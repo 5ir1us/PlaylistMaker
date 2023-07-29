@@ -33,7 +33,7 @@
         app:cornerRadius="@dimen/indent"
         app:icon="@drawable/search"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/icon_range"
         app:iconTint="@color/blackness" />
 
 
@@ -50,10 +50,10 @@
         android:textColor="@color/blackness"
         android:textSize="@dimen/text_size"
 
-        app:cornerRadius="16dp"
+        app:cornerRadius="@dimen/indent"
         app:icon="@drawable/media"
         app:iconGravity="textStart"
-        app:iconPadding="10dp"
+        app:iconPadding="@dimen/icon_range"
         app:iconTint="@color/blackness" />
 
     <Button
@@ -64,7 +64,6 @@
         android:layout_weight="1"
         android:backgroundTint="@color/lily"
         android:foreground="?attr/selectableItemBackground"
-        android:paddingBottom="28dp"
         android:text="@string/sitting"
         android:textAllCaps="false"
         android:textColor="@color/blackness"
@@ -73,7 +72,7 @@
         app:cornerRadius="@dimen/indent"
         app:icon="@drawable/setting"
         app:iconGravity="textStart"
-        app:iconPadding="10.66dp"
+        app:iconPadding="@dimen/icon_range"
         app:iconTint="@color/blackness" />
 
 </LinearLayout>
