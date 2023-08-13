@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="indent">16dp</dimen>
+    <dimen name="text_size">22sp</dimen>
+    <dimen name="text_size_settings">16sp</dimen>
+    <dimen name="icon_range">10dp</dimen>
+    <dimen name="padding_end_setting">12dp</dimen>
+    <dimen name="line_indent_settings">42dp</dimen>
+</resources>
