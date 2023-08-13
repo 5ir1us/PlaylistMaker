@@ -1,9 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchcActivity">
+    android:background="?attr/colorSecondary"
+    android:orientation="vertical"
+    tools:context=".SearchActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarSearch"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginBottom="@dimen/indent_min"
+        android:background="?attr/colorSecondary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageView
+            android:id="@+id/buttonSittingBack"
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/settings_return" />
+
+        <TextView
+            android:id="@+id/x_panel_hea"
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="@dimen/padding_12"
+            android:paddingEnd="@dimen/padding_12"
+            android:text="@string/search" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/indent">
+
+
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@drawable/edittext_rounded"
+            android:drawableStart="@drawable/search"
+            android:drawablePadding="@dimen/text_size_settings"
+            android:drawableTint="@color/search_color_text"
+            android:hint="@string/search"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLength="300"
+            android:maxLines="1"
+            android:paddingLeft="14dp"
+            android:singleLine="true"
+            android:textColorHint="@color/search_color_text" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/clearIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/indent"
+            android:src="@drawable/clear"
+            android:visibility="gone"
+            app:tint="@color/black_color" />
+    </RelativeLayout>
+
+
+</LinearLayout>

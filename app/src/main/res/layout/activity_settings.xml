@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/lily"
+    android:background="?attr/colorSecondary"
     android:orientation="vertical"
     tools:ignore="ExtraText">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:paddingStart="@dimen/indent"
-        android:paddingEnd="@dimen/indent">
+        android:layout_height="?actionBarSize"
+        android:background="?attr/colorSecondary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
         <ImageView
-            android:id="@+id/sittingBack"
+            android:id="@+id/buttonSittingBack"
+            style="@style/ActivityToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -27,72 +27,48 @@
 
         <TextView
             android:id="@+id/text"
+            style="@style/ActivityToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/padding_end_setting"
-            android:text="@string/sitting"
-            android:textColor="@color/blackness"
-            android:textSize="@dimen/text_size">
+            android:text="@string/sitting">
 
         </TextView>
-    </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/swichDarckTheam"
+        style="@style/ActivitySettingsStyleSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="61dp"
-        android:paddingStart="@dimen/indent"
-        android:paddingEnd="@dimen/padding_end_setting"
-        android:text="@string/darkTheme"
-        android:textColor="@color/blackness"
-        android:textSize="@dimen/text_size_settings"
-        android:thumbTint="@color/settings_image_color"
-        android:trackTint="@color/track_gray">
+        android:text="@string/darkTheme">
 
     </androidx.appcompat.widget.SwitchCompat>
 
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/share"
+        style="@style/ActivitySettingsStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/line_indent_settings"
-        android:clickable="true"
-        android:drawableTint="@color/settings_image_color"
-        android:paddingStart="@dimen/indent"
-        android:paddingEnd="@dimen/padding_end_setting"
         android:text="@string/shareApp"
-        android:textColor="@color/settings_text_color"
-        android:textSize="@dimen/text_size_settings"
         app:drawableEndCompat="@drawable/settings_share" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/message_support"
+        style="@style/ActivitySettingsStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/line_indent_settings"
-        android:clickable="true"
-        android:paddingStart="@dimen/indent"
-        android:paddingEnd="@dimen/padding_end_setting"
-        android:text="@string/shareApp"
-        android:textColor="@color/settings_text_color"
+        android:text="@string/writeToSupport"
         android:textSize="@dimen/text_size_settings"
-        app:drawableEndCompat="@drawable/settings_support"
-        app:drawableTint="@color/settings_image_color" />
+        app:drawableEndCompat="@drawable/settings_support" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/terms_user"
+        style="@style/ActivitySettingsStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/line_indent_settings"
-        android:clickable="true"
-        android:drawableTint="@color/settings_image_color"
-        android:paddingStart="@dimen/indent"
-        android:paddingEnd="@dimen/padding_end_setting"
         android:text="@string/termsOfUse"
-        android:textColor="@color/settings_text_color"
-        android:textSize="@dimen/text_size_settings"
         app:drawableEndCompat="@drawable/settings_arrow_forward" />
 
 </LinearLayout>
