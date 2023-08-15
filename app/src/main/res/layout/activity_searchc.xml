@@ -38,11 +38,10 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="@dimen/indent">
-
 
         <EditText
             android:id="@+id/search"
@@ -59,6 +58,7 @@
             android:maxLength="300"
             android:maxLines="1"
             android:paddingLeft="14dp"
+            android:textColor="@color/black_color"
             android:singleLine="true"
             android:textColorHint="@color/search_color_text" />
 
@@ -66,14 +66,12 @@
             android:id="@+id/clearIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/indent"
+            android:padding="@dimen/indent_18"
             android:src="@drawable/clear"
             android:visibility="gone"
-            app:tint="@color/black_color" />
-    </RelativeLayout>
+            app:tint="@color/search_color_text" />
+    </FrameLayout>
 
 
 </LinearLayout>

@@ -1,64 +1,65 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlistmaker.databinding.ActivitySettingsBinding
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivitySettingsBinding//байндинг
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivitySettingsBinding.inflate(layoutInflater) //байндинг
+        setContentView(binding.root)
+
+        //строковые ресурсы черех getstring
+        val context : Context = this
+        val shareText = context.getString(R.string.share_message)
+        val mail = context.getString(R.string.mail_support)
+        val bodySupport = context.getString(R.string.body_support)
+        val supportText = context.getString(R.string.message_support)
+        val termsText = context.getString(R.string.terms_user_message)
 
         //выход из настроек в главное меню
-        setContentView(R.layout.activity_settings)
-
-        val backFromSettings = findViewById<ImageView>(R.id.buttonSittingBack)
-        backFromSettings.setOnClickListener {
+        binding.buttonSittingBack.setOnClickListener {
             finish()
         }
-        //поделиться приложением
-        val shareButton = findViewById<TextView>(R.id.share)
 
-        shareButton.setOnClickListener {
+        //поделиться приложением
+        binding.share.setOnClickListener {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
-            val shareApp =
-                "https://practicum.yandex.ru/profile/android-developer/?from=mobile_landing"
-            shareIntent.putExtra(Intent.EXTRA_TEXT, shareApp)
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareText)
             startActivity(shareIntent)
 
         }
         //написать в пподдержку
-        val emailButton = findViewById<TextView>(R.id.message_support)
-
-        val builder = Uri.Builder() //собрал uri пример из практикума не работает
+        val builder = Uri.Builder() //собрал uri/, пример из практикума не работает
         builder.scheme("mailto")
-            .appendPath("zod15ru@gmail.com")
+            .appendPath(mail)
             .appendQueryParameter(
-                "subject",
-                "Сообщение разработчикам и разработчица приложения PlayList Maker"
+                "subject", supportText
             )
-            .appendQueryParameter("body", "Спасибо разрабам за крутое приложение!!!")
+            .appendQueryParameter("body", bodySupport)
         val uri = builder.build()
 
-        emailButton.setOnClickListener {
+        binding.messageSupport.setOnClickListener {
             val emailIntent = Intent(Intent.ACTION_SENDTO)
             emailIntent.data = uri
             startActivity(emailIntent)
         }
 
         //пользовательское соглашение
-        val agreementButton = findViewById<TextView>(R.id.terms_user)
-        agreementButton.setOnClickListener {
+        binding.termsUser.setOnClickListener {
             val agreementIntent = Intent(Intent.ACTION_VIEW)
-//            agreementIntent.type = "text/html"
-            val agreementUrl = "https://yandex.ru/legal/practicum_offer/"
-            agreementIntent.data = Uri.parse(agreementUrl)
+            agreementIntent.data = Uri.parse(termsText)
             startActivity(agreementIntent)
         }
-
 
     }
 }

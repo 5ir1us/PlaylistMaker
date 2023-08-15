@@ -10,43 +10,37 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
-const val SEARCH_STRING_QUERY = "search_key"
+import com.example.playlistmaker.databinding.ActivitySearchcBinding
+
+
 class SearchActivity : AppCompatActivity() {
-    private lateinit var searchEditText: EditText
-    private lateinit var clearButton: ImageView
 
 
-    //    private lateinit var  simpleTextWatcher: TextWatcher
+    companion object {
+        private const val SEARCH_STRING_QUERY = "search_key"
+    }
+
+    private lateinit var simpleTextWatcher: TextWatcher
+
+    private lateinit var binding: ActivitySearchcBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_searchc)
+        binding = ActivitySearchcBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        searchEditText = findViewById(R.id.search)
-        clearButton = findViewById(R.id.clearIcon)
-        val backButton = findViewById<ImageView>(R.id.buttonSittingBack)
 
 //кнопка назад
-        backButton.setOnClickListener {
+        binding.buttonSittingBack.setOnClickListener {
             finish()
         }
 
-        clearButton.setOnClickListener {
-            searchEditText.setText("")
+        binding.clearIcon.setOnClickListener {
+            binding.search.setText("")
             hideKeyboard()
         }
 
-
-
-        if (savedInstanceState != null) {
-            // Восстанавливаем текст из Bundle
-            val text = savedInstanceState.getString(SEARCH_STRING_QUERY)
-            // Устанавливаем текст в EditText
-            searchEditText.setText(text)
-        }
-
-
-
-        val simpleTextWatcher = object : TextWatcher {
+        simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 Log.d("DummyTextWatcher", "beforeTextChanged: " + s);
 
@@ -55,35 +49,28 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d("DummyTextWatcher", "onTextChanged: " + s);
 
-
             }
 
             override fun afterTextChanged(s: Editable?) {
-                clearButton.visibility = clearButtonVisibility(s)
+                binding.clearIcon.visibility = clearButtonVisibility(s)
             }
 
         }
-        searchEditText.addTextChangedListener(simpleTextWatcher)
-
+        binding.search.addTextChangedListener(simpleTextWatcher)
 
     }
 
-
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SEARCH_STRING_QUERY,searchEditText.text.toString())
+        outState.putString(SEARCH_STRING_QUERY, binding.search.text.toString())
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         super.onRestoreInstanceState(savedInstanceState)
         val searchText = savedInstanceState.getString(SEARCH_STRING_QUERY)
-        searchEditText.setText(searchText)
-
+        binding.search.setText(searchText)
 
     }
-
-
-
 
     //проврка пустого запроса
     private fun clearButtonVisibility(s: CharSequence?): Int {
