@@ -3,11 +3,7 @@ package com.example.playlistmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Toast
 
 
 class MainActivity : AppCompatActivity() {
@@ -22,7 +18,7 @@ class MainActivity : AppCompatActivity() {
 
 
         searchButton.setOnClickListener {
-            val searchIntent = Intent(this, SearchcActivity::class.java)
+            val searchIntent = Intent(this, SearchActivity::class.java)
             startActivity(searchIntent)
         }
         mediaButton.setOnClickListener {

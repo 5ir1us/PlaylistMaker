@@ -2,8 +2,13 @@
 <resources>
     <dimen name="indent">16dp</dimen>
     <dimen name="text_size">22sp</dimen>
-    <dimen name="text_size_settings">16sp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
     <dimen name="icon_range">10dp</dimen>
-    <dimen name="padding_end_setting">12dp</dimen>
+    <dimen name="padding_12">12dp</dimen>
     <dimen name="line_indent_settings">42dp</dimen>
+    <dimen name="toolbar_size">26sp</dimen>
+    <dimen name="indent_min">8dp</dimen>
+    <dimen name="indent_18">18dp</dimen>
+    <dimen name="indent_13">13dp</dimen>
 </resources>

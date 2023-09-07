@@ -2,9 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
 
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/blue"
+    android:background="?attr/colorPrimary"
     android:orientation="vertical"
     android:padding="@dimen/indent">
 
@@ -13,66 +14,39 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:text="@string/app_name"
-        android:textColor="@color/lily"
+        android:textColor="@color/white_color"
         android:textSize="@dimen/text_size" />
 
 
     <Button
         android:id="@+id/searchcid"
+        style="@style/ActivityMainScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="40dp"
-        android:layout_weight="1"
-        android:backgroundTint="@color/lily"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/search"
-        android:textAllCaps="false"
-        android:textColor="@color/blackness"
-        android:textSize="@dimen/text_size"
-
-        app:cornerRadius="@dimen/indent"
-        app:icon="@drawable/search"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_range"
-        app:iconTint="@color/blackness" />
+        app:icon="@drawable/search" />
 
 
     <Button
         android:id="@+id/mediaLibraryId"
+        style="@style/ActivityMainScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/indent"
-        android:layout_weight="1"
-        android:backgroundTint="@color/lily"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/mediaLibrary"
-        android:textAllCaps="false"
-        android:textColor="@color/blackness"
-        android:textSize="@dimen/text_size"
-
-        app:cornerRadius="@dimen/indent"
-        app:icon="@drawable/media"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_range"
-        app:iconTint="@color/blackness" />
+        app:icon="@drawable/media" />
 
     <Button
         android:id="@+id/sittingId"
+        style="@style/ActivityMainScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/indent"
-        android:layout_weight="1"
-        android:backgroundTint="@color/lily"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/sitting"
-        android:textAllCaps="false"
-        android:textColor="@color/blackness"
-        android:textSize="@dimen/text_size"
-
-        app:cornerRadius="@dimen/indent"
-        app:icon="@drawable/setting"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_range"
-        app:iconTint="@color/blackness" />
+        app:icon="@drawable/setting" />
 
 </LinearLayout>
