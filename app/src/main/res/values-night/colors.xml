@@ -3,4 +3,6 @@
 <resources>
     <color name="search_color_text">#000000</color>
     <color name="search_color_background">#FFFFFF</color>
+    <color name="text_color_track">#FFFFFF</color>
+    <color name="text_color_track2">#FFFFFF</color>
 </resources>

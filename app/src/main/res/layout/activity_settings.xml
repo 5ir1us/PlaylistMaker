@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/writeToSupport"
-        android:textSize="@dimen/text_size_settings"
+        android:textSize="@dimen/text_size_16"
         app:drawableEndCompat="@drawable/settings_support" />
 
     <androidx.appcompat.widget.AppCompatTextView

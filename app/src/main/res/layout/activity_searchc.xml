@@ -49,7 +49,7 @@
             android:layout_height="48dp"
             android:background="@drawable/edittext_rounded"
             android:drawableStart="@drawable/search"
-            android:drawablePadding="@dimen/text_size_settings"
+            android:drawablePadding="@dimen/text_size_16"
             android:drawableTint="@color/search_color_text"
             android:hint="@string/search"
             android:imeOptions="actionDone"
@@ -58,8 +58,8 @@
             android:maxLength="300"
             android:maxLines="1"
             android:paddingLeft="14dp"
-            android:textColor="@color/black_color"
             android:singleLine="true"
+            android:textColor="@color/black_color"
             android:textColorHint="@color/search_color_text" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -72,6 +72,17 @@
             android:visibility="gone"
             app:tint="@color/search_color_text" />
     </FrameLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListTrack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:layout_marginTop="@dimen/indent"
+        tools:listitem="@layout/track_list">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </LinearLayout>

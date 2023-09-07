@@ -16,5 +16,8 @@
     <color name="text_gray">#AEAFB4</color>
     <color name="search_color_text">#AEAFB4</color>
     <color name="search_color_background">#E6E8EB</color>
+    <color name="text_color_track">#000000</color>
+    <color name="text_color_track2">#AEAFB4</color>
+
 </resources>
 
