@@ -19,5 +19,8 @@
     <color name="text_color_track">#000000</color>
     <color name="text_color_track2">#AEAFB4</color>
 
+    <color name="black_revers">#1A1B22</color>
+    <color name="white_revers">#FFFFFF</color>
+
 </resources>
 

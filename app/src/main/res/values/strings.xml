@@ -12,10 +12,10 @@
     <string name="mail_support">zod15ru@gmail.com</string>
     <string name="body_support">Спасибо разрабам за крутое приложение!!!"</string>
     <string name="terms_user_message">https://yandex.ru/legal/practicum_offer/</string>
-
-
-
-
+    <string name="Update_search">Обновить</string>
+    <string name="error_no_connect">Проблемы со связью </string>
+    <string name="error_no_connect_2">Загрузка не удалась. Проверьте подключение к интернету. </string>
+    <string name="no_results">Ничего не нашлось</string>
 
 
 </resources>

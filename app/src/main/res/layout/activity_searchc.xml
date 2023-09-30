@@ -6,20 +6,20 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
     android:orientation="vertical"
-    tools:context=".SearchActivity">
+    tools:context=".activity.SearchActivity">
 
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarSearch"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:layout_marginBottom="@dimen/indent_min"
+        android:layout_marginBottom="@dimen/indent_8"
         android:background="?attr/colorSecondary"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
         <ImageView
-            android:id="@+id/buttonSittingBack"
+            android:id="@+id/button_sitting_back"
             style="@style/ActivityToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -41,10 +41,10 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="@dimen/indent">
+        android:paddingHorizontal="@dimen/indent_16">
 
         <EditText
-            android:id="@+id/search"
+            android:id="@+id/searchEdittext"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:background="@drawable/edittext_rounded"
@@ -73,16 +73,103 @@
             app:tint="@color/search_color_text" />
     </FrameLayout>
 
-
+               <!--список-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerListTrack"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
-        android:layout_marginTop="@dimen/indent"
-        tools:listitem="@layout/track_list">
-
+        android:layout_marginTop="@dimen/indent_16"
+        android:visibility="gone"
+        tools:listitem="@layout/layout_track">
     </androidx.recyclerview.widget.RecyclerView>
+
+
+  <!-- Виджет с изображением и текстом для случая, когда поиск не дал результатов -->
+
+  <LinearLayout
+      android:id="@+id/no_results_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:visibility="gone"
+      >
+
+    <ImageView
+        android:id="@+id/no_results_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_102"
+        android:foregroundGravity="center"
+        android:src="@drawable/no_results"/>
+    <TextView
+        android:id="@+id/no_results_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/ys_display_medium"
+        android:gravity="center"
+        android:text="@string/no_results"
+        android:textColor="@color/black_revers"
+        android:textSize="@dimen/text_size_19"
+        />
+
+  </LinearLayout>
+
+<!--виджет на случай ечли произошла ошибка сети -->
+  <LinearLayout
+      android:id="@+id/no_connection_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+    <ImageView
+        android:id="@+id/no_connection_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_102"
+        android:foregroundGravity="center"
+        android:src="@drawable/no_connection" />
+
+
+
+    <TextView
+        android:id="@+id/no_connection_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error_no_connect"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/text_size_19"
+        android:layout_marginBottom="@dimen/indent_24"
+        android:textColor="@color/black_revers"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/indent_24"
+        android:text="@string/error_no_connect_2"
+        android:gravity="center"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/text_size_19"
+        android:textColor="@color/black_revers"/>
+
+
+    <ImageView
+        android:id="@+id/retry_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_24"
+        android:clickable="true"
+        android:textColor="@color/white_revers"
+        android:background="@drawable/button"
+        android:text="@string/Update_search"/>
+
+
+
+  </LinearLayout>
+
 
 
 </LinearLayout>

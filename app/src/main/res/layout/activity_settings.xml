@@ -17,7 +17,7 @@
         android:theme="?attr/actionBarTheme">
 
         <ImageView
-            android:id="@+id/buttonSittingBack"
+            android:id="@+id/button_sitting_back"
             style="@style/ActivityToolbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/swichDarckTheam"
+        android:id="@+id/switch_darck_theam"
         style="@style/ActivitySettingsStyleSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
