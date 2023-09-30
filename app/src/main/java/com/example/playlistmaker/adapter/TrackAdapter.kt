@@ -8,7 +8,7 @@ class TrackAdapter(val trackList: ArrayList<Track>) : RecyclerView.Adapter<Track
 
     
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.track_list, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_track, parent, false)
         return TrackViewHolder(view)
     }
 

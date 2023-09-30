@@ -5,12 +5,12 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlistmaker.databinding.TrackListBinding
+import com.example.playlistmaker.databinding.LayoutTrackBinding
 
 class TrackViewHolder(item: View) : RecyclerView.ViewHolder(item) {
 
 
-    val binding = TrackListBinding.bind(item)
+    val binding = LayoutTrackBinding.bind(item)
     fun bind(list: Track) = with(binding) {
         songTitle.text = list.trackName
         artistName.text = list.artistName
