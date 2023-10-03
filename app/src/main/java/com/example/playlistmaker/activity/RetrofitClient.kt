@@ -26,17 +26,12 @@ object RetrofitClient {
     }
   }
 
-
-
-
   val client = OkHttpClient.Builder()
     .addInterceptor(HttpLoggingInterceptor().apply {
       setLevel(HttpLoggingInterceptor.Level.BODY)
     })
-    .addInterceptor(errorInterceptor) // добавили еще один
+    // .addInterceptor(errorInterceptor) //код 400 проверка
     .build()
-
-
 
   private var retrofit: Retrofit? = null
   private fun getClient(baseUrl: String): Retrofit {

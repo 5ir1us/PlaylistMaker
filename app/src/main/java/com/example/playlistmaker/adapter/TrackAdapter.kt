@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.Track
 
-class TrackAdapter(private val trackList: ArrayList<Track>) :
+class TrackAdapter(private val trackList: MutableList<Track>) :
   RecyclerView.Adapter<TrackViewHolder>() {
 
   override fun onCreateViewHolder(
@@ -29,7 +29,7 @@ class TrackAdapter(private val trackList: ArrayList<Track>) :
 
   @SuppressLint("NotifyDataSetChanged")
   fun updateTracks(newTracks: ArrayList<Track>) {
-    trackList.clear()
+    newTracks.clear()
     notifyDataSetChanged()
   }
 }
