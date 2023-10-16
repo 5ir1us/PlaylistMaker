@@ -1,4 +1,4 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.activity
 
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity

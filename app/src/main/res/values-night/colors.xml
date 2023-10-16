@@ -5,4 +5,9 @@
     <color name="search_color_background">#FFFFFF</color>
     <color name="text_color_track">#FFFFFF</color>
     <color name="text_color_track2">#FFFFFF</color>
+
+    <color name="black_revers">#FFFFFF</color>
+    <color name="white_revers">#1A1B22</color>
+
+
 </resources>

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorPrimary"
     android:orientation="vertical"
-    android:padding="@dimen/indent">
+    android:padding="@dimen/indent_16">
 
     <TextView
         android:layout_width="wrap_content"
@@ -15,7 +15,7 @@
         android:gravity="start"
         android:text="@string/app_name"
         android:textColor="@color/white_color"
-        android:textSize="@dimen/text_size" />
+        android:textSize="@dimen/text_size_22" />
 
 
     <Button
@@ -34,7 +34,7 @@
         style="@style/ActivityMainScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/indent"
+        android:layout_marginTop="@dimen/indent_16"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/mediaLibrary"
         app:icon="@drawable/media" />
@@ -44,7 +44,7 @@
         style="@style/ActivityMainScreen"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/indent"
+        android:layout_marginTop="@dimen/indent_16"
         android:foreground="?attr/selectableItemBackground"
         android:text="@string/sitting"
         app:icon="@drawable/setting" />
