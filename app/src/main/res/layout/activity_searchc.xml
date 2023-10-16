@@ -92,8 +92,7 @@
       android:layout_height="match_parent"
       android:gravity="center_horizontal"
       android:orientation="vertical"
-      android:visibility="gone"
-      >
+      android:visibility="gone">
 
     <ImageView
         android:id="@+id/no_results_image"
@@ -170,6 +169,43 @@
 
   </LinearLayout>
 
+
+  <LinearLayout
+      android:id="@+id/search_history_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:gravity="center_horizontal"
+      android:orientation="vertical"
+      android:visibility="gone">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/indent_24"
+        android:text="@string/storyrequested_information"
+        android:gravity="center"
+        android:layout_marginTop="42dp"
+        android:fontFamily="@font/ys_display_medium"
+        android:textSize="@dimen/text_size_19"
+        android:textColor="@color/black_revers"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_search_history"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="@dimen/padding_12"
+        tools:listitem="@layout/layout_track"/>
+
+    <ImageButton
+        android:id="@+id/clear_search_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/indent_24"
+        android:background="@drawable/clear_search_history"
+        android:clickable="true"/>
+
+
+  </LinearLayout>
 
 
 </LinearLayout>

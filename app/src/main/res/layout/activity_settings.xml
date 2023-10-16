@@ -35,15 +35,15 @@
         </TextView>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_darck_theam"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         style="@style/ActivitySettingsStyleSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="61dp"
         android:text="@string/darkTheme">
 
-    </androidx.appcompat.widget.SwitchCompat>
+    </com.google.android.material.switchmaterial.SwitchMaterial>
 
 
     <androidx.appcompat.widget.AppCompatTextView

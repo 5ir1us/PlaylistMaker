@@ -16,6 +16,7 @@
     <string name="error_no_connect">Проблемы со связью </string>
     <string name="error_no_connect_2">Загрузка не удалась. Проверьте подключение к интернету. </string>
     <string name="no_results">Ничего не нашлось</string>
+  <string name="storyrequested_information">Вы искали</string>
 
 
 </resources>

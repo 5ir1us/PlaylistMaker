@@ -1,9 +1,7 @@
-package com.example.playlistmaker.Interface
+package com.example.playlistmaker.utils
 
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Adapter
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +12,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class SearchMethods {
+class RequestOnServer {
   // Функция для установки слушателя событий для поля ввода текста
   fun setSearchListener(
     editText: EditText,
@@ -24,14 +22,14 @@ class SearchMethods {
     noConnectionLayout: View,
     noResultsLayout: View,
     retryButtonn: ImageView,
-    trackk: ArrayList<Track>
+    trackk: ArrayList<Track>,
   ) {
     editText.setOnEditorActionListener { _, actionId, _ ->
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         // Функция для выполнения запроса к сервису поиска треков
         performSearch(
           service, editText.text.toString(), list, adapter, noConnectionLayout, noResultsLayout,
-          retryButtonn,trackk
+          retryButtonn, trackk
         )
         true
       } else {
@@ -40,7 +38,7 @@ class SearchMethods {
     }
   }
 
-  // Функция для выполнения запроса к сервису поиска треков
+  // Функция для выполнения запроса
   private fun performSearch(
     service: RetrofitServices,
     query: String,
@@ -49,7 +47,7 @@ class SearchMethods {
     noConnectionLayout: View,
     noResultsLayout: View,
     retryButton: ImageView,
-    trackk: ArrayList<Track>
+    trackk: ArrayList<Track>,
   ) {
     val call = service.findTrack(query)
     call.enqueue(object : Callback<NewTrack> {
@@ -59,8 +57,8 @@ class SearchMethods {
         response: Response<NewTrack>,
       ) {
         if (response.code() != 200) {
-          // Функция для установки видимости для разных макетов
           setVisibility(noConnectionLayout, list, noResultsLayout)
+
           retryButton.setOnClickListener {
             val newCall = call.clone()
             newCall.enqueue(this)
@@ -76,7 +74,7 @@ class SearchMethods {
 
           response.body()?.results?.isNotEmpty() == true -> {
 
-             updateListAndAdapter(response.body()?.results!!, adapter,trackk)
+            updateListAndAdapter(response.body()?.results!!, adapter, trackk)
             setVisibility(list, noResultsLayout, noConnectionLayout)
           }
         }
@@ -91,7 +89,7 @@ class SearchMethods {
   }
 
   // Функция для установки видимости для разных макетов
-  private fun setVisibility(
+  fun setVisibility(
     visibleView: View,
     vararg invisibleViews: View,
   ) {

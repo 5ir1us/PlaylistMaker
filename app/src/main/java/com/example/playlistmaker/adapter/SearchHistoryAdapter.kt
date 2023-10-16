@@ -6,14 +6,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.data.Track
-import com.example.playlistmaker.utils.SearchHistory
 
-class TrackAdapter(
-  private val trackList: ArrayList<Track>,
-) : RecyclerView.Adapter<TrackViewHolder>() {
+class SearchHistoryAdapter() : RecyclerView.Adapter<TrackViewHolder>() {
 
-  private var itemClickListener: ((Track) -> Unit)? = null
+    val historyList  = mutableListOf<Track>()
 
+  fun updateData(newData: MutableList<Track>) {
+    historyList.clear()
+    historyList.addAll(newData)
+    notifyDataSetChanged()
+  }
   override fun onCreateViewHolder(
     parent: ViewGroup,
     viewType: Int,
@@ -22,28 +24,18 @@ class TrackAdapter(
     return TrackViewHolder(view)
   }
 
+  override fun getItemCount(): Int = historyList.size
+
   override fun onBindViewHolder(
     holder: TrackViewHolder,
     position: Int,
   ) {
-    val track = trackList[position]
-    holder.bind(track)
-    holder.itemView.setOnClickListener {
-
-      itemClickListener?.invoke(track)
-     }
+    holder.bind(historyList[position])
   }
 
-  override fun getItemCount(): Int = trackList.size
-
-  @SuppressLint("NotifyDataSetChanged")
-  fun updateTracks(newTracks: ArrayList<Track>) {
-    newTracks.clear()
+  fun clearTracksHistory(newData: MutableList<Track>) {
+    newData.clear()
     notifyDataSetChanged()
   }
-  fun setItemClickListener(listener: (Track) -> Unit) {
-    itemClickListener = listener
-  }
 }
-
 

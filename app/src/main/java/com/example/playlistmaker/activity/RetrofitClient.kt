@@ -1,6 +1,6 @@
 package com.example.playlistmaker.activity
 
-import com.example.playlistmaker.Interface.RetrofitServices
+import com.example.playlistmaker.utils.RetrofitServices
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
