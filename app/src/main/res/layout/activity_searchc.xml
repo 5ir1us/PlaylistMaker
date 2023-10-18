@@ -176,7 +176,7 @@
       android:layout_height="match_parent"
       android:gravity="center_horizontal"
       android:orientation="vertical"
-      android:visibility="gone">
+      android:visibility="visible">
 
     <TextView
         android:layout_width="match_parent"
@@ -189,21 +189,34 @@
         android:textSize="@dimen/text_size_19"
         android:textColor="@color/black_revers"/>
 
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_search_history"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:layout_marginTop="@dimen/padding_12"
         tools:listitem="@layout/layout_track"/>
 
-    <ImageButton
-        android:id="@+id/clear_search_history"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/indent_24"
-        android:background="@drawable/clear_search_history"
-        android:clickable="true"/>
 
+  <ImageButton
+      android:id="@+id/clear_search_history"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:layout_marginTop="@dimen/indent_24"
+      android:layout_marginBottom="@dimen/indent_24"
+      android:background="@drawable/clear_search_history"
+      android:clickable="true" />
+
+
+  </LinearLayout>
 
   </LinearLayout>
 

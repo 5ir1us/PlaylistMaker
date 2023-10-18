@@ -48,8 +48,10 @@
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:tint">@color/black_super</item>
         <item name="android:textFontWeight">500</item>
-        <item name="android:padding">@dimen/padding_12</item>
-    </style>
+     </style>
+
+
+
 
 
 

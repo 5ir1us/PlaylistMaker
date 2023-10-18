@@ -88,10 +88,10 @@ class SearchActivity : AppCompatActivity() {
 
 
       clearIcon.setOnClickListener {
+        hideKeyboard()
         searchEdittext.setText("")
         searchEdittext.clearFocus()
         // searchEdittext.text.delete(0, searchEdittext.text.length)
-        hideKeyboard()
         trackAdapter.updateTracks(trackList)
         historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
         showOrHideSearchHistoryLayout()
