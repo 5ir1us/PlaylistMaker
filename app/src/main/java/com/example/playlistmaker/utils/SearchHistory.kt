@@ -22,6 +22,7 @@ class SearchHistory(private val sharedPreferences: SharedPreferences) {
   }
 
 
+
 }
 
 

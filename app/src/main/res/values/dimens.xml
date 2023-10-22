@@ -14,4 +14,6 @@
   <dimen name="text_size_19">19sp</dimen>
   <dimen name="indent_102">102dp</dimen>
   <dimen name="indent_24">24dp</dimen>
+  <dimen name="indent_26">26dp</dimen>
+  <dimen name="indent_39">39dp</dimen>
 </resources>

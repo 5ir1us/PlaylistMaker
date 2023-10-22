@@ -16,7 +16,7 @@ class RequestOnServer {
   // Функция для установки слушателя событий для поля ввода текста
   fun setSearchListener(
     editText: EditText,
-    service: RetrofitServices,
+    service: RetrofitService,
     list: RecyclerView,
     adapter: TrackAdapter,
     noConnectionLayout: View,
@@ -40,7 +40,7 @@ class RequestOnServer {
 
   // Функция для выполнения запроса
   private fun performSearch(
-    service: RetrofitServices,
+    service: RetrofitService,
     query: String,
     list: RecyclerView,
     adapter: TrackAdapter,
