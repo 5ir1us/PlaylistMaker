@@ -11,14 +11,14 @@
       android:id="@+id/image_album"
       android:layout_width="0dp"
       android:layout_height="0dp"
-      android:scaleType="centerCrop"
+      android:layout_marginBottom="@dimen/indent_24"
+      android:scaleType="fitXY"
       app:layout_constraintBottom_toTopOf="@+id/album_artist"
       app:layout_constraintEnd_toStartOf="@+id/right_guideline"
       app:layout_constraintStart_toStartOf="@+id/left_guideline"
       app:layout_constraintTop_toBottomOf="@+id/toolbarSearch"
       app:srcCompat="@drawable/placeholder"
       tools:layout_marginTop="@dimen/indent_26"
-      android:layout_marginBottom="@dimen/indent_24"
       />
 
   <ImageView
@@ -130,11 +130,13 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="12dp"
+      android:ellipsize="end"
       android:fontFamily="@font/ys_display_medium"
+      android:maxLines="1"
+      android:maxWidth="200dp"
       android:textColor="@color/black_revers"
       app:layout_constraintEnd_toStartOf="@+id/guideline4"
       app:layout_constraintHorizontal_bias="0.0"
-      app:layout_constraintHorizontal_weight="1"
       app:layout_constraintStart_toStartOf="@+id/album_artist"
       app:layout_constraintTop_toBottomOf="@+id/album_artist"
       tools:text="The Beatles "
@@ -145,32 +147,33 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="56dp"
       android:ellipsize="end"
-      app:layout_constrainedWidth="true"
-      android:maxLines="1"
       android:fontFamily="@font/ys_display_medium"
+      android:maxLines="1"
       android:textColor="@color/black_revers"
       android:textSize="@dimen/text_size_22"
+      app:layout_constrainedWidth="true"
       app:layout_constraintBottom_toTopOf="@+id/imageView3"
       app:layout_constraintEnd_toStartOf="@+id/right_guideline"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="@+id/left_guideline"
       tools:text="Yesterday (Remastered 2009)"
       />
+
   <TextView
       android:id="@+id/track_duration"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/indent_39"
       app:layout_constraintBaseline_toBaselineOf="@id/track_duration1"
-      app:layout_constraintBottom_toTopOf="@+id/collection_name"
-      app:layout_constraintEnd_toEndOf="@+id/collection_name"
+      app:layout_constraintBottom_toTopOf="@+id/album_one_name"
+      app:layout_constraintEnd_toEndOf="@+id/album_one_name"
       app:layout_constraintTop_toTopOf="@+id/horizontal_guideline"
       tools:text="00:00"
       style="@style/TrackApiInfo"
       />
 
   <TextView
-      android:id="@+id/collection_name"
+      android:id="@+id/album_one_name"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_marginEnd="@dimen/indent_16"
@@ -192,8 +195,8 @@
       android:layout_height="wrap_content"
       app:layout_constraintBaseline_toBaselineOf="@id/track_year3"
       app:layout_constraintBottom_toTopOf="@+id/track_genre"
-      app:layout_constraintEnd_toEndOf="@+id/collection_name"
-      app:layout_constraintTop_toBottomOf="@+id/collection_name"
+      app:layout_constraintEnd_toEndOf="@+id/album_one_name"
+      app:layout_constraintTop_toBottomOf="@+id/album_one_name"
       tools:text="1965"
       style="@style/TrackApiInfo"
       />
@@ -248,12 +251,21 @@
         />
   </androidx.appcompat.widget.Toolbar>
 
+  <androidx.constraintlayout.widget.Barrier
+      android:layout_width="wrap_content"
+      android:layout_height="0dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:barrierDirection="top"
+      app:constraint_referenced_ids="track_album2,album_one_name"
+
+      />
   <androidx.constraintlayout.widget.Group
       android:id="@+id/visibleGroup"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:visibility="visible"
-      app:constraint_referenced_ids="track_album2,collection_name"
+      app:constraint_referenced_ids="track_album2,album_one_name"
       />
   <androidx.constraintlayout.widget.Guideline
       android:id="@+id/left_guideline"
@@ -275,15 +287,6 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       app:layout_constraintGuide_percent="0.7140903"
-      />
-  <androidx.constraintlayout.widget.Barrier
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:barrierDirection="top"
-      app:constraint_referenced_ids="track_album2,collection_name"
-
       />
   <androidx.constraintlayout.widget.Guideline
       android:id="@+id/guideline4"

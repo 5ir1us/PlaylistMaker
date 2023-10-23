@@ -1,18 +1,28 @@
 package com.example.playlistmaker.activity
 
-import android.net.Uri
+import android.content.Context
+import android.os.Build.VERSION_CODES
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.util.TypedValue
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
+import com.example.playlistmaker.data.Track
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
 import com.example.playlistmaker.utils.Constants
 
 class AudioPlayerActivity : AppCompatActivity() {
 
+  companion object {
+    const val TRACK_INFO: String = "Track"
+  }
+
   private lateinit var binding: ActivityAudioPlayerBinding
 
+  @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
@@ -22,36 +32,45 @@ class AudioPlayerActivity : AppCompatActivity() {
       buttonPlayerBack.setOnClickListener {
         finish()
       }
+      val track = intent.getParcelableExtra<Track>(TRACK_INFO)
+      //не совместим с 26 мин вер. нужна 33
+      // val track = intent.getParcelableExtra("track",Track::class.java)
 
-      val intent = intent
-
-      val image = intent.getStringExtra(Constants.PLAYER_IMAGE_TRACK)
-      val time = intent.getStringExtra(Constants.PLAYER_TIME_TRACK)
-      val collection = intent.getStringExtra(Constants.PLAYER_COLLECTION_TRACK)
-      val year = intent.getStringExtra(Constants.PLAYER_YEAR_TRACK)
-      val genre = intent.getStringExtra(Constants.PLAYER_GENRE_TRACK)
-      val country = intent.getStringExtra(Constants.PLAYER_COUNTRY_TRACK)
-      val artistName = intent.getStringExtra(Constants.PLAYER_ARTIST_NAME)
-      val trackName = intent.getStringExtra(Constants.PLAYER_TRACK_NAME)
+      val radiusImage = dpToPx(8f, this@AudioPlayerActivity)
 
       Glide.with(this@AudioPlayerActivity)
-        .load(image)
+        .load(track?.getCoverArtwork())
         .placeholder(R.drawable.placeholder)
+        .centerCrop()
+        .transform(RoundedCorners(radiusImage))
         .into(imageAlbum)
 
-      trackDuration.text = time //
-      collectionName.text = collection //
-      trackYear.text = year
-      trackGenre.text = genre
-      trackCountry.text = country
-      viewArtistName.text = artistName
-      albumArtist.text = trackName
-      timeTrack.text = time
 
-      if (collection == null) {
-        visibleGroup.visibility = View.GONE
+      track?.apply {
+        trackDuration.text = getTimeTrack()
+        albumOneName.text = collectionName
+        trackYear.text = changeDateFormat()
+        trackGenre.text = primaryGenreName
+        trackCountry.text = country
+        viewArtistName.text = artistName
+        albumArtist.text = trackName
+        timeTrack.text = getTimeTrack()
+
+        visibleGroup.isVisible = collectionName != null
+
       }
 
     }
+  }
+
+  private fun dpToPx(
+    dp: Float,
+    context: Context,
+  ): Int {
+    return TypedValue.applyDimension(
+      TypedValue.COMPLEX_UNIT_DIP,
+      dp,
+      context.resources.displayMetrics
+    ).toInt()
   }
 }

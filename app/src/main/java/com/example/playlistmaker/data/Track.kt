@@ -1,19 +1,22 @@
 package com.example.playlistmaker.data
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.Locale
-
+@Parcelize
 data class Track(
-  val trackName: String, // Название композиции
-  val artistName: String, // Имя исполнителя
-  val trackTimeMillis: Long?, // Продолжительность трека
+  val trackName: String,
+  val artistName: String,
+  val trackTimeMillis: Long?,
   val artworkUrl100: String?,// Ссылка на изображение
   // val trackId: Int,// идентификатор уникальности трека
   val collectionName: String?,
   val releaseDate: String?,
   val primaryGenreName: String?,
   val country: String?,
-) {
+):Parcelable {
+
   fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
   fun getTimeTrack(): String? =
     SimpleDateFormat("mm:ss", Locale.getDefault()).format(trackTimeMillis)

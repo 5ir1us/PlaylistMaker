@@ -180,14 +180,8 @@ class SearchActivity : AppCompatActivity() {
     track: Track,
   ) {
     with(intent) {
-      putExtra(Constants.PLAYER_IMAGE_TRACK, track.getCoverArtwork())
-      putExtra(Constants.PLAYER_TIME_TRACK, track.getTimeTrack())
-      putExtra(Constants.PLAYER_COLLECTION_TRACK, track.collectionName)
-      putExtra(Constants.PLAYER_YEAR_TRACK, track.changeDateFormat())
-      putExtra(Constants.PLAYER_GENRE_TRACK, track.primaryGenreName)
-      putExtra(Constants.PLAYER_COUNTRY_TRACK, track.country)
-      putExtra(Constants.PLAYER_ARTIST_NAME, track.artistName)
-      putExtra(Constants.PLAYER_TRACK_NAME, track.trackName)
+      putExtra(AudioPlayerActivity.TRACK_INFO,track)
+
     }
   }
 }

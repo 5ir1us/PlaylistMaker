@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.parcelize' // интерфей Parcelable для передачи
+
 }
 
 android {
@@ -45,9 +47,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'com.google.android.material:material:1.9.0'
-    implementation 'com.github.bumptech.glide:glide:4.16.0' //   глэйд
+    implementation 'com.github.bumptech.glide:glide:4.16.0' //   Glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2' // аннотации на глэйд
     implementation 'com.squareup.retrofit2:retrofit:2.9.0' //     Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0' //  конвертера JSON от ретрофита
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0' // interceptor для логгирования
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0' // interceptor для логов
+
 }
