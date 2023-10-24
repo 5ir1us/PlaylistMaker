@@ -1,22 +1,28 @@
 <resources>
-    <string name="app_name">Playlist Maker</string>
-    <string name="sitting">Настройки</string>
-    <string name="search">Поиск</string>
-    <string name="mediaLibrary">Медиатека</string>
-    <string name="darkTheme">Темная тема</string>
-    <string name="shareApp">Поделиться приложением</string>
-    <string name="writeToSupport">Написать в поддержку</string>
-    <string name="termsOfUse">Пользовательское соглашение</string>
-    <string name="share_message">"https://practicum.yandex.ru/profile/android-developer/?from=mobile_landing"</string>
-    <string name="message_support">Сообщение разработчикам и разработчица приложения PlayList Maker</string>
-    <string name="mail_support">zod15ru@gmail.com</string>
-    <string name="body_support">Спасибо разрабам за крутое приложение!!!"</string>
-    <string name="terms_user_message">https://yandex.ru/legal/practicum_offer/</string>
-    <string name="Update_search">Обновить</string>
-    <string name="error_no_connect">Проблемы со связью </string>
-    <string name="error_no_connect_2">Загрузка не удалась. Проверьте подключение к интернету. </string>
-    <string name="no_results">Ничего не нашлось</string>
+  <string name="app_name">Playlist Maker</string>
+  <string name="sitting">Настройки</string>
+  <string name="search">Поиск</string>
+  <string name="mediaLibrary">Медиатека</string>
+  <string name="darkTheme">Темная тема</string>
+  <string name="shareApp">Поделиться приложением</string>
+  <string name="writeToSupport">Написать в поддержку</string>
+  <string name="termsOfUse">Пользовательское соглашение</string>
+  <string name="share_message">"https://practicum.yandex.ru/profile/android-developer/?from=mobile_landing"</string>
+  <string name="message_support">Сообщение разработчикам и разработчица приложения PlayList Maker</string>
+  <string name="mail_support">zod15ru@gmail.com</string>
+  <string name="body_support">Спасибо разрабам за крутое приложение!!!"</string>
+  <string name="terms_user_message">https://yandex.ru/legal/practicum_offer/</string>
+  <string name="Update_search">Обновить</string>
+  <string name="error_no_connect">Проблемы со связью </string>
+  <string name="error_no_connect_2">Загрузка не удалась. Проверьте подключение к интернету. </string>
+  <string name="no_results">Ничего не нашлось</string>
   <string name="storyrequested_information">Вы искали</string>
+  <string name="trackDuration">Длительность</string>
+  <string name="albumTrack">Альбом</string>
+  <string name="yearOfReleaseOfTheTrack">Год</string>
+  <string name="genreTrack">Жанр</string>
+  <string name="countryTrek">Страна</string>
+  <string name="time_track_message">00:00</string>
 
 
 </resources>

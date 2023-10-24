@@ -4,4 +4,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MediaLibraryActivity"/>
+    tools:context=".activity.MediaLibraryActivity"
+    >
+
+  <androidx.appcompat.widget.Toolbar
+      android:id="@+id/toolbarSearch"
+      android:layout_width="match_parent"
+      android:layout_height="?actionBarSize"
+      android:background="?attr/colorSecondary"
+      android:minHeight="?attr/actionBarSize"
+      android:theme="?attr/actionBarTheme"
+      app:layout_constraintStart_toStartOf="parent"
+      tools:ignore="MissingConstraints"
+      >
+
+    <ImageView
+        android:id="@+id/button_sitting_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:clickable="true"
+        android:src="@drawable/settings_return"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="16dp"
+        android:padding="@dimen/padding_12"
+        style="@style/ActivityToolbar"
+        />
+
+  </androidx.appcompat.widget.Toolbar>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

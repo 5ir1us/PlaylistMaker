@@ -1,17 +1,14 @@
 package com.example.playlistmaker.activity
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.VelocityTracker
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isEmpty
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.utils.RequestOnServer
 import com.example.playlistmaker.activity.RetrofitClient.retrofitService
@@ -21,7 +18,6 @@ import com.example.playlistmaker.data.Track
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
 import com.example.playlistmaker.utils.Constants
 import com.example.playlistmaker.utils.SearchHistory
-import kotlin.math.log
 
 class SearchActivity : AppCompatActivity() {
 
@@ -95,7 +91,7 @@ class SearchActivity : AppCompatActivity() {
         trackAdapter.updateTracks(trackList)
         historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
         showOrHideSearchHistoryLayout()
-       }
+      }
 
       recyclerListTrack.layoutManager = LinearLayoutManager(this@SearchActivity)
       trackAdapter = TrackAdapter(trackList)
@@ -118,8 +114,6 @@ class SearchActivity : AppCompatActivity() {
         searchHistor.clearSharedPreferencesHistory()
         historyAdapter.clearTracksHistory(historyList)
         showOrHideSearchHistoryLayout()
-        // searchHistoryLayout.visibility = View.GONE
-
       }
 
       historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
@@ -135,6 +129,17 @@ class SearchActivity : AppCompatActivity() {
         }
         searchHistor.saveTrackToSharedPreferences(uniqueList)
         showOrHideSearchHistoryLayout()
+
+        val searchIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+        getInfoSong(searchIntent, track)
+        startActivity(searchIntent)
+      }
+
+      historyAdapter.setItemClickListener { track ->
+        val historyIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+
+        getInfoSong(historyIntent, track)
+        startActivity(historyIntent)
       }
 
     }
@@ -167,6 +172,16 @@ class SearchActivity : AppCompatActivity() {
       } else {
         searchHistoryLayout.visibility = View.GONE
       }
+    }
+  }
+
+  private fun getInfoSong(
+    intent: Intent,
+    track: Track,
+  ) {
+    with(intent) {
+      putExtra(AudioPlayerActivity.TRACK_INFO,track)
+
     }
   }
 }
