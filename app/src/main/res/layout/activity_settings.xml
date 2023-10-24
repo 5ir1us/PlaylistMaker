@@ -22,28 +22,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:layout_marginRight="@dimen/padding_12"
             android:src="@drawable/settings_return" />
 
 
         <TextView
             android:id="@+id/text"
             style="@style/ActivityToolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sitting">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/sitting"
+            android:gravity="center_vertical">
 
         </TextView>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switch_darck_theam"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/themeSwitcher"
         style="@style/ActivitySettingsStyleSwitch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="61dp"
         android:text="@string/darkTheme">
 
-    </androidx.appcompat.widget.SwitchCompat>
+    </com.google.android.material.switchmaterial.SwitchMaterial>
 
 
     <androidx.appcompat.widget.AppCompatTextView

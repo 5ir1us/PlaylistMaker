@@ -1,6 +1,5 @@
 package com.example.playlistmaker.activity
-
-import com.example.playlistmaker.Interface.RetrofitServices
+import com.example.playlistmaker.utils.RetrofitService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -44,6 +43,6 @@ object RetrofitClient {
   }
 
   private val BASE_URL = "https://itunes.apple.com"
-  val retrofitService: RetrofitServices
-    get() = getClient(BASE_URL).create(RetrofitServices::class.java)
+  val retrofitService: RetrofitService
+    get() = getClient(BASE_URL).create(RetrofitService::class.java)
 }
