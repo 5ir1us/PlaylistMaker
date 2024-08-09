@@ -1,20 +1,25 @@
 package com.example.playlistmaker.utils
 
+import android.app.Activity
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.adapter.TrackAdapter
 import com.example.playlistmaker.data.NewTrack
 import com.example.playlistmaker.data.Track
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import android.content.Context
 
 class RequestOnServer {
   // Функция для установки слушателя событий для поля ввода текста
   fun setSearchListener(
+    context: Context,//todo
     editText: EditText,
     service: RetrofitService,
     list: RecyclerView,
@@ -27,7 +32,7 @@ class RequestOnServer {
     editText.setOnEditorActionListener { _, actionId, _ ->
       if (actionId == EditorInfo.IME_ACTION_DONE) {
         // Функция для выполнения запроса к сервису поиска треков
-        performSearch(
+        performSearch(context,//todo
           service, editText.text.toString(), list, adapter, noConnectionLayout, noResultsLayout,
           retryButtonn, trackk
         )
@@ -39,7 +44,8 @@ class RequestOnServer {
   }
 
   // Функция для выполнения запроса
-  private fun performSearch(
+  fun performSearch(
+    context: Context,//todo
     service: RetrofitService,
     query: String,
     list: RecyclerView,
@@ -49,6 +55,8 @@ class RequestOnServer {
     retryButton: ImageView,
     trackk: ArrayList<Track>,
   ) {
+    val progressBar = (context as Activity).findViewById<ProgressBar>(R.id.progressBar)//todo
+    progressBar.visibility = View.VISIBLE
     val call = service.findTrack(query)
     call.enqueue(object : Callback<NewTrack> {
 
@@ -56,6 +64,7 @@ class RequestOnServer {
         call: Call<NewTrack>,
         response: Response<NewTrack>,
       ) {
+        progressBar.visibility = View.GONE//todo
         if (response.code() != 200) {
           setVisibility(noConnectionLayout, list, noResultsLayout)
 
@@ -84,6 +93,9 @@ class RequestOnServer {
         call: Call<NewTrack>,
         t: Throwable,
       ) {
+        progressBar.visibility = View.GONE //todo
+        setVisibility(noConnectionLayout, list, noResultsLayout)//todo
+
       }
     })
   }

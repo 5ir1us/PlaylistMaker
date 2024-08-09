@@ -64,5 +64,14 @@
 
   </style>
 
+  <style name="ProgressBarColorBlue">
+    <item name="colorAccent">@color/blue</item>
+    <item name="android:indeterminateTint">@color/blue</item>
+    <item name="android:progressTint">@color/blue</item>
+    <item name="android:progressBackgroundTint">@color/blue</item>
+  </style>
+
+
+
 
 </resources>

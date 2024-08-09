@@ -35,6 +35,8 @@
             android:paddingEnd="@dimen/padding_12"
             android:text="@string/search" />
 
+
+
     </androidx.appcompat.widget.Toolbar>
 
 
@@ -61,6 +63,8 @@
             android:singleLine="true"
             android:textColor="@color/black_color"
             android:textColorHint="@color/search_color_text" />
+
+
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/clearIcon"
@@ -101,6 +105,7 @@
         android:layout_marginTop="@dimen/indent_102"
         android:foregroundGravity="center"
         android:src="@drawable/no_results"/>
+
     <TextView
         android:id="@+id/no_results_text"
         android:layout_width="wrap_content"
@@ -166,9 +171,17 @@
         android:text="@string/Update_search"/>
 
 
-
   </LinearLayout>
 
+<!--шкала загрузки-->
+  <ProgressBar
+      android:id="@+id/progressBar"
+      style="@style/ProgressBarColorBlue"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="130dp"
+      android:visibility="gone"
+      android:layout_gravity="center"/>
 
   <LinearLayout
       android:id="@+id/search_history_layout"
@@ -177,6 +190,7 @@
       android:gravity="center_horizontal"
       android:orientation="vertical"
       android:visibility="gone">
+
 
     <TextView
         android:layout_width="match_parent"
@@ -203,7 +217,6 @@
         android:layout_weight="1"
         android:layout_marginTop="@dimen/padding_12"
         tools:listitem="@layout/layout_track"/>
-
 
   <ImageButton
       android:id="@+id/clear_search_history"

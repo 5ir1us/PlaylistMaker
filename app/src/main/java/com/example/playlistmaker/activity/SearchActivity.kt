@@ -4,12 +4,19 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.playlistmaker.R
 import com.example.playlistmaker.utils.RequestOnServer
 import com.example.playlistmaker.activity.RetrofitClient.retrofitService
 import com.example.playlistmaker.adapter.SearchHistoryAdapter
@@ -18,6 +25,12 @@ import com.example.playlistmaker.data.Track
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
 import com.example.playlistmaker.utils.Constants
 import com.example.playlistmaker.utils.SearchHistory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.Runnable
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
@@ -32,14 +45,25 @@ class SearchActivity : AppCompatActivity() {
   private lateinit var historyList: MutableList<Track>
   private lateinit var uniqueList: MutableList<Track>
 
+  // Handler для реализации debounce
+  private val handler = Handler(Looper.getMainLooper())
+  private var isClickAllowed = true
+
+  companion object {
+    const val CLICK_DEBOUNCE = 2000L // константа для отложки запроса
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     binding = ActivitySearchcBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+
+
     binding.apply {
 
       simpleTextWatcher = object : TextWatcher {
+        //TextWatcher и обработка ввода текста
         override fun beforeTextChanged(
           s: CharSequence?,
           start: Int,
@@ -59,6 +83,23 @@ class SearchActivity : AppCompatActivity() {
           } else {
             showOrHideSearchHistoryLayout()
           }
+          val searchRunnable = Runnable {//todo
+            val query = searchEdittext.text.toString().trim()
+            if (query.isNotEmpty()) {
+              progressBar.visibility = View.VISIBLE
+              requestOnServer.performSearch(
+                this@SearchActivity,
+                retrofitService, query, recyclerListTrack,
+                trackAdapter, noConnectionLayout, noResultsLayout, retryButton, trackList
+              )
+            }else{
+              progressBar.visibility = View.GONE
+              trackAdapter.updateTracks(ArrayList()) // Очистка списка треков
+              showOrHideSearchHistoryLayout() // Показ истории поиска, если доступно
+            }
+          }
+          handler.removeCallbacks(searchRunnable)
+          handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -68,7 +109,6 @@ class SearchActivity : AppCompatActivity() {
 
       searchEdittext.addTextChangedListener(simpleTextWatcher)
       searchEdittext.setOnFocusChangeListener { _, focus ->
-
         if (focus && searchEdittext.text.isEmpty()) {
           showOrHideSearchHistoryLayout()
         } else {
@@ -97,7 +137,9 @@ class SearchActivity : AppCompatActivity() {
       trackAdapter = TrackAdapter(trackList)
       recyclerListTrack.adapter = trackAdapter
 
+      //выполняет запрос на сервер кнопкоц
       requestOnServer.setSearchListener(
+        this@SearchActivity,//todo
         searchEdittext, retrofitService, recyclerListTrack,
         trackAdapter, noConnectionLayout, noResultsLayout, retryButton, trackList
       )
@@ -119,10 +161,12 @@ class SearchActivity : AppCompatActivity() {
       historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
 
       trackAdapter.setItemClickListener { track ->
-        historyList = searchHistor.loadTrackFromSharedPreferences().toMutableList()
-        historyList.add(0, track)
-        historyAdapter.notifyItemInserted(0)
+        if (clickDebounce()) { //условие дебаунса
 
+          historyList = searchHistor.loadTrackFromSharedPreferences().toMutableList()
+          historyList.add(0, track)
+          historyAdapter.notifyItemInserted(0)
+        }
         uniqueList = historyList.toSet().toMutableList()
         if (historyList.size > 10) {
           historyList = historyList.subList(0, 10)
@@ -143,6 +187,16 @@ class SearchActivity : AppCompatActivity() {
       }
 
     }
+  }
+
+  // дебаунс проверка запроса
+  private fun clickDebounce(): Boolean {
+    val current = isClickAllowed
+    if (isClickAllowed) {
+      isClickAllowed = false
+      handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE)
+    }
+    return current
   }
 
   //проврка пустого запроса
@@ -180,7 +234,7 @@ class SearchActivity : AppCompatActivity() {
     track: Track,
   ) {
     with(intent) {
-      putExtra(AudioPlayerActivity.TRACK_INFO,track)
+      putExtra(AudioPlayerActivity.TRACK_INFO, track)
 
     }
   }
