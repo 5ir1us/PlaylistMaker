@@ -111,6 +111,7 @@ class RequestOnServer {
     }
   }
 
+
   // Функция для добавления результатов к списку треков и обновления адаптера
   private fun updateListAndAdapter(
     results: ArrayList<Track>,

@@ -48,9 +48,30 @@ class SearchActivity : AppCompatActivity() {
   // Handler для реализации debounce
   private val handler = Handler(Looper.getMainLooper())
   private var isClickAllowed = true
+  private val searchRunnable = Runnable {
+    val query = binding.searchEdittext.text.toString().trim()
+    if (query.isNotEmpty()) {
+      binding.progressBar.visibility = View.VISIBLE
+      requestOnServer.performSearch(
+        this@SearchActivity,
+        retrofitService,
+        query,
+        binding.recyclerListTrack,
+        trackAdapter,
+        binding.noConnectionLayout,
+        binding.noResultsLayout,
+        binding.retryButton,
+        trackList
+      )
+    } else {
+      binding.progressBar.visibility = View.GONE
+      trackAdapter.updateTracks(ArrayList()) // Очистка списка треков
+      showOrHideSearchHistoryLayout() // Показ истории поиска, если доступно
+    }
+  }
 
   companion object {
-    const val CLICK_DEBOUNCE = 2000L // константа для отложки запроса
+    const val CLICK_DEBOUNCE = 3000L // константа для отложки запроса
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,21 +104,7 @@ class SearchActivity : AppCompatActivity() {
           } else {
             showOrHideSearchHistoryLayout()
           }
-          val searchRunnable = Runnable {//todo
-            val query = searchEdittext.text.toString().trim()
-            if (query.isNotEmpty()) {
-              progressBar.visibility = View.VISIBLE
-              requestOnServer.performSearch(
-                this@SearchActivity,
-                retrofitService, query, recyclerListTrack,
-                trackAdapter, noConnectionLayout, noResultsLayout, retryButton, trackList
-              )
-            }else{
-              progressBar.visibility = View.GONE
-              trackAdapter.updateTracks(ArrayList()) // Очистка списка треков
-              showOrHideSearchHistoryLayout() // Показ истории поиска, если доступно
-            }
-          }
+          //TODO
           handler.removeCallbacks(searchRunnable)
           handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
         }

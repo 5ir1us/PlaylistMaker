@@ -27,7 +27,7 @@ class AudioPlayerActivity : AppCompatActivity() {
   private lateinit var mediaPlayer: MediaPlayer
   private lateinit var handler: Handler
   private var isPlaying = false //   для отслеживания состояния
-  private var track: Track? = null // Переменная для хранения данных трека
+  private var isFavorite = false // избранное состояние
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +39,7 @@ class AudioPlayerActivity : AppCompatActivity() {
       buttonPlayerBack.setOnClickListener {
         finish()
       }
+
       val track = intent.getParcelableExtra<Track>(TRACK_INFO)
       //не совместим с 26 мин вер. нужна 33
       // val track = intent.getParcelableExtra("track",Track::class.java)
@@ -68,7 +69,7 @@ class AudioPlayerActivity : AppCompatActivity() {
       playButton.setOnClickListener { togglePlayback() }
 
       //   обработчик на кнопку воспроизведения
-      addTrack.setOnClickListener { togglePlayback() }
+      favoriteMusic.setOnClickListener {toggleFavorite()}
 
       // Инициализация Handler
       handler = Handler(Looper.getMainLooper())
@@ -80,6 +81,7 @@ class AudioPlayerActivity : AppCompatActivity() {
       }
     }
   }
+
   // из цикла жизни приложения
   override fun onPause() {
     super.onPause()
@@ -96,6 +98,18 @@ class AudioPlayerActivity : AppCompatActivity() {
       playTrack()
     }
   }
+  private fun toggleFavorite() {
+    isFavorite = !isFavorite // Меняем состояние на противоположное
+    updateFavoriteIcon() // Обновляем иконку
+  }
+  private fun updateFavoriteIcon() {
+    if (isFavorite) {
+      binding.favoriteMusic.setImageResource(R.drawable.like_button) //   иконк   избранное
+    } else {
+      binding.favoriteMusic.setImageResource(R.drawable.favorite_border) // иконкуа  не избранное
+    }
+  }
+
 
   // Метод для воспроизведения трека
   private fun playTrack() {
@@ -109,9 +123,9 @@ class AudioPlayerActivity : AppCompatActivity() {
   private fun pauseTrack() {
     mediaPlayer.pause() // Приостанавливаем воспроизведение
     isPlaying = false
-    binding.playButton.setImageResource(
+    binding.playButton.setImageResource(// Меняем иконку на "Воспроизведение"
       R.drawable.play_button
-    ) // Меняем иконку на "Воспроизведение"
+    )
   }
 
   // Метод для обновления текущего времени воспроизведения
@@ -124,8 +138,13 @@ class AudioPlayerActivity : AppCompatActivity() {
           val seconds = currentPosition % 60
           binding.timeTrack.text = String.format("%02d:%02d", minutes, seconds)
           handler.postDelayed(this, 1000) // Обновляем каждую секунду
-        }else{
-          binding.playButton.setImageResource(R.drawable.play_button) // Время закончилось, возвращаем кнопку в состояние "Играть"
+        } else if (!isPlaying) {
+          // Оставляем время
+          handler.removeCallbacks(this)
+        } else {
+          binding.playButton.setImageResource(
+            R.drawable.play_button
+          ) // Время закончилось, возвращаем кнопку в состояние "Играть"
           binding.timeTrack.text = "00:00"
         }
       }

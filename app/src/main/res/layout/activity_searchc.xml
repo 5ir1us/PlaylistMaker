@@ -62,6 +62,7 @@
             android:paddingLeft="14dp"
             android:singleLine="true"
             android:textColor="@color/black_color"
+            android:textCursorDrawable="@drawable/cursor_color"
             android:textColorHint="@color/search_color_text" />
 
 
