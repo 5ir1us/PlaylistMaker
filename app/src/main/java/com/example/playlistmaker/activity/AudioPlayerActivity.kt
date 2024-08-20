@@ -1,9 +1,12 @@
 package com.example.playlistmaker.activity
 
 import android.content.Context
+import android.media.MediaPlayer
 import android.os.Build.VERSION_CODES
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.TypedValue
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -21,6 +24,10 @@ class AudioPlayerActivity : AppCompatActivity() {
   }
 
   private lateinit var binding: ActivityAudioPlayerBinding
+  private lateinit var mediaPlayer: MediaPlayer
+  private lateinit var handler: Handler
+  private var isPlaying = false //   для отслеживания состояния
+  private var isFavorite = false // избранное состояние
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +39,7 @@ class AudioPlayerActivity : AppCompatActivity() {
       buttonPlayerBack.setOnClickListener {
         finish()
       }
+
       val track = intent.getParcelableExtra<Track>(TRACK_INFO)
       //не совместим с 26 мин вер. нужна 33
       // val track = intent.getParcelableExtra("track",Track::class.java)
@@ -45,7 +53,7 @@ class AudioPlayerActivity : AppCompatActivity() {
         .transform(RoundedCorners(radiusImage))
         .into(imageAlbum)
 
-
+// Заполнение UI данными трека
       track?.apply {
         trackDuration.text = getTimeTrack()
         albumOneName.text = collectionName
@@ -55,12 +63,100 @@ class AudioPlayerActivity : AppCompatActivity() {
         viewArtistName.text = artistName
         albumArtist.text = trackName
         timeTrack.text = getTimeTrack()
-
         visibleGroup.isVisible = collectionName != null
-
       }
 
+      playButton.setOnClickListener { togglePlayback() }
+
+      //   обработчик на кнопку воспроизведения
+      favoriteMusic.setOnClickListener {toggleFavorite()}
+
+      // Инициализация Handler
+      handler = Handler(Looper.getMainLooper())
+
+      // Инициализация MediaPlayer
+      mediaPlayer = MediaPlayer().apply {
+        setDataSource(track?.previewUrl) // Установка ссылки на аудиофайл
+        prepare() // Подготовка MediaPlayer к воспроизведению
+      }
     }
+  }
+
+  // из цикла жизни приложения
+  override fun onPause() {
+    super.onPause()
+    if (isPlaying) {
+      pauseTrack() // Останавливаем воспроизведение, когда активность переходит в фоновый режим
+    }
+  }
+
+  // Метод для переключения воспроизведения и паузы
+  private fun togglePlayback() {
+    if (isPlaying) {
+      pauseTrack()
+    } else {
+      playTrack()
+    }
+  }
+  private fun toggleFavorite() {
+    isFavorite = !isFavorite // Меняем состояние на противоположное
+    updateFavoriteIcon() // Обновляем иконку
+  }
+  private fun updateFavoriteIcon() {
+    if (isFavorite) {
+      binding.favoriteMusic.setImageResource(R.drawable.like_button) //   иконк   избранное
+    } else {
+      binding.favoriteMusic.setImageResource(R.drawable.favorite_border) // иконкуа  не избранное
+    }
+  }
+
+
+  // Метод для воспроизведения трека
+  private fun playTrack() {
+    mediaPlayer.start() // Начинаем воспроизведение
+    isPlaying = true
+    binding.playButton.setImageResource(R.drawable.stop_player) // Меняем иконку на "Пауза"
+    updateTrackProgress() // Обновляем прогресс трека
+  }
+
+  // Метод для паузы воспроизведения
+  private fun pauseTrack() {
+    mediaPlayer.pause() // Приостанавливаем воспроизведение
+    isPlaying = false
+    binding.playButton.setImageResource(// Меняем иконку на "Воспроизведение"
+      R.drawable.play_button
+    )
+  }
+
+  // Метод для обновления текущего времени воспроизведения
+  private fun updateTrackProgress() {
+    val runnable = object : Runnable {
+      override fun run() {
+        if (mediaPlayer.isPlaying) {
+          val currentPosition = mediaPlayer.currentPosition / 1000
+          val minutes = currentPosition / 60
+          val seconds = currentPosition % 60
+          binding.timeTrack.text = String.format("%02d:%02d", minutes, seconds)
+          handler.postDelayed(this, 1000) // Обновляем каждую секунду
+        } else if (!isPlaying) {
+          // Оставляем время
+          handler.removeCallbacks(this)
+        } else {
+          binding.playButton.setImageResource(
+            R.drawable.play_button
+          ) // Время закончилось, возвращаем кнопку в состояние "Играть"
+          binding.timeTrack.text = "00:00"
+        }
+      }
+    }
+    handler.post(runnable)
+  }
+
+  // Освобождение ресурсов при завершении активности
+  override fun onDestroy() {
+    super.onDestroy()
+    mediaPlayer.release() // Освобождаем ресурсы MediaPlayer
+    handler.removeCallbacksAndMessages(null) // Останавливаем обновление времени
   }
 
   private fun dpToPx(

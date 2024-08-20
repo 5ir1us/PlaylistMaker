@@ -22,9 +22,9 @@
       />
 
   <ImageView
-      android:id="@+id/imageView3"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
+      android:id="@+id/playButton"
+      android:layout_width="@dimen/play_size"
+      android:layout_height="@dimen/play_size"
       android:clickable="true"
       app:layout_constraintBottom_toTopOf="@+id/time_track"
       app:layout_constraintEnd_toStartOf="@+id/right_guideline"
@@ -33,13 +33,13 @@
       />
 
   <ImageView
-      android:id="@+id/imageView4"
+      android:id="@+id/favoriteMusic"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:clickable="true"
-      app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+      app:layout_constraintBottom_toBottomOf="@+id/playButton"
       app:layout_constraintEnd_toStartOf="@+id/right_guideline"
-      app:layout_constraintTop_toTopOf="@+id/imageView3"
+      app:layout_constraintTop_toTopOf="@+id/playButton"
       app:srcCompat="@drawable/favorite_border"
       />
 
@@ -48,9 +48,9 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:clickable="true"
-      app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+      app:layout_constraintBottom_toBottomOf="@+id/playButton"
       app:layout_constraintStart_toStartOf="@+id/view_artist_name"
-      app:layout_constraintTop_toTopOf="@+id/imageView3"
+      app:layout_constraintTop_toTopOf="@+id/playButton"
       app:srcCompat="@drawable/property_add_list"
       />
   <TextView
@@ -152,7 +152,7 @@
       android:textColor="@color/black_revers"
       android:textSize="@dimen/text_size_22"
       app:layout_constrainedWidth="true"
-      app:layout_constraintBottom_toTopOf="@+id/imageView3"
+      app:layout_constraintBottom_toTopOf="@+id/playButton"
       app:layout_constraintEnd_toStartOf="@+id/right_guideline"
       app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="@+id/left_guideline"

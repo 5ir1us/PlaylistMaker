@@ -16,4 +16,5 @@
   <dimen name="indent_24">24dp</dimen>
   <dimen name="indent_26">26dp</dimen>
   <dimen name="indent_39">39dp</dimen>
+  <dimen name="play_size">100dp</dimen>
 </resources>
