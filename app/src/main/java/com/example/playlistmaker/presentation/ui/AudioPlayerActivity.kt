@@ -1,4 +1,4 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.media.MediaPlayer
@@ -13,9 +13,10 @@ import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.Track
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.example.playlistmaker.utils.Constants
+import com.example.playlistmaker.domain.api.PlayTrackInteractor
+import com.example.playlistmaker.domain.impl.PlayTrackInteractorImpl
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -26,8 +27,8 @@ class AudioPlayerActivity : AppCompatActivity() {
   private lateinit var binding: ActivityAudioPlayerBinding
   private lateinit var mediaPlayer: MediaPlayer
   private lateinit var handler: Handler
-  private var isPlaying = false //   для отслеживания состояния
   private var isFavorite = false // избранное состояние
+  private lateinit var trackPlayerInteractor: PlayTrackInteractor//todo
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +36,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
     setContentView(binding.root)
     binding.apply {
+
+      trackPlayerInteractor = PlayTrackInteractorImpl(
+        onTrackComplete = { binding.playButton.setImageResource(R.drawable.play_button) })//todo
 
       buttonPlayerBack.setOnClickListener {
         finish()
@@ -66,10 +70,13 @@ class AudioPlayerActivity : AppCompatActivity() {
         visibleGroup.isVisible = collectionName != null
       }
 
-      playButton.setOnClickListener { togglePlayback() }
+      //todo new
+      playButton.setOnClickListener {
+        togglePlayback(track?.previewUrl ?: "")
+      }
 
       //   обработчик на кнопку воспроизведения
-      favoriteMusic.setOnClickListener {toggleFavorite()}
+      favoriteMusic.setOnClickListener { toggleFavorite() }
 
       // Инициализация Handler
       handler = Handler(Looper.getMainLooper())
@@ -85,23 +92,27 @@ class AudioPlayerActivity : AppCompatActivity() {
   // из цикла жизни приложения
   override fun onPause() {
     super.onPause()
-    if (isPlaying) {
-      pauseTrack() // Останавливаем воспроизведение, когда активность переходит в фоновый режим
+    if (trackPlayerInteractor.isPlaying()) {
+      trackPlayerInteractor.pause()
     }
   }
 
-  // Метод для переключения воспроизведения и паузы
-  private fun togglePlayback() {
-    if (isPlaying) {
-      pauseTrack()
+  private fun togglePlayback(trackUrl: String) {
+    if (trackPlayerInteractor.isPlaying()) {
+      trackPlayerInteractor.pause()
+      binding.playButton.setImageResource(R.drawable.play_button)
     } else {
-      playTrack()
+      trackPlayerInteractor.play(trackUrl)
+      binding.playButton.setImageResource(R.drawable.stop_player)
+      updateTrackProgress()
     }
   }
+
   private fun toggleFavorite() {
     isFavorite = !isFavorite // Меняем состояние на противоположное
     updateFavoriteIcon() // Обновляем иконку
   }
+
   private fun updateFavoriteIcon() {
     if (isFavorite) {
       binding.favoriteMusic.setImageResource(R.drawable.like_button) //   иконк   избранное
@@ -110,42 +121,20 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
   }
 
-
-  // Метод для воспроизведения трека
-  private fun playTrack() {
-    mediaPlayer.start() // Начинаем воспроизведение
-    isPlaying = true
-    binding.playButton.setImageResource(R.drawable.stop_player) // Меняем иконку на "Пауза"
-    updateTrackProgress() // Обновляем прогресс трека
-  }
-
-  // Метод для паузы воспроизведения
-  private fun pauseTrack() {
-    mediaPlayer.pause() // Приостанавливаем воспроизведение
-    isPlaying = false
-    binding.playButton.setImageResource(// Меняем иконку на "Воспроизведение"
-      R.drawable.play_button
-    )
-  }
-
   // Метод для обновления текущего времени воспроизведения
   private fun updateTrackProgress() {
     val runnable = object : Runnable {
       override fun run() {
-        if (mediaPlayer.isPlaying) {
-          val currentPosition = mediaPlayer.currentPosition / 1000
+        if (trackPlayerInteractor.isPlaying()) {
+          val currentPosition = trackPlayerInteractor.getCurrentPosition() / 1000
           val minutes = currentPosition / 60
           val seconds = currentPosition % 60
           binding.timeTrack.text = String.format("%02d:%02d", minutes, seconds)
           handler.postDelayed(this, 1000) // Обновляем каждую секунду
-        } else if (!isPlaying) {
-          // Оставляем время
-          handler.removeCallbacks(this)
         } else {
-          binding.playButton.setImageResource(
-            R.drawable.play_button
-          ) // Время закончилось, возвращаем кнопку в состояние "Играть"
-          binding.timeTrack.text = "00:00"
+          handler.removeCallbacks(this)
+          // binding.playButton.setImageResource(R.drawable.play_button)
+          // binding.timeTrack.text = "00:00"
         }
       }
     }
@@ -155,7 +144,7 @@ class AudioPlayerActivity : AppCompatActivity() {
   // Освобождение ресурсов при завершении активности
   override fun onDestroy() {
     super.onDestroy()
-    mediaPlayer.release() // Освобождаем ресурсы MediaPlayer
+    trackPlayerInteractor.release()
     handler.removeCallbacksAndMessages(null) // Останавливаем обновление времени
   }
 

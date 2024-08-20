@@ -1,25 +1,37 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
+import com.example.playlistmaker.domain.Creator
+import com.example.playlistmaker.domain.api.ThemeInteractor
+import com.example.playlistmaker.presentation.App
 
 class SettingsActivity : AppCompatActivity() {
 
-  private lateinit var sharedPreferences: SharedPreferences
+
+  private lateinit var themeInteractor: ThemeInteractor
+
+
   private lateinit var binding: ActivitySettingsBinding
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
 
-    val app = application as App
+    // val app = application as App
 
     binding = ActivitySettingsBinding.inflate(layoutInflater)
     setContentView(binding.root)
+
+    //инициализ черз креатор
+    val sharedPreferences = getSharedPreferences("your_prefs_name", Context.MODE_PRIVATE)
+    themeInteractor = Creator.provideThemeInteractor(sharedPreferences)
+
+    binding.themeSwitcher.isChecked = themeInteractor.isDarkThemeEnabled()
 
 
 
@@ -32,6 +44,8 @@ class SettingsActivity : AppCompatActivity() {
     val termsText = context.getString(R.string.terms_user_message)
 
 
+
+
     binding.apply {
 
       //выход из настроек
@@ -39,13 +53,17 @@ class SettingsActivity : AppCompatActivity() {
         finish()
       }
 
-      //переключатель темной темы
-      binding.themeSwitcher.isChecked = app.loadThemeMode()
-      themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
-        app.switchTheme(isChecked)
-        app.saveThemeMode(isChecked)
-
+       //переключатель
+      binding.themeSwitcher.isChecked = themeInteractor.isDarkThemeEnabled()
+      binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
+        if (isChecked) {
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+          AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+        themeInteractor.setDarkThemeEnabled(isChecked)
       }
+
 
       //поделиться приложением
       share.setOnClickListener {
