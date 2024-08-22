@@ -1,6 +1,6 @@
-package com.example.playlistmaker.domain.api
+package com.example.playlistmaker.domain.interactor
 
-interface PlayTrackInteractor {
+interface AudioPlayerInteractor {
   fun play(trackUrl: String)
   fun pause()
   fun isPlaying(): Boolean

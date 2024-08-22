@@ -15,8 +15,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.example.playlistmaker.domain.api.PlayTrackInteractor
-import com.example.playlistmaker.domain.impl.PlayTrackInteractorImpl
+import com.example.playlistmaker.di.Creator
+import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -28,7 +28,7 @@ class AudioPlayerActivity : AppCompatActivity() {
   private lateinit var mediaPlayer: MediaPlayer
   private lateinit var handler: Handler
   private var isFavorite = false // избранное состояние
-  private lateinit var trackPlayerInteractor: PlayTrackInteractor//todo
+  private lateinit var trackPlayerInteractor: AudioPlayerInteractor//todo
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,9 +37,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     setContentView(binding.root)
     binding.apply {
 
-      trackPlayerInteractor = PlayTrackInteractorImpl(
-        onTrackComplete = { binding.playButton.setImageResource(R.drawable.play_button) })//todo
-
+      trackPlayerInteractor = Creator.providePlayTrackInteractor(
+        onTrackComplete = { binding.playButton.setImageResource(R.drawable.play_button) }
+      )
       buttonPlayerBack.setOnClickListener {
         finish()
       }
@@ -134,7 +134,8 @@ class AudioPlayerActivity : AppCompatActivity() {
         } else {
           handler.removeCallbacks(this)
           // binding.playButton.setImageResource(R.drawable.play_button)
-          // binding.timeTrack.text = "00:00"
+          binding.timeTrack.text = "00:00"
+          handler.removeCallbacks(this)
         }
       }
     }

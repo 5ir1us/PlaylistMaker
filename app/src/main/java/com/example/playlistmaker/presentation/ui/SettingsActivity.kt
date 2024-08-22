@@ -8,15 +8,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySettingsBinding
-import com.example.playlistmaker.domain.Creator
-import com.example.playlistmaker.domain.api.ThemeInteractor
-import com.example.playlistmaker.presentation.App
+import com.example.playlistmaker.di.Creator
+import com.example.playlistmaker.domain.interactor.ThemeInteractor
 
 class SettingsActivity : AppCompatActivity() {
 
-
   private lateinit var themeInteractor: ThemeInteractor
-
 
   private lateinit var binding: ActivitySettingsBinding
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,12 +25,9 @@ class SettingsActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     //инициализ черз креатор
-    val sharedPreferences = getSharedPreferences("your_prefs_name", Context.MODE_PRIVATE)
-    themeInteractor = Creator.provideThemeInteractor(sharedPreferences)
+    themeInteractor = Creator.provideThemeInteractor(this)
 
     binding.themeSwitcher.isChecked = themeInteractor.isDarkThemeEnabled()
-
-
 
     //строковые ресурсы черех getstring
     val context: Context = this
@@ -53,7 +47,7 @@ class SettingsActivity : AppCompatActivity() {
         finish()
       }
 
-       //переключатель
+      //переключатель
       binding.themeSwitcher.isChecked = themeInteractor.isDarkThemeEnabled()
       binding.themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
         if (isChecked) {
@@ -63,7 +57,6 @@ class SettingsActivity : AppCompatActivity() {
         }
         themeInteractor.setDarkThemeEnabled(isChecked)
       }
-
 
       //поделиться приложением
       share.setOnClickListener {

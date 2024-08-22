@@ -1,22 +1,23 @@
-package com.example.playlistmaker.domain.impl
+package com.example.playlistmaker.data.repository
 
 import android.media.MediaPlayer
-import com.example.playlistmaker.domain.api.PlayTrackInteractor
+import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 
-
-class PlayTrackInteractorImpl(private val onTrackComplete: () -> Unit) : PlayTrackInteractor {
+class AudioPlayerRepositoryImpl (
+  private val onTrackComplete: () -> Unit
+) : AudioPlayerRepository {
 
   private var mediaPlayer: MediaPlayer? = null
   private var currentPosition: Int = 0
 
-  override fun play(trackUrl: String) {
+  override fun playTrack(trackUrl: String) {
     if (mediaPlayer == null) {
       mediaPlayer = MediaPlayer().apply {
         setDataSource(trackUrl)
         prepare()
         setOnCompletionListener {
           onTrackComplete()
-          stop()
+          stopTrack()
         }
         start()
       }
@@ -26,12 +27,17 @@ class PlayTrackInteractorImpl(private val onTrackComplete: () -> Unit) : PlayTra
     }
   }
 
-  override fun pause() {
+  override fun pauseTrack() {
     mediaPlayer?.let {
       it.pause()
       currentPosition = it.currentPosition
-      onTrackComplete()
     }
+  }
+
+  override fun stopTrack() {
+    mediaPlayer?.release()
+    mediaPlayer = null
+    currentPosition = 0
   }
 
   override fun isPlaying(): Boolean {
@@ -40,12 +46,6 @@ class PlayTrackInteractorImpl(private val onTrackComplete: () -> Unit) : PlayTra
 
   override fun getCurrentPosition(): Int {
     return mediaPlayer?.currentPosition ?: 0
-  }
-
-  override fun stop() {
-    mediaPlayer?.release()
-    mediaPlayer = null
-    currentPosition = 0
   }
 
   override fun release() {

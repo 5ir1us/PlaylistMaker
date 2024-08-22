@@ -53,4 +53,5 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0' //  конвертера JSON от ретрофита
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0' // interceptor для логов
 
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"  //lifecycle-runtime-ktx
 }
