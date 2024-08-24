@@ -5,7 +5,6 @@ import com.example.playlistmaker.domain.repository.SearchTrackRepository
 import com.example.playlistmaker.domain.model.Track
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 

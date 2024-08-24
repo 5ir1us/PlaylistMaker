@@ -1,7 +1,25 @@
 package com.example.playlistmaker.domain.repository
 
-import android.content.SharedPreferences
-
 interface SharedPreferencesProvider {
-  fun provideSharedPreferences(): SharedPreferences
+  // fun provideSharedPreferences(): SharedPreferences
+
+  fun saveString(
+    key: String,
+    value: String,
+  )
+
+  fun getString(
+    key: String,
+    defaultValue: String,
+  ): String
+
+  fun saveBoolean(
+    key: String,
+    value: Boolean,
+  )
+
+  fun getBoolean(
+    key: String,
+    defaultValue: Boolean,
+  ): Boolean
 }

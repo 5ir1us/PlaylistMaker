@@ -29,4 +29,12 @@ class AudioPlayerInteractorImpl(private val trackPlayerRepository: AudioPlayerRe
   override fun release() {
     trackPlayerRepository.release()
   }
+
+  override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
+    trackPlayerRepository.updateTrackProgress(callback)
+  }
+
+  override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
+    trackPlayerRepository.togglePlayback(trackUrl, onPlay, onPause)
+  }
 }

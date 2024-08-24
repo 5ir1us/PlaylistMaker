@@ -1,12 +1,9 @@
 package com.example.playlistmaker.presentation.ui
 
 import android.content.Context
-import android.media.MediaPlayer
 import android.os.Build.VERSION_CODES
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.TypedValue
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
@@ -25,10 +22,8 @@ class AudioPlayerActivity : AppCompatActivity() {
   }
 
   private lateinit var binding: ActivityAudioPlayerBinding
-  private lateinit var mediaPlayer: MediaPlayer
-  private lateinit var handler: Handler
   private var isFavorite = false // избранное состояние
-  private lateinit var trackPlayerInteractor: AudioPlayerInteractor//todo
+  private lateinit var trackPlayerInteractor: AudioPlayerInteractor
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,26 +65,26 @@ class AudioPlayerActivity : AppCompatActivity() {
         visibleGroup.isVisible = collectionName != null
       }
 
-      //todo new
       playButton.setOnClickListener {
-        togglePlayback(track?.previewUrl ?: "")
+        trackPlayerInteractor.togglePlayback(
+          track?.previewUrl ?: "",
+          onPlay = {
+            binding.playButton.setImageResource(R.drawable.stop_player)
+            updateTrackProgress()
+          },
+          onPause = {
+            binding.playButton.setImageResource(R.drawable.play_button)
+          }
+        )
       }
 
       //   обработчик на кнопку воспроизведения
       favoriteMusic.setOnClickListener { toggleFavorite() }
-
-      // Инициализация Handler
-      handler = Handler(Looper.getMainLooper())
-
-      // Инициализация MediaPlayer
-      mediaPlayer = MediaPlayer().apply {
-        setDataSource(track?.previewUrl) // Установка ссылки на аудиофайл
-        prepare() // Подготовка MediaPlayer к воспроизведению
-      }
     }
+    updateTrackProgress()
   }
 
-  // из цикла жизни приложения
+  //Жизненный цикл Activiti
   override fun onPause() {
     super.onPause()
     if (trackPlayerInteractor.isPlaying()) {
@@ -97,20 +92,9 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
   }
 
-  private fun togglePlayback(trackUrl: String) {
-    if (trackPlayerInteractor.isPlaying()) {
-      trackPlayerInteractor.pause()
-      binding.playButton.setImageResource(R.drawable.play_button)
-    } else {
-      trackPlayerInteractor.play(trackUrl)
-      binding.playButton.setImageResource(R.drawable.stop_player)
-      updateTrackProgress()
-    }
-  }
-
   private fun toggleFavorite() {
     isFavorite = !isFavorite // Меняем состояние на противоположное
-    updateFavoriteIcon() // Обновляем иконку
+    updateFavoriteIcon()
   }
 
   private fun updateFavoriteIcon() {
@@ -121,32 +105,31 @@ class AudioPlayerActivity : AppCompatActivity() {
     }
   }
 
-  // Метод для обновления текущего времени воспроизведения
   private fun updateTrackProgress() {
-    val runnable = object : Runnable {
-      override fun run() {
-        if (trackPlayerInteractor.isPlaying()) {
-          val currentPosition = trackPlayerInteractor.getCurrentPosition() / 1000
-          val minutes = currentPosition / 60
-          val seconds = currentPosition % 60
-          binding.timeTrack.text = String.format("%02d:%02d", minutes, seconds)
-          handler.postDelayed(this, 1000) // Обновляем каждую секунду
-        } else {
-          handler.removeCallbacks(this)
-          // binding.playButton.setImageResource(R.drawable.play_button)
-          binding.timeTrack.text = "00:00"
-          handler.removeCallbacks(this)
-        }
-      }
+    trackPlayerInteractor.updateTrackProgress { formattedTime ->
+      binding.timeTrack.text = formattedTime
     }
-    handler.post(runnable)
   }
 
-  // Освобождение ресурсов при завершении активности
+
+  //todo перенеси вверх для читаемости
+  // Жизненный цикл Activiti
   override fun onDestroy() {
     super.onDestroy()
     trackPlayerInteractor.release()
-    handler.removeCallbacksAndMessages(null) // Останавливаем обновление времени
+  }
+
+  //Жизненный цикл Activiti
+  override fun onResume() {
+    super.onResume()
+    if (trackPlayerInteractor.isPlaying()) {
+
+      binding.playButton.setImageResource(R.drawable.stop_player)
+
+      updateTrackProgress()
+    } else {
+      binding.playButton.setImageResource(R.drawable.play_button)
+    }
   }
 
   private fun dpToPx(

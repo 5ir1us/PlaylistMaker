@@ -7,4 +7,6 @@ interface AudioPlayerRepository {
   fun isPlaying(): Boolean
   fun getCurrentPosition(): Int
   fun release()
+  fun updateTrackProgress(callback: (currentTime: String) -> Unit)  //todo
+  fun togglePlayback (trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit)
 }

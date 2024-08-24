@@ -9,6 +9,7 @@ import com.example.playlistmaker.data.network.RetrofitClient
 import com.example.playlistmaker.data.repository.AudioPlayerRepositoryImpl
 import com.example.playlistmaker.data.repository.SharedPreferencesProviderImpl
 import com.example.playlistmaker.data.repository.ThemeRepositoryImpl
+import com.example.playlistmaker.domain.Constants.PREFS_NAME
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
 import com.example.playlistmaker.domain.repository.SearchTrackRepository
@@ -42,29 +43,42 @@ object Creator {
   }
 
   // история
-  private fun getTrackHistoryRepository(sharedPreferences: SharedPreferences): TrackHistoryRepository {
-    return TrackHistoryRepositoryImpl(sharedPreferences)
+  private fun getTrackHistoryRepository(preferencesProvider: SharedPreferencesProvider ): TrackHistoryRepository {
+    return TrackHistoryRepositoryImpl(preferencesProvider)
   }
 
   //  история
-  fun provideTrackHistoryInteractor(sharedPreferences: SharedPreferences): TrackHistoryInteractorImpl {
-    return TrackHistoryInteractorImpl(getTrackHistoryRepository(sharedPreferences))
+  fun provideTrackHistoryInteractor(context: Context): TrackHistoryInteractorImpl {
+    val preferencesRepository = providePreferencesRepository(context)
+    return TrackHistoryInteractorImpl(getTrackHistoryRepository(preferencesRepository))
   }
+
+
 
   //шаред
-  private fun getSharedPreferencesProvider(context: Context): SharedPreferencesProvider {
-    return SharedPreferencesProviderImpl(context)
+  private fun getSharedPreferencesProvider(context: Context): SharedPreferences {
+    return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+  }
+  fun providePreferencesRepository(context: Context): SharedPreferencesProvider {
+    val sharedPreferences = getSharedPreferencesProvider(context)
+    return SharedPreferencesProviderImpl(sharedPreferences)
   }
 
+
+
+
   //     настройки
-  private fun getThemeRepository(context: Context): ThemeRepository {
-    return ThemeRepositoryImpl(getSharedPreferencesProvider(context).provideSharedPreferences())
+  private fun getThemeRepository(preferencesRepository: SharedPreferencesProvider): ThemeRepository {
+    return ThemeRepositoryImpl(preferencesRepository)
   }
 
   //   настройки
   fun provideThemeInteractor(context: Context): ThemeInteractor {
-    return ThemeInteractorImpl(getThemeRepository(context))
+    val preferencesRepository = providePreferencesRepository(context)
+    return ThemeInteractorImpl(getThemeRepository(preferencesRepository))
   }
+
+
 
   //плеер
   fun providePlayTrackInteractor(onTrackComplete: () -> Unit): AudioPlayerInteractor {

@@ -3,13 +3,11 @@ package com.example.playlistmaker.presentation.ui
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -20,10 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
-import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.di.Creator
 import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
-import com.example.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.domain.interactor.TrackHistoryInteractor
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
@@ -38,10 +34,8 @@ class SearchActivity : AppCompatActivity() {
   private lateinit var historyAdapter: SearchHistoryAdapter
   private val trackList = ArrayList<Track>()
   private lateinit var trackHistoryInteractor: TrackHistoryInteractor//todo
-  private lateinit var sharedPreferences: SharedPreferences
   private lateinit var historyList: MutableList<Track>
   private lateinit var searchTracksInteractor: SearchTracksInteractor
-  private lateinit var trackHistoryInteractorImpl: TrackHistoryInteractorImpl
 
   // Handler для реализации debounce
   private val handler = Handler(Looper.getMainLooper())
@@ -61,7 +55,7 @@ class SearchActivity : AppCompatActivity() {
         binding.noResultsLayout,
         binding.retryButton,
         trackList,
-        searchTracksInteractor //   интерактор для поиска
+        searchTracksInteractor
       )
     } else {
       binding.progressBar.visibility = View.GONE
@@ -79,15 +73,9 @@ class SearchActivity : AppCompatActivity() {
     binding = ActivitySearchcBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-
-    trackHistoryInteractorImpl = Creator.provideTrackHistoryInteractor(
-      getSharedPreferences(Constants.SEARCH_HISTORY, Context.MODE_PRIVATE)
-    )
+    trackHistoryInteractor = Creator.provideTrackHistoryInteractor(this)
 
     searchTracksInteractor = Creator.provideTrackInteractor(lifecycleScope)
-    Log.d("SearchActivity", "searchTracksInteractor initialized: $searchTracksInteractor")
-
-
 
     binding.apply {
 
@@ -112,7 +100,6 @@ class SearchActivity : AppCompatActivity() {
           } else {
             showOrHideSearchHistoryLayout()
           }
-          //TODO тут логика запросва
           handler.removeCallbacks(searchRunnable)
           handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
         }
@@ -155,30 +142,29 @@ class SearchActivity : AppCompatActivity() {
       historyAdapter = SearchHistoryAdapter()
       historyList = historyAdapter.historyList
       recyclerSearchHistory.adapter = historyAdapter
-      //todo
-      sharedPreferences = getSharedPreferences(Constants.SEARCH_HISTORY, Context.MODE_PRIVATE)
-      trackHistoryInteractor = Creator.provideTrackHistoryInteractor(sharedPreferences)
+
 
 
       clearSearchHistory.setOnClickListener {
-        trackHistoryInteractorImpl.clearHistory()//todo
+        trackHistoryInteractor.clearHistory()
         historyAdapter.clearTracksHistory(historyList)
         showOrHideSearchHistoryLayout()
       }
 
-      historyAdapter.updateData(
-        trackHistoryInteractorImpl.getHistory().toMutableList()
-      )//todo изменено
+       historyAdapter.updateData(
+        trackHistoryInteractor.getHistory().toMutableList()
+      )
 
-      //todo новый проверка
+
 
       trackAdapter.setItemClickListener { track ->
         if (clickDebounce()) {
-          trackHistoryInteractorImpl.addTrackToHistory(
+          // todo Должно использоваться через TrackHistoryInteractor
+          trackHistoryInteractor.addTrackToHistory(
             track
           ) // Сохраняем трек в историю через интерактор
           historyAdapter.updateData(
-            trackHistoryInteractorImpl.getHistory().toMutableList()
+            trackHistoryInteractor.getHistory().toMutableList()
           ) // Обновляем адаптер истории
           showOrHideSearchHistoryLayout() // Обновляем видимость истории поиска
 

@@ -1,12 +1,15 @@
 package com.example.playlistmaker.data.repository
 
 import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 
 class AudioPlayerRepositoryImpl (
   private val onTrackComplete: () -> Unit
 ) : AudioPlayerRepository {
 
+  private val handler = Handler(Looper.getMainLooper())
   private var mediaPlayer: MediaPlayer? = null
   private var currentPosition: Int = 0
 
@@ -38,6 +41,7 @@ class AudioPlayerRepositoryImpl (
     mediaPlayer?.release()
     mediaPlayer = null
     currentPosition = 0
+    // handler.removeCallbacksAndMessages(null) // todo
   }
 
   override fun isPlaying(): Boolean {
@@ -51,5 +55,34 @@ class AudioPlayerRepositoryImpl (
   override fun release() {
     mediaPlayer?.release()
     mediaPlayer = null
+    handler.removeCallbacksAndMessages(null)  //todo
+  }
+
+  override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
+    val runnable = object : Runnable {
+      override fun run() {
+        if (isPlaying()) {
+          val currentPosition = getCurrentPosition() / 1000
+          val minutes = currentPosition / 60
+          val seconds = currentPosition % 60
+          callback.invoke(String.format("%02d:%02d", minutes, seconds))
+          handler.postDelayed(this, 1000)
+        } else {
+          handler.removeCallbacks(this)
+          callback.invoke("00:00")
+        }
+      }
+    }
+    handler.post(runnable)
+  }
+
+  override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
+    if (isPlaying()) {
+      pauseTrack()
+      onPause()
+    } else {
+      playTrack(trackUrl)
+      onPlay()
+    }
   }
 }
