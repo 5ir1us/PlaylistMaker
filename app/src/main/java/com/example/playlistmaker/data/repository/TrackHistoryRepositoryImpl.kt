@@ -1,13 +1,12 @@
 package com.example.playlistmaker.data.repository
 
-import android.content.SharedPreferences
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.Constants
-import com.example.playlistmaker.domain.repository.SharedPreferencesProvider
+import com.example.playlistmaker.data.datasource.SharedPreferencesDataSource
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
 import com.google.gson.Gson
 
-class TrackHistoryRepositoryImpl(private val preferencesRepository: SharedPreferencesProvider) :
+class TrackHistoryRepositoryImpl(private val preferencesRepository: SharedPreferencesDataSource) :
   TrackHistoryRepository {
 
   override fun clearTrackSearchHistory() {

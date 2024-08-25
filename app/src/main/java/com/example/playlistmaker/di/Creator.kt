@@ -1,13 +1,11 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
-import android.content.SharedPreferences
 import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.repository.SearchTrackRepositoryImpl
 import com.example.playlistmaker.data.repository.TrackHistoryRepositoryImpl
 import com.example.playlistmaker.data.network.RetrofitClient
 import com.example.playlistmaker.data.repository.AudioPlayerRepositoryImpl
-import com.example.playlistmaker.data.repository.SharedPreferencesProviderImpl
 import com.example.playlistmaker.data.repository.ThemeRepositoryImpl
 import com.example.playlistmaker.domain.Constants.PREFS_NAME
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
@@ -18,7 +16,7 @@ import com.example.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.domain.impl.SearchTracksInteractorImpl
 import com.example.playlistmaker.domain.impl.ThemeInteractorImpl
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
-import com.example.playlistmaker.domain.repository.SharedPreferencesProvider
+import com.example.playlistmaker.data.datasource.SharedPreferencesDataSource
 import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
 import kotlinx.coroutines.CoroutineScope
@@ -43,46 +41,35 @@ object Creator {
   }
 
   // история
-  private fun getTrackHistoryRepository(preferencesProvider: SharedPreferencesProvider ): TrackHistoryRepository {
+  private fun getTrackHistoryRepository(preferencesProvider: SharedPreferencesDataSource): TrackHistoryRepository {
     return TrackHistoryRepositoryImpl(preferencesProvider)
   }
 
   //  история
   fun provideTrackHistoryInteractor(context: Context): TrackHistoryInteractorImpl {
-    val preferencesRepository = providePreferencesRepository(context)
+    val preferencesRepository = provideSharedPreferencesDataSource(context)
     return TrackHistoryInteractorImpl(getTrackHistoryRepository(preferencesRepository))
   }
 
-
-
   //шаред
-  private fun getSharedPreferencesProvider(context: Context): SharedPreferences {
-    return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+  private fun provideSharedPreferencesDataSource(context: Context): SharedPreferencesDataSource {
+    val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    return SharedPreferencesDataSource(sharedPreferences)
   }
-  fun providePreferencesRepository(context: Context): SharedPreferencesProvider {
-    val sharedPreferences = getSharedPreferencesProvider(context)
-    return SharedPreferencesProviderImpl(sharedPreferences)
-  }
-
-
-
 
   //     настройки
-  private fun getThemeRepository(preferencesRepository: SharedPreferencesProvider): ThemeRepository {
+  private fun provideThemeRepository(preferencesRepository: SharedPreferencesDataSource): ThemeRepository {
     return ThemeRepositoryImpl(preferencesRepository)
   }
 
   //   настройки
   fun provideThemeInteractor(context: Context): ThemeInteractor {
-    val preferencesRepository = providePreferencesRepository(context)
-    return ThemeInteractorImpl(getThemeRepository(preferencesRepository))
+    val preferencesRepository = provideSharedPreferencesDataSource(context)
+    return ThemeInteractorImpl(provideThemeRepository(preferencesRepository))
   }
-
-
 
   //плеер
   fun providePlayTrackInteractor(onTrackComplete: () -> Unit): AudioPlayerInteractor {
-    // todo это экземляр  AudioPlayerRepositoryImpl в случаае чего раздели
     val trackPlayerRepository = AudioPlayerRepositoryImpl(onTrackComplete)
     return AudioPlayerInteractorImpl(trackPlayerRepository)
   }
