@@ -1,6 +1,7 @@
 package com.example.playlistmaker.di
 
 import android.content.Context
+import com.example.playlistmaker.R
 import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.repository.SearchTrackRepositoryImpl
 import com.example.playlistmaker.data.repository.TrackHistoryRepositoryImpl
@@ -17,18 +18,25 @@ import com.example.playlistmaker.domain.impl.SearchTracksInteractorImpl
 import com.example.playlistmaker.domain.impl.ThemeInteractorImpl
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.data.datasource.SharedPreferencesDataSource
+import com.example.playlistmaker.data.repository.ExternalNavigatorRepositoryImpl
+import com.example.playlistmaker.data.system.SystemNavigator
+import com.example.playlistmaker.data.system.SystemNavigatorImpl
+import com.example.playlistmaker.domain.impl.ExternalNavigatorInteractorImpl
+import com.example.playlistmaker.domain.interactor.ExternalNavigatorInteractor
 import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
+import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModelFactory
+import com.example.playlistmaker.presentation.viewmodel.SearchViewModelFactory
+import com.example.playlistmaker.presentation.viewmodel.SettingsViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 
 object Creator {
 
-  //  экземпляр NetworkClient через RetrofitClient
   private fun createNetworkClient(): NetworkClient {
-    return RetrofitClient()  // Теперь здесь создается и возвращается NetworkClient
+    return RetrofitClient()
   }
 
-  // Создаем и предоставляем экземпляр репозитория
+  // экземпляра SearchTrackRepository
   private fun getTrackRepository(): SearchTrackRepository {
     val networkClient = createNetworkClient()
     return SearchTrackRepositoryImpl(networkClient)
@@ -57,15 +65,41 @@ object Creator {
     return SharedPreferencesDataSource(sharedPreferences)
   }
 
-  //     настройки
+  //  настройки
   private fun provideThemeRepository(preferencesRepository: SharedPreferencesDataSource): ThemeRepository {
     return ThemeRepositoryImpl(preferencesRepository)
   }
 
   //   настройки
-  fun provideThemeInteractor(context: Context): ThemeInteractor {
+  private fun provideThemeInteractor(context: Context): ThemeInteractor {
     val preferencesRepository = provideSharedPreferencesDataSource(context)
     return ThemeInteractorImpl(provideThemeRepository(preferencesRepository))
+  }
+
+  private fun provideSystemNavigator(context: Context): SystemNavigator {
+    return SystemNavigatorImpl(context)
+  }
+
+  // ExternalNavigatorInteractor
+  private fun provideExternalNavigatorInteractor(systemNavigator: SystemNavigator): ExternalNavigatorInteractor {
+    val repository = ExternalNavigatorRepositoryImpl(systemNavigator)
+    val shareText = systemNavigator.getString(R.string.share_message)
+    val mail = systemNavigator.getString(R.string.mail_support)
+    val bodySupport = systemNavigator.getString(R.string.body_support)
+    val supportText = systemNavigator.getString(R.string.message_support)
+    val termsText = systemNavigator.getString(R.string.terms_user_message)
+
+    return ExternalNavigatorInteractorImpl(
+      repository, shareText, mail, supportText, bodySupport, termsText
+    )
+  }
+
+  //ViewModel
+  fun provideSettingsViewModelFactory(context: Context): SettingsViewModelFactory {
+    val themeInteractor = provideThemeInteractor(context)
+    val systemNavigator = provideSystemNavigator(context)
+    val externalNavigatorInteractor = provideExternalNavigatorInteractor(systemNavigator)
+    return SettingsViewModelFactory(themeInteractor, externalNavigatorInteractor)
   }
 
   //плеер
@@ -73,4 +107,12 @@ object Creator {
     val trackPlayerRepository = AudioPlayerRepositoryImpl(onTrackComplete)
     return AudioPlayerInteractorImpl(trackPlayerRepository)
   }
+
+  fun provideSearchViewModelFactory(context: Context,scope: CoroutineScope): SearchViewModelFactory {
+    val searchTracksInteractor = provideTrackInteractor(scope)
+    val trackHistoryInteractor = provideTrackHistoryInteractor(context)
+    return SearchViewModelFactory(searchTracksInteractor, trackHistoryInteractor)
+  }
 }
+
+

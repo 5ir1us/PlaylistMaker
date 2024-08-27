@@ -13,6 +13,7 @@ class AudioPlayerRepositoryImpl (
   private var mediaPlayer: MediaPlayer? = null
   private var currentPosition: Int = 0
 
+  // TODO:  
   override fun playTrack(trackUrl: String) {
     if (mediaPlayer == null) {
       mediaPlayer = MediaPlayer().apply {
@@ -30,6 +31,7 @@ class AudioPlayerRepositoryImpl (
     }
   }
 
+  // TODO:  
   override fun pauseTrack() {
     mediaPlayer?.let {
       it.pause()
@@ -37,6 +39,7 @@ class AudioPlayerRepositoryImpl (
     }
   }
 
+  // TODO:  
   override fun stopTrack() {
     mediaPlayer?.release()
     mediaPlayer = null
@@ -52,12 +55,14 @@ class AudioPlayerRepositoryImpl (
     return mediaPlayer?.currentPosition ?: 0
   }
 
+  // TODO:  
   override fun release() {
     mediaPlayer?.release()
     mediaPlayer = null
     handler.removeCallbacksAndMessages(null)  //todo
   }
 
+  // TODO:  
   override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
     val runnable = object : Runnable {
       override fun run() {
@@ -76,11 +81,12 @@ class AudioPlayerRepositoryImpl (
     handler.post(runnable)
   }
 
+  // TODO:  
   override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
     if (isPlaying()) {
       pauseTrack()
       onPause()
-    } else {
+    } else {  
       playTrack(trackUrl)
       onPlay()
     }
