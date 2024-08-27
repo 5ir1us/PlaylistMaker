@@ -1,8 +1,8 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation.ui
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -10,27 +10,21 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.utils.RequestOnServer
-import com.example.playlistmaker.activity.RetrofitClient.retrofitService
-import com.example.playlistmaker.adapter.SearchHistoryAdapter
-import com.example.playlistmaker.adapter.TrackAdapter
-import com.example.playlistmaker.data.Track
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
-import com.example.playlistmaker.utils.Constants
-import com.example.playlistmaker.utils.SearchHistory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import com.example.playlistmaker.di.Creator
+import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
+import com.example.playlistmaker.domain.interactor.TrackHistoryInteractor
+import com.example.playlistmaker.domain.model.Track
+import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
+import com.example.playlistmaker.presentation.adapter.TrackAdapter
 import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SearchActivity : AppCompatActivity() {
 
@@ -38,35 +32,35 @@ class SearchActivity : AppCompatActivity() {
   private lateinit var binding: ActivitySearchcBinding
   private lateinit var trackAdapter: TrackAdapter
   private lateinit var historyAdapter: SearchHistoryAdapter
-  private val requestOnServer = RequestOnServer()
   private val trackList = ArrayList<Track>()
-  private lateinit var searchHistor: SearchHistory
-  private lateinit var sharedPreferences: SharedPreferences
+  private lateinit var trackHistoryInteractor: TrackHistoryInteractor//todo
   private lateinit var historyList: MutableList<Track>
-  private lateinit var uniqueList: MutableList<Track>
+  private lateinit var searchTracksInteractor: SearchTracksInteractor
 
   // Handler для реализации debounce
   private val handler = Handler(Looper.getMainLooper())
   private var isClickAllowed = true
+
   private val searchRunnable = Runnable {
     val query = binding.searchEdittext.text.toString().trim()
     if (query.isNotEmpty()) {
       binding.progressBar.visibility = View.VISIBLE
-      requestOnServer.performSearch(
+
+      searchTracksAndUpdateUI(
         this@SearchActivity,
-        retrofitService,
         query,
         binding.recyclerListTrack,
         trackAdapter,
         binding.noConnectionLayout,
         binding.noResultsLayout,
         binding.retryButton,
-        trackList
+        trackList,
+        searchTracksInteractor
       )
     } else {
       binding.progressBar.visibility = View.GONE
       trackAdapter.updateTracks(ArrayList()) // Очистка списка треков
-      showOrHideSearchHistoryLayout() // Показ истории поиска, если доступно
+      showOrHideSearchHistoryLayout() //   истории поиска, если доступно
     }
   }
 
@@ -79,7 +73,9 @@ class SearchActivity : AppCompatActivity() {
     binding = ActivitySearchcBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
+    trackHistoryInteractor = Creator.provideTrackHistoryInteractor(this)
 
+    searchTracksInteractor = Creator.provideTrackInteractor(lifecycleScope)
 
     binding.apply {
 
@@ -104,7 +100,6 @@ class SearchActivity : AppCompatActivity() {
           } else {
             showOrHideSearchHistoryLayout()
           }
-          //TODO
           handler.removeCallbacks(searchRunnable)
           handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
         }
@@ -129,14 +124,12 @@ class SearchActivity : AppCompatActivity() {
         finish()
       }
 
-
       clearIcon.setOnClickListener {
         hideKeyboard()
         searchEdittext.setText("")
         searchEdittext.clearFocus()
-        // searchEdittext.text.delete(0, searchEdittext.text.length)
         trackAdapter.updateTracks(trackList)
-        historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
+        historyAdapter.updateData(trackHistoryInteractor.getHistory().toMutableList())
         showOrHideSearchHistoryLayout()
       }
 
@@ -144,48 +137,42 @@ class SearchActivity : AppCompatActivity() {
       trackAdapter = TrackAdapter(trackList)
       recyclerListTrack.adapter = trackAdapter
 
-      //выполняет запрос на сервер кнопкоц
-      requestOnServer.setSearchListener(
-        this@SearchActivity,//todo
-        searchEdittext, retrofitService, recyclerListTrack,
-        trackAdapter, noConnectionLayout, noResultsLayout, retryButton, trackList
-      )
-
       // SEARCH history :)
       recyclerSearchHistory.layoutManager = LinearLayoutManager(this@SearchActivity)
       historyAdapter = SearchHistoryAdapter()
       historyList = historyAdapter.historyList
       recyclerSearchHistory.adapter = historyAdapter
-      sharedPreferences = getSharedPreferences(Constants.SEARCH_HISTORY, Context.MODE_PRIVATE)
-      searchHistor = SearchHistory(sharedPreferences)
+
+
 
       clearSearchHistory.setOnClickListener {
-        searchHistor.clearSharedPreferencesHistory()
+        trackHistoryInteractor.clearHistory()
         historyAdapter.clearTracksHistory(historyList)
         showOrHideSearchHistoryLayout()
       }
 
-      historyAdapter.updateData(searchHistor.loadTrackFromSharedPreferences().toMutableList())
+       historyAdapter.updateData(
+        trackHistoryInteractor.getHistory().toMutableList()
+      )
+
+
 
       trackAdapter.setItemClickListener { track ->
-        if (clickDebounce()) { //условие дебаунса
+        if (clickDebounce()) {
+          // todo Должно использоваться через TrackHistoryInteractor
+          trackHistoryInteractor.addTrackToHistory(
+            track
+          ) // Сохраняем трек в историю через интерактор
+          historyAdapter.updateData(
+            trackHistoryInteractor.getHistory().toMutableList()
+          ) // Обновляем адаптер истории
+          showOrHideSearchHistoryLayout() // Обновляем видимость истории поиска
 
-          historyList = searchHistor.loadTrackFromSharedPreferences().toMutableList()
-          historyList.add(0, track)
-          historyAdapter.notifyItemInserted(0)
+          val searchIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
+          getInfoSong(searchIntent, track)
+          startActivity(searchIntent)
         }
-        uniqueList = historyList.toSet().toMutableList()
-        if (historyList.size > 10) {
-          historyList = historyList.subList(0, 10)
-        }
-        searchHistor.saveTrackToSharedPreferences(uniqueList)
-        showOrHideSearchHistoryLayout()
-
-        val searchIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
-        getInfoSong(searchIntent, track)
-        startActivity(searchIntent)
       }
-
       historyAdapter.setItemClickListener { track ->
         val historyIntent = Intent(this@SearchActivity, AudioPlayerActivity::class.java)
 
@@ -245,5 +232,62 @@ class SearchActivity : AppCompatActivity() {
 
     }
   }
-}
 
+  fun searchTracksAndUpdateUI(
+    context: Context,
+    query: String,
+    list: RecyclerView,
+    adapter: TrackAdapter,
+    noConnectionLayout: View,
+    noResultsLayout: View,
+    retryButton: ImageView,
+    trackk: ArrayList<Track>,
+    searchTracksInteractor: SearchTracksInteractor, // добавляем интерактор как зависимость
+  ) {
+    val progressBar = (context as Activity).findViewById<ProgressBar>(R.id.progressBar)
+    progressBar.visibility = View.VISIBLE
+
+    //   интерактор для поиска треков
+    searchTracksInteractor.searchTracks(query) { tracks ->
+      progressBar.visibility = View.GONE
+
+      if (tracks.isEmpty()) {
+        //   список треков пуст, показываем макет отсутствия результатов
+        setVisibility(noResultsLayout, list, noConnectionLayout)
+      } else {
+        //   треки найдены, обновляем адаптер и отображаем список
+        updateListAndAdapter(tracks, adapter, trackk)
+        setVisibility(list, noResultsLayout, noConnectionLayout)
+      }
+    }
+
+    // Обработка повторной попытки
+    retryButton.setOnClickListener {
+      searchTracksAndUpdateUI(
+        context, query, list, adapter, noConnectionLayout, noResultsLayout, retryButton, trackk,
+        searchTracksInteractor
+      )
+    }
+  }
+
+  // Функция для установки видимости для разных макетов
+  fun setVisibility(
+    visibleView: View,
+    vararg invisibleViews: View,
+  ) {
+    visibleView.visibility = View.VISIBLE
+    for (view in invisibleViews) {
+      view.visibility = View.GONE
+    }
+  }
+
+  // Функция для добавления результатов к списку треков и обновления адаптера
+  private fun updateListAndAdapter(
+    results: ArrayList<Track>,
+    adapter: TrackAdapter,
+    track: ArrayList<Track>,
+  ) {
+    track.addAll(results)
+    adapter.notifyDataSetChanged()
+  }
+}

@@ -1,12 +1,12 @@
-package com.example.playlistmaker.adapter
+package com.example.playlistmaker.presentation.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.data.Track
-import com.example.playlistmaker.utils.SearchHistory
+import com.example.playlistmaker.domain.model.Track
 
 class TrackAdapter(
   private val trackList: ArrayList<Track>,
@@ -31,16 +31,18 @@ class TrackAdapter(
     holder.itemView.setOnClickListener {
 
       itemClickListener?.invoke(track)
-     }
+    }
   }
 
   override fun getItemCount(): Int = trackList.size
 
   @SuppressLint("NotifyDataSetChanged")
   fun updateTracks(newTracks: ArrayList<Track>) {
-    newTracks.clear()
-    notifyDataSetChanged()
+    trackList.clear()  // Очищаем
+    trackList.addAll(newTracks)  // Добавляем
+    notifyDataSetChanged()  // Обновляем адаптер todo new clear
   }
+
   fun setItemClickListener(listener: (Track) -> Unit) {
     itemClickListener = listener
   }

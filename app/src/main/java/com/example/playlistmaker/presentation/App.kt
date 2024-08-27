@@ -1,10 +1,10 @@
-package com.example.playlistmaker.activity
+package com.example.playlistmaker.presentation
 
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.utils.Constants
+import com.example.playlistmaker.domain.Constants
 
 class App : Application( ) {
 
