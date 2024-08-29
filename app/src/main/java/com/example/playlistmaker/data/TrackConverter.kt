@@ -12,11 +12,11 @@ object TrackConverter {
       artistName = dto.artistName,
       trackTimeMillis = dto.trackTimeMillis,
       artworkUrl100 = dto.artworkUrl100,
+      trackId = dto.trackId,
       collectionName = dto.collectionName,
       releaseDate = dto.releaseDate,
       primaryGenreName = dto.primaryGenreName,
       country = dto.country,
-      previewUrl = dto.previewUrl
-    )
+      previewUrl = dto.previewUrl)
   }
 }

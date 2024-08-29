@@ -26,10 +26,7 @@ class AudioPlayerActivity : AppCompatActivity() {
   private lateinit var binding: ActivityAudioPlayerBinding
 
   private val audioPlayerViewModel: AudioPlayerViewModel by viewModels {
-    AudioPlayerViewModelFactory(
-      Creator.providePlayTrackInteractor(
-        onTrackComplete = { binding.playButton.setImageResource(R.drawable.play_button) })
-    )
+    Creator.provideAudioPlayerViewModelFactory( )
   }
 
   @RequiresApi(VERSION_CODES.TIRAMISU)

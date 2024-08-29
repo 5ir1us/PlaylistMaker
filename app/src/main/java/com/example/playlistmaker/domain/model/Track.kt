@@ -10,7 +10,7 @@ data class Track(
   val artistName: String,
   val trackTimeMillis: Long?,
   val artworkUrl100: String?,// Ссылка на изображение
-  // val trackId: Int,// идентификатор уникальности трека
+  val trackId: Int,// идентификатор уникальности трека
   val collectionName: String?,
   val releaseDate: String?,
   val primaryGenreName: String?,

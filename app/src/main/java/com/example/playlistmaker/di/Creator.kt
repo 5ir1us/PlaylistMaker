@@ -32,6 +32,12 @@ import kotlinx.coroutines.CoroutineScope
 
 object Creator {
 
+  private lateinit var applicationContext: Context
+
+  fun init(context: Context) {
+    applicationContext = context.applicationContext
+  }
+
   private fun createNetworkClient(): NetworkClient {
     return RetrofitClient()
   }
@@ -43,41 +49,42 @@ object Creator {
   }
 
   //   поиск
-  fun provideTrackInteractor(scope: CoroutineScope): SearchTracksInteractor {
+  fun provideTrackInteractor( ): SearchTracksInteractor {
     val repository = getTrackRepository()
-    return SearchTracksInteractorImpl(scope, repository)
+    return SearchTracksInteractorImpl(  repository)
   }
 
   // история
-  private fun getTrackHistoryRepository(preferencesProvider: SharedPreferencesDataSource): TrackHistoryRepository {
+  private fun getTrackHistoryRepository(): TrackHistoryRepository {
+    val preferencesProvider = provideSharedPreferencesDataSource()
     return TrackHistoryRepositoryImpl(preferencesProvider)
   }
 
   //  история
-  fun provideTrackHistoryInteractor(context: Context): TrackHistoryInteractorImpl {
-    val preferencesRepository = provideSharedPreferencesDataSource(context)
-    return TrackHistoryInteractorImpl(getTrackHistoryRepository(preferencesRepository))
+  fun provideTrackHistoryInteractor(): TrackHistoryInteractorImpl {
+    return TrackHistoryInteractorImpl(getTrackHistoryRepository())
   }
 
   //шаред
-  private fun provideSharedPreferencesDataSource(context: Context): SharedPreferencesDataSource {
-    val sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+  private fun provideSharedPreferencesDataSource(): SharedPreferencesDataSource {
+    val sharedPreferences =
+      applicationContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     return SharedPreferencesDataSource(sharedPreferences)
   }
 
   //  настройки
-  private fun provideThemeRepository(preferencesRepository: SharedPreferencesDataSource): ThemeRepository {
+  private fun provideThemeRepository(): ThemeRepository {
+    val preferencesRepository = provideSharedPreferencesDataSource()
     return ThemeRepositoryImpl(preferencesRepository)
   }
 
   //   настройки
-  private fun provideThemeInteractor(context: Context): ThemeInteractor {
-    val preferencesRepository = provideSharedPreferencesDataSource(context)
-    return ThemeInteractorImpl(provideThemeRepository(preferencesRepository))
+  private fun provideThemeInteractor(): ThemeInteractor {
+    return ThemeInteractorImpl(provideThemeRepository())
   }
 
-  private fun provideSystemNavigator(context: Context): SystemNavigator {
-    return SystemNavigatorImpl(context)
+  private fun provideSystemNavigator(): SystemNavigator {
+    return SystemNavigatorImpl(applicationContext)
   }
 
   // ExternalNavigatorInteractor
@@ -95,22 +102,27 @@ object Creator {
   }
 
   //ViewModel
-  fun provideSettingsViewModelFactory(context: Context): SettingsViewModelFactory {
-    val themeInteractor = provideThemeInteractor(context)
-    val systemNavigator = provideSystemNavigator(context)
+  fun provideSettingsViewModelFactory(): SettingsViewModelFactory {
+    val themeInteractor = provideThemeInteractor()
+    val systemNavigator = provideSystemNavigator()
     val externalNavigatorInteractor = provideExternalNavigatorInteractor(systemNavigator)
     return SettingsViewModelFactory(themeInteractor, externalNavigatorInteractor)
   }
 
-  //плеер
-  fun providePlayTrackInteractor(onTrackComplete: () -> Unit): AudioPlayerInteractor {
-    val trackPlayerRepository = AudioPlayerRepositoryImpl(onTrackComplete)
-    return AudioPlayerInteractorImpl(trackPlayerRepository)
+  // Интерактор для плеера
+  private fun providePlayTrackInteractor(): AudioPlayerInteractor {
+    return AudioPlayerInteractorImpl(AudioPlayerRepositoryImpl())
   }
 
-  fun provideSearchViewModelFactory(context: Context,scope: CoroutineScope): SearchViewModelFactory {
-    val searchTracksInteractor = provideTrackInteractor(scope)
-    val trackHistoryInteractor = provideTrackHistoryInteractor(context)
+  // Фабрика для ViewModel
+  fun provideAudioPlayerViewModelFactory(): AudioPlayerViewModelFactory {
+    val audioPlayerInteractor = providePlayTrackInteractor()
+    return AudioPlayerViewModelFactory(audioPlayerInteractor)
+  }
+
+  fun provideSearchViewModelFactory(): SearchViewModelFactory {
+    val searchTracksInteractor = provideTrackInteractor()
+    val trackHistoryInteractor = provideTrackHistoryInteractor()
     return SearchViewModelFactory(searchTracksInteractor, trackHistoryInteractor)
   }
 }

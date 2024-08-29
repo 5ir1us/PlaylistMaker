@@ -13,7 +13,7 @@ class SettingsActivity : AppCompatActivity() {
   private lateinit var binding: ActivitySettingsBinding
 
   private val settingsViewModel: SettingsViewModel by viewModels {
-    Creator.provideSettingsViewModelFactory(this)
+    Creator.provideSettingsViewModelFactory( )
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {

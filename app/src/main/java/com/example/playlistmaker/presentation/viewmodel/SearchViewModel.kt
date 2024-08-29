@@ -3,10 +3,12 @@ package com.example.playlistmaker.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
 import com.example.playlistmaker.domain.interactor.TrackHistoryInteractor
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.state.SearchScreenState
+import kotlinx.coroutines.launch
 
 class SearchViewModel(
   private val searchTracksInteractor: SearchTracksInteractor,
@@ -34,37 +36,42 @@ class SearchViewModel(
 
   fun searchTracks(query: String) {
     if (query.isNotEmpty()) {
-      // Сброс состояния перед новым поиском
       _screenState.value = _screenState.value?.copy(
         isLoading = true,
         isHistoryVisible = false,
         showNoResults = false,
         showError = false,
-        searchResults = emptyList()  // Очищаем предыдущие результаты
+        searchResults = emptyList()
       )
 
-      searchTracksInteractor.searchTracks(query) { tracks ->
-        if (tracks.isEmpty()) {
-          // Если нет результатов, показываем "ничего не найдено"
+      viewModelScope.launch {
+        try {
+          val tracks = searchTracksInteractor.searchTracks(query)
+          if (tracks.isEmpty()) {
+            _screenState.value = _screenState.value?.copy(
+              isLoading = false,
+              showNoResults = true,
+              searchResults = tracks,
+              isHistoryVisible = false,
+              showError = false
+            )
+          } else {
+            _screenState.value = _screenState.value?.copy(
+              isLoading = false,
+              searchResults = tracks,
+              isHistoryVisible = false,
+              showNoResults = false,
+              showError = false
+            )
+          }
+        } catch (e: Exception) {
           _screenState.value = _screenState.value?.copy(
             isLoading = false,
-            showNoResults = true,
-            searchResults = tracks,
-            isHistoryVisible = false,
-            showError = false
-          )
-        } else {
-          _screenState.value = _screenState.value?.copy(
-            isLoading = false,
-            searchResults = tracks,
-            isHistoryVisible = false,
-            showNoResults = false,
-            showError = false
+            showError = true
           )
         }
       }
     } else {
-      // Если запрос пуст, показываем историю поиска
       _screenState.value = _screenState.value?.copy(
         searchResults = emptyList(),
         isHistoryVisible = trackHistoryInteractor.getHistory().isNotEmpty(),

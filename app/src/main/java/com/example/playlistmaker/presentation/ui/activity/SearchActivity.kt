@@ -33,7 +33,7 @@ class SearchActivity : AppCompatActivity() {
   private var isClickAllowed = true
 
   private val searchViewModel: SearchViewModel by viewModels {
-    Creator.provideSearchViewModelFactory(this, lifecycleScope)
+    Creator.provideSearchViewModelFactory(  )
   }
 
   private val searchRunnable = Runnable {
@@ -83,6 +83,7 @@ class SearchActivity : AppCompatActivity() {
         after: Int,
       ) {
       }
+
       override fun onTextChanged(
         s: CharSequence?,
         start: Int,
@@ -94,6 +95,7 @@ class SearchActivity : AppCompatActivity() {
         handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
         searchViewModel.onQueryTextChanged(s.toString())
       }
+
       override fun afterTextChanged(s: Editable?) {
         binding.clearIcon.visibility = clearButtonVisibility(s)
       }

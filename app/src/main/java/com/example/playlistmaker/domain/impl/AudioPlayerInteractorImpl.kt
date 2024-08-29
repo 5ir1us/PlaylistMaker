@@ -37,4 +37,7 @@ class AudioPlayerInteractorImpl(private val trackPlayerRepository: AudioPlayerRe
   override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
     trackPlayerRepository.togglePlayback(trackUrl, onPlay, onPause)
   }
+  override fun setOnTrackCompleteListener(listener: () -> Unit) {
+    trackPlayerRepository.setOnCompletionListener(listener)
+  }
 }

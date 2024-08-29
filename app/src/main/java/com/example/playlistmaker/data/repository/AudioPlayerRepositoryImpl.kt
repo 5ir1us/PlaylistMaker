@@ -5,10 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 
-class AudioPlayerRepositoryImpl (
-  private val onTrackComplete: () -> Unit
-) : AudioPlayerRepository {
-
+class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
+  private var onTrackComplete: (() -> Unit)? = null
   private val handler = Handler(Looper.getMainLooper())
   private var mediaPlayer: MediaPlayer? = null
   private var currentPosition: Int = 0
@@ -20,7 +18,7 @@ class AudioPlayerRepositoryImpl (
         setDataSource(trackUrl)
         prepare()
         setOnCompletionListener {
-          onTrackComplete()
+          onTrackComplete?.invoke()
           stopTrack()
         }
         start()
@@ -90,5 +88,8 @@ class AudioPlayerRepositoryImpl (
       playTrack(trackUrl)
       onPlay()
     }
+  }
+  override fun setOnCompletionListener(listener: () -> Unit) {
+    onTrackComplete = listener
   }
 }
