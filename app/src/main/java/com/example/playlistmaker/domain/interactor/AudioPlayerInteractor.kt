@@ -9,4 +9,5 @@ interface AudioPlayerInteractor {
   fun release()
   fun updateTrackProgress(callback: (currentTime: String) -> Unit)
   fun togglePlayback (trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit)
-}
+  fun setOnTrackCompleteListener(listener: () -> Unit)
+  }

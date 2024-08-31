@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlistmaker.di.Creator
 import com.example.playlistmaker.domain.Constants
 
 class App : Application( ) {
@@ -14,7 +15,9 @@ class App : Application( ) {
     super.onCreate()
     sharedPreferences = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE)
     switchTheme(loadThemeMode())
+    Creator.init(this)
   }
+
 
 
   fun switchTheme(darkThemeEnabled: Boolean) {

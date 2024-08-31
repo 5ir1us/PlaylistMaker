@@ -9,4 +9,5 @@ interface AudioPlayerRepository {
   fun release()
   fun updateTrackProgress(callback: (currentTime: String) -> Unit)  //todo
   fun togglePlayback (trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit)
+  fun setOnCompletionListener(listener: () -> Unit)
 }
