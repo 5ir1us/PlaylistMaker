@@ -9,18 +9,17 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
-import com.example.playlistmaker.di.Creator
+import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
 
 import kotlinx.coroutines.Runnable
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
@@ -32,9 +31,7 @@ class SearchActivity : AppCompatActivity() {
   private val handler = Handler(Looper.getMainLooper())
   private var isClickAllowed = true
 
-  private val searchViewModel: SearchViewModel by viewModels {
-    Creator.provideSearchViewModelFactory(  )
-  }
+  private val searchViewModel: SearchViewModel by viewModel()
 
   private val searchRunnable = Runnable {
     val query = binding.searchEdittext.text.toString().trim()
@@ -43,10 +40,6 @@ class SearchActivity : AppCompatActivity() {
     } else {
       searchViewModel.resetStateToHistory()
     }
-  }
-
-  companion object {
-    const val CLICK_DEBOUNCE = 3000L // константа для отложки запроса
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +85,7 @@ class SearchActivity : AppCompatActivity() {
       ) {
 
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable, CLICK_DEBOUNCE)
+        handler.postDelayed(searchRunnable,Constants.CLICK_DEBOUNCE)
         searchViewModel.onQueryTextChanged(s.toString())
       }
 
@@ -160,7 +153,7 @@ class SearchActivity : AppCompatActivity() {
     val current = isClickAllowed
     if (isClickAllowed) {
       isClickAllowed = false
-      handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE)
+      handler.postDelayed({ isClickAllowed = true }, Constants.CLICK_DEBOUNCE)
     }
     return current
   }

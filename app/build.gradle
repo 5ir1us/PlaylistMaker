@@ -58,4 +58,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0' // interceptor для логов
 
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"  //lifecycle-runtime-ktx
+
+    implementation "io.insert-koin:koin-android:3.3.0" //фреймворк di Koin
+
 }

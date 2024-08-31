@@ -6,10 +6,10 @@ import com.example.playlistmaker.domain.repository.ThemeRepository
 class  ThemeInteractorImpl(private val repository: ThemeRepository) : ThemeInteractor {
 
   override fun isDarkThemeEnabled(): Boolean {
-    return repository.saveThemeState()
+    return repository.getThemeState()
   }
 
   override fun setDarkThemeEnabled(enabled: Boolean) {
-    repository.getThemeState(enabled)
+    repository.saveThemeState(enabled)
   }
 }

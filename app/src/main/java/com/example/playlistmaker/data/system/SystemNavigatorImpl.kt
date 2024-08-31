@@ -6,6 +6,7 @@ import android.net.Uri
 
 class SystemNavigatorImpl(private val context: Context) : SystemNavigator {
   override fun startActivity(intent: Intent) {
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     context.startActivity(intent)
   }
 

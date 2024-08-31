@@ -1,42 +1,34 @@
 package com.example.playlistmaker.presentation
 
 import android.app.Application
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlistmaker.di.Creator
-import com.example.playlistmaker.domain.Constants
+import com.example.playlistmaker.di.dataModule
+import com.example.playlistmaker.di.domainModule
+import com.example.playlistmaker.di.presentationModule
 
-class App : Application( ) {
+import com.example.playlistmaker.domain.interactor.ThemeInteractor
+import org.koin.android.ext.android.get
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.GlobalContext.startKoin
 
-  private lateinit var   sharedPreferences: SharedPreferences
-  private var darkTheme = false
+class App : Application() {
+
   override fun onCreate() {
     super.onCreate()
-    sharedPreferences = getSharedPreferences(Constants.APP_PREFERENCES, Context.MODE_PRIVATE)
-    switchTheme(loadThemeMode())
-    Creator.init(this)
+
+    val appModules = listOf(dataModule, domainModule, presentationModule)
+    startKoin {
+      androidContext(this@App)
+      modules(appModules)
+    }
+    val themeInteractor: ThemeInteractor = get()
+    applySavedTheme(themeInteractor)
   }
 
-
-
-  fun switchTheme(darkThemeEnabled: Boolean) {
-    darkTheme = darkThemeEnabled
+  private fun applySavedTheme(themeInteractor: ThemeInteractor) {
+    val isDarkThemeEnabled = themeInteractor.isDarkThemeEnabled()
     AppCompatDelegate.setDefaultNightMode(
-      if (darkThemeEnabled) {
-        AppCompatDelegate.MODE_NIGHT_YES
-      } else {
-        AppCompatDelegate.MODE_NIGHT_NO
-      }
+      if (isDarkThemeEnabled) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
     )
-  }
-
-  fun saveThemeMode(isDarkMode: Boolean) {
-    sharedPreferences.edit().putBoolean(Constants.THEME_MODE_KEY, isDarkMode).apply()
-
-  }
-
-    fun loadThemeMode(): Boolean {
-    return sharedPreferences.getBoolean(Constants.THEME_MODE_KEY, false)
   }
 }
