@@ -1,6 +1,7 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import com.example.playlistmaker.domain.impl.ExternalNavigatorInteractorImpl
 import com.example.playlistmaker.domain.impl.SearchTracksInteractorImpl
@@ -15,14 +16,8 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
+
 val domainModule = module {
-
-  // single { androidContext().getString(R.string.mail_support) } // mail
-  // single { androidContext().getString(R.string.share_message) } // shareText
-  // single { androidContext().getString(R.string.message_support_api) } // supportText
-  // single { androidContext().getString(R.string.body_support) } // bodySupport
-  // single { androidContext().getString(R.string.terms_user_message) } // termsText
-
 
   single(named("mail")) { androidContext().getString(R.string.mail_support) }
   single(named("shareText")) { androidContext().getString(R.string.share_message) }
@@ -30,10 +25,9 @@ val domainModule = module {
   single(named("bodySupport")) { androidContext().getString(R.string.body_support) }
   single(named("termsText")) { androidContext().getString(R.string.terms_user_message) }
 
-
   single<AudioPlayerInteractor> { AudioPlayerInteractorImpl(get()) }
 
-  single<ExternalNavigatorInteractor> {
+  factory<ExternalNavigatorInteractor> {
     ExternalNavigatorInteractorImpl(
       repository = get(),
       shareText = get(named("shareText")),
@@ -41,12 +35,6 @@ val domainModule = module {
       supportText = get(named("supportText")),
       bodySupport = get(named("bodySupport")),
       termsText = get(named("termsText"))
-      // repository = get(),
-      // shareText = get(),
-      // mail = get(),
-      // supportText = get(),
-      // bodySupport = get(),
-      // termsText = get()
     )
   }
 

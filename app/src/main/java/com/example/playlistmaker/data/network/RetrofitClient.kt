@@ -20,15 +20,12 @@ class RetrofitClient ( private val trackApiService: TrackApiService): NetworkCli
       .build()
   }
 
-  // fun createTrackApiService(): TrackApiService {
-  //   return retrofit.create(TrackApiService::class.java)
-  // }
 
   override fun doRequest(dto: Any): ResponseCode {
     return if (dto is TrackSearchRequest) {
       try {
         // Выполнение синхронного запроса
-        val response = trackApiService.findTrack(dto.term).execute() // TODO: createTrackApiService
+        val response = trackApiService.findTrack(dto.term).execute()
         val body = response.body() ?: ResponseCode()
         body.apply { resultCode = response.code() }
       } catch (e: IOException) {

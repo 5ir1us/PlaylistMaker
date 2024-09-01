@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.databinding.ActivitySearchcBinding
-import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
@@ -23,11 +22,14 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
+  companion object {
+    private const val CLICK_DEBOUNCER = 3000L // Значение задержки в миллисекундах
+  }
+
   private lateinit var simpleTextWatcher: TextWatcher
   private lateinit var binding: ActivitySearchcBinding
   private lateinit var trackAdapter: TrackAdapter
   private lateinit var historyAdapter: SearchHistoryAdapter
-
   private val handler = Handler(Looper.getMainLooper())
   private var isClickAllowed = true
 
@@ -85,7 +87,7 @@ class SearchActivity : AppCompatActivity() {
       ) {
 
         handler.removeCallbacks(searchRunnable)
-        handler.postDelayed(searchRunnable,Constants.CLICK_DEBOUNCE)
+        handler.postDelayed(searchRunnable, CLICK_DEBOUNCER)
         searchViewModel.onQueryTextChanged(s.toString())
       }
 
@@ -153,7 +155,7 @@ class SearchActivity : AppCompatActivity() {
     val current = isClickAllowed
     if (isClickAllowed) {
       isClickAllowed = false
-      handler.postDelayed({ isClickAllowed = true }, Constants.CLICK_DEBOUNCE)
+      handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCER)
     }
     return current
   }

@@ -1,6 +1,5 @@
 package com.example.playlistmaker.domain.repository
 
-import android.content.Intent
 
 interface ExternalNavigatorRepository {
   fun shareApp(shareText: String)

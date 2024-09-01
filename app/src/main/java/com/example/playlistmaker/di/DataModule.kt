@@ -2,6 +2,7 @@ package com.example.playlistmaker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.media.MediaPlayer
 import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.datasource.SharedPreferencesDataSource
 import com.example.playlistmaker.data.network.RetrofitClient
@@ -19,6 +20,7 @@ import com.example.playlistmaker.domain.repository.ExternalNavigatorRepository
 import com.example.playlistmaker.domain.repository.SearchTrackRepository
 import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
+import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -47,15 +49,19 @@ val dataModule = module {
     RetrofitClient(get())
   }
 
-  single<AudioPlayerRepository> { AudioPlayerRepositoryImpl() }
+  single { Gson() }
+
+  factory { MediaPlayer() }
+
+  factory<AudioPlayerRepository> { AudioPlayerRepositoryImpl(get()) }
 
   single<ExternalNavigatorRepository> { ExternalNavigatorRepositoryImpl(get()) }
 
-  single<SearchTrackRepository> { SearchTrackRepositoryImpl(get()) }
+  factory<SearchTrackRepository> { SearchTrackRepositoryImpl(get()) }
 
   single<ThemeRepository> { ThemeRepositoryImpl(get()) }
 
-  single<TrackHistoryRepository> { TrackHistoryRepositoryImpl(get()) }
+  single<TrackHistoryRepository> { TrackHistoryRepositoryImpl(get(), get()) }
 
   single<SystemNavigator> { SystemNavigatorImpl(androidContext()) }
 }

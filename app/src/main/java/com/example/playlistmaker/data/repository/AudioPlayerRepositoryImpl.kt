@@ -5,13 +5,11 @@ import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 
-class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
+class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer?) : AudioPlayerRepository {
   private var onTrackComplete: (() -> Unit)? = null
   private val handler = Handler(Looper.getMainLooper())
-  private var mediaPlayer: MediaPlayer? = null
   private var currentPosition: Int = 0
 
-  // TODO:  
   override fun playTrack(trackUrl: String) {
     if (mediaPlayer == null) {
       mediaPlayer = MediaPlayer().apply {
@@ -29,7 +27,6 @@ class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
     }
   }
 
-  // TODO:  
   override fun pauseTrack() {
     mediaPlayer?.let {
       it.pause()
@@ -37,12 +34,16 @@ class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
     }
   }
 
-  // TODO:  
   override fun stopTrack() {
-    mediaPlayer?.release()
-    mediaPlayer = null
+    try {
+      mediaPlayer?.stop()
+    } catch (e: IllegalStateException) {
+
+    } finally {
+      mediaPlayer?.release()
+      mediaPlayer = null
+    }
     currentPosition = 0
-    // handler.removeCallbacksAndMessages(null) // todo
   }
 
   override fun isPlaying(): Boolean {
@@ -53,14 +54,12 @@ class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
     return mediaPlayer?.currentPosition ?: 0
   }
 
-  // TODO:  
   override fun release() {
     mediaPlayer?.release()
     mediaPlayer = null
-    handler.removeCallbacksAndMessages(null)  //todo
+    handler.removeCallbacksAndMessages(null)
   }
 
-  // TODO:  
   override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
     val runnable = object : Runnable {
       override fun run() {
@@ -79,16 +78,20 @@ class AudioPlayerRepositoryImpl   : AudioPlayerRepository {
     handler.post(runnable)
   }
 
-  // TODO:  
-  override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
+  override fun togglePlayback(
+    trackUrl: String,
+    onPlay: () -> Unit,
+    onPause: () -> Unit,
+  ) {
     if (isPlaying()) {
       pauseTrack()
       onPause()
-    } else {  
+    } else {
       playTrack(trackUrl)
       onPlay()
     }
   }
+
   override fun setOnCompletionListener(listener: () -> Unit) {
     onTrackComplete = listener
   }
