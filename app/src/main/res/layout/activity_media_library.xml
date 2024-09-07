@@ -1,37 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.ui.activity.MediaLibraryActivity"
-    >
+    android:background="@color/white_revers"
+    android:orientation="vertical"
+    tools:context=".presentation.ui.activity.MediaLibraryActivity">
 
-  <androidx.appcompat.widget.Toolbar
-      android:id="@+id/toolbarSearch"
-      android:layout_width="match_parent"
-      android:layout_height="?actionBarSize"
-      android:background="?attr/colorSecondary"
-      android:minHeight="?attr/actionBarSize"
-      android:theme="?attr/actionBarTheme"
-      app:layout_constraintStart_toStartOf="parent"
-      tools:ignore="MissingConstraints"
-      >
+    <!-- Toolbar с кнопкой "Назад" -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarMedia"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginBottom="@dimen/indent_8"
+        android:background="@color/white_revers"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
 
-    <ImageView
-        android:id="@+id/button_sitting_back"
-        android:layout_width="wrap_content"
+        <ImageView
+            android:id="@+id/buttonBack"
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:src="@drawable/settings_return" />
+
+        <TextView
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingStart="@dimen/indent_26"
+            android:paddingEnd="@dimen/padding_12"
+            android:text="@string/mediateka" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- ViewPager для отображения контента в фрагментах -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        style="@style/TabMedia"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:clickable="true"
-        android:src="@drawable/settings_return"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="16dp"
-        android:padding="@dimen/padding_12"
-        style="@style/ActivityToolbar"
+        android:background="@color/white_revers"
+
+
         />
 
-  </androidx.appcompat.widget.Toolbar>
+    <!-- TabLayout для переключения между фрагментами -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white_revers" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -23,6 +23,10 @@
   <string name="genreTrack">Жанр</string>
   <string name="countryTrek">Страна</string>
   <string name="time_track_message">00:00</string>
+  <string name="mediateka">Медиатека</string>
+  <string name="uncreated_playlist">Вы не создали </string>
+  <string name="uncreated_playlist2">ни одного плейлиста </string>
+  <string name="empty_playlist">Ваша медиатека пуста</string>
 
 
 </resources>

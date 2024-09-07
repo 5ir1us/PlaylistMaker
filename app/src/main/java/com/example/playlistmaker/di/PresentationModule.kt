@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
+import com.example.playlistmaker.presentation.viewmodel.FavoritesViewModel
+import com.example.playlistmaker.presentation.viewmodel.PlaylistsViewModel
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
 import com.example.playlistmaker.presentation.viewmodel.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -19,6 +21,8 @@ val presentationModule = module {
   viewModel {
     SettingsViewModel(themeInteractor = get(), externalNavigatorInteractor = get())
   }
+
+
 
 
 }
