@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:layout_marginRight="@dimen/padding_12"
+            android:layout_marginEnd="@dimen/indent_24"
             android:src="@drawable/settings_return" />
 
 

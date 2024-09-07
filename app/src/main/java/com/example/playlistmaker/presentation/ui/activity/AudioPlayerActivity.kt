@@ -5,7 +5,6 @@ import android.os.Build.VERSION_CODES
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.TypedValue
-import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -13,9 +12,9 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.databinding.ActivityAudioPlayerBinding
-import com.example.playlistmaker.di.Creator
+import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
-import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AudioPlayerActivity : AppCompatActivity() {
 
@@ -25,9 +24,7 @@ class AudioPlayerActivity : AppCompatActivity() {
 
   private lateinit var binding: ActivityAudioPlayerBinding
 
-  private val audioPlayerViewModel: AudioPlayerViewModel by viewModels {
-    Creator.provideAudioPlayerViewModelFactory( )
-  }
+  private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
 
   @RequiresApi(VERSION_CODES.TIRAMISU)
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,7 +32,7 @@ class AudioPlayerActivity : AppCompatActivity() {
     binding = ActivityAudioPlayerBinding.inflate(layoutInflater)
     setContentView(binding.root)
 
-    val track = intent.getParcelableExtra<Track>(TRACK_INFO)
+    val track = intent.getParcelableExtra<Track>(Constants.TRACK_INFO)
     track?.let { setupTrackInfo(it) }
     observeViewModel()
 

@@ -18,7 +18,6 @@ class SearchViewModel(
   private val _screenState = MutableLiveData<SearchScreenState>()
   val searchScreenState: LiveData<SearchScreenState> get() = _screenState
 
-  // private var debouncePeriod = 3000L // Период дебаунса
 
   init {
     _screenState.value = SearchScreenState(

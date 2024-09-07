@@ -10,8 +10,7 @@ import com.example.playlistmaker.domain.model.Track
 
 class SearchTrackRepositoryImpl(
   private val networkClient: NetworkClient
-  // private val sharedPreferences: SharedPreferencesTrackHistory
-) : SearchTrackRepository {
+ ) : SearchTrackRepository {
 
   override fun searchTracks(query: String): ArrayList<Track> {
     val request = TrackSearchRequest(query)
@@ -26,13 +25,4 @@ class SearchTrackRepositoryImpl(
 
   }
 }
-
-  // override fun saveTrackToHistory(track: Track) {
-  //   // Сохранение трека в историю
-  // }
-  //
-  // override fun getTrackHistory(): ArrayList<Track> {
-  //   // Получение истории треков
-  // }
-// }
 

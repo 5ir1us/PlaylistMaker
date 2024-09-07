@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 
-class RetrofitClient : NetworkClient {
+class RetrofitClient ( private val trackApiService: TrackApiService): NetworkClient {
 
   private val BASE_URL = "https://itunes.apple.com"
   private val retrofit: Retrofit by lazy {
@@ -20,15 +20,12 @@ class RetrofitClient : NetworkClient {
       .build()
   }
 
-  fun createTrackApiService(): TrackApiService {
-    return retrofit.create(TrackApiService::class.java)
-  }
 
   override fun doRequest(dto: Any): ResponseCode {
     return if (dto is TrackSearchRequest) {
       try {
         // Выполнение синхронного запроса
-        val response = createTrackApiService().findTrack(dto.term).execute()
+        val response = trackApiService.findTrack(dto.term).execute()
         val body = response.body() ?: ResponseCode()
         body.apply { resultCode = response.code() }
       } catch (e: IOException) {
