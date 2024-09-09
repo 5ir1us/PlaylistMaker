@@ -10,19 +10,19 @@ import org.koin.dsl.module
 
 val presentationModule = module {
 
-  viewModel {
-    AudioPlayerViewModel(audioPlayerInteractor = get())
-  }
+    viewModel {
+        AudioPlayerViewModel(audioPlayerInteractor = get())
+    }
 
-  viewModel {
-    SearchViewModel(searchTracksInteractor = get(), trackHistoryInteractor = get())
-  }
+    viewModel {
+        SearchViewModel(searchTracksInteractor = get(), trackHistoryInteractor = get())
+    }
 
-  viewModel {
-    SettingsViewModel(themeInteractor = get(), externalNavigatorInteractor = get())
-  }
+    viewModel {
+        SettingsViewModel(themeInteractor = get(), externalNavigatorInteractor = get())
+    }
 
+    viewModel { FavoritesViewModel() }
 
-
-
+    viewModel { PlaylistsViewModel() }
 }

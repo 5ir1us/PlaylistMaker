@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.domain.repository.SearchTrackRepository
 
-class FavoritesViewModel(private val trackRepository: SearchTrackRepository) : ViewModel() {
-
-
+class FavoritesViewModel( ) : ViewModel() {
 
   private val _favoriteTracks = MutableLiveData<List<Track>>()
   val favoriteTracks: LiveData<List<Track>> = _favoriteTracks

@@ -27,6 +27,8 @@
   <string name="uncreated_playlist">Вы не создали </string>
   <string name="uncreated_playlist2">ни одного плейлиста </string>
   <string name="empty_playlist">Ваша медиатека пуста</string>
+  <string name="tab_playlists">Плейлисты</string>
+  <string name="tab_favorite_tracks">Избранные треки</string>
 
 
 </resources>

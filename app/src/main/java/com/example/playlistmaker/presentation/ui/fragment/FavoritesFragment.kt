@@ -12,17 +12,14 @@ import com.example.playlistmaker.presentation.viewmodel.FavoritesViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class FavoritesFragment : Fragment() {
-    private lateinit var binding: FragmentFavoritesBinding
-    private lateinit var trackAdapter: TrackAdapter
+
+
     private val favoriteTrackViewModel: FavoritesViewModel by viewModel()
 
 
     companion object {
-        fun newInstance(): FavoritesFragment {
-            return FavoritesFragment()
-        }
+        fun newInstance() = FavoritesFragment()
     }
-
 
 
     override fun onCreateView(
@@ -30,12 +27,15 @@ class FavoritesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Подключаем разметку для фрагмента
+
         return inflater.inflate(R.layout.fragment_favorites, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        favoriteTrackViewModel.favoriteTracks.observe(viewLifecycleOwner) { favoriteTracks ->
+            // TODO:
+        }
 
 
     }

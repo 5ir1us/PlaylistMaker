@@ -20,18 +20,26 @@ class MediaLibraryActivity : AppCompatActivity() {
     val viewPager: ViewPager2 = findViewById(R.id.view_pager)
     val tabLayout: TabLayout = findViewById(R.id.tab_layout)
 
-    binding.buttonBack.setOnClickListener {
-      finish()
-    }
+
     val adapter = ViewPagerAdapter(this)
+
     viewPager.adapter = adapter
 
     TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-      when (position) {
-        0 -> tab.text = "Плейлисты"
-        1 -> tab.text = "Избранные треки"
+      tab.text = when (position) {
+
+        0 ->  getString(R.string.tab_favorite_tracks)
+        1 ->  getString(R.string.tab_playlists)
+        else -> ""
       }
+
+
     }.attach()
+
+    binding.buttonBack.setOnClickListener {
+      finish()
+    }
   }
+
 }
 

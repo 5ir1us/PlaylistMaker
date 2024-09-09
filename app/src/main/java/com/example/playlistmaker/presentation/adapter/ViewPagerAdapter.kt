@@ -17,7 +17,11 @@ class ViewPagerAdapter(
     return when (position) {
       0 -> FavoritesFragment.newInstance()
       1 -> PlaylistsFragment.newInstance()
-      else -> throw IllegalStateException("Invalid fragment position")
+      else -> PlaylistsFragment.newInstance()
+
     }
+
   }
+
+
 }
