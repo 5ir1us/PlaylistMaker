@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white_revers"
     android:orientation="vertical"
-    tools:context=".presentation.ui.activity.MediaLibraryActivity">
+    tools:context="com.example.playlistmaker.presentation.ui.fragment.MediaLibraryFragment">
 
     <!-- Toolbar с кнопкой "Назад" -->
     <androidx.appcompat.widget.Toolbar
@@ -18,13 +18,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <ImageView
-            android:id="@+id/buttonBack"
-            style="@style/ActivityToolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/settings_return" />
+
 
         <TextView
             style="@style/ActivityToolbar"
@@ -37,6 +31,7 @@
 
     </androidx.appcompat.widget.Toolbar>
 
+
     <!-- ViewPager для отображения контента в фрагментах -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
@@ -44,9 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_revers"
-        android:textAllCaps="false"
-
-        />
+        android:textAllCaps="false" />
 
     <!-- TabLayout для переключения между фрагментами -->
     <androidx.viewpager2.widget.ViewPager2
@@ -54,9 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/white_revers"
-
-          />
+        android:background="@color/white_revers" />
 
 
 </LinearLayout>

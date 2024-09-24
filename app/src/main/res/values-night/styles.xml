@@ -49,4 +49,11 @@
         <item name="android:tint">@color/white_color</item>
         <item name="android:textFontWeight">500</item>
      </style>
+
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+         <item name="android:background">@color/black_color</item>
+
+
+    </style>
+
 </resources>

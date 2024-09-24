@@ -47,7 +47,6 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:1.5.7"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.1"
-
     implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -55,16 +54,17 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.github.bumptech.glide:glide:4.16.0' //   Glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2' // аннотации на глэйд
     implementation 'com.squareup.retrofit2:retrofit:2.9.0' //     Retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0' //  конвертера JSON от ретрофита
     implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0' // interceptor для логов
-
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"  //lifecycle-runtime-ktx
-
     implementation "io.insert-koin:koin-android:3.3.0" //фреймворк di Koin
+    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"//навигациия
+    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"//навигациия
+    implementation "androidx.fragment:fragment-ktx:1.5.6"//навигациия
+    implementation 'com.google.android.material:material:1.8.0' // BottomNavigationView
 
 }

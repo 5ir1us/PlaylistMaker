@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?attr/colorSecondary"
     android:orientation="vertical"
-    tools:context=".presentation.ui.activity.SearchActivity">
+    tools:context=".presentation.ui.fragment.SearchFragment">
 
 
     <androidx.appcompat.widget.Toolbar
@@ -18,13 +18,7 @@
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme">
 
-        <ImageView
-            android:id="@+id/button_sitting_back"
-            style="@style/ActivityToolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/settings_return" />
+
 
         <TextView
             android:id="@+id/x_panel_hea"
