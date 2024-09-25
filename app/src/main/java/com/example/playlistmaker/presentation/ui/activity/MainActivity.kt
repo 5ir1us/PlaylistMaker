@@ -1,36 +1,57 @@
 package com.example.playlistmaker.presentation.ui.activity
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
+import com.example.playlistmaker.databinding.ActivityMainBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        val searchButton = findViewById<Button>(R.id.searchcid)
-        val mediaButton = findViewById<Button>(R.id.mediaLibraryId)
-        val sittingsButton = findViewById<Button>(R.id.sittingId)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
-        searchButton.setOnClickListener {
-            val searchIntent = Intent(this, SearchActivity::class.java)
-            startActivity(searchIntent)
+        val navController = navHostFragment.navController
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+        bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.mediaLibraryFragment -> bottomNavigationView.menu.findItem(R.id.nav_mediaLibrary).isChecked = true
+                R.id.searchFragment -> bottomNavigationView.menu.findItem(R.id.nav_search).isChecked = true
+                R.id.settingsFragment -> bottomNavigationView.menu.findItem(R.id.nav_settings).isChecked = true
+            }
         }
-        mediaButton.setOnClickListener {
-            val mediaIntent = Intent(this, MediaLibraryActivity::class.java)
-            startActivity(mediaIntent)
-
-        }
-
-        sittingsButton.setOnClickListener {
-            val settingIntent = Intent (this, SettingsActivity::class.java)
-            startActivity(settingIntent)
-
+        bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_mediaLibrary -> {
+                    navController.navigate(R.id.mediaLibraryFragment)
+                    true
+                }
+                R.id.nav_search -> {
+                    navController.navigate(R.id.searchFragment)
+                    true
+                }
+                R.id.nav_settings -> {
+                    navController.navigate(R.id.settingsFragment)
+                    true
+                }
+                else -> false
+            }
         }
     }
+
+
 }

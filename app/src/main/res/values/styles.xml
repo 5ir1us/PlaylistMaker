@@ -88,5 +88,11 @@
         <item name="android:textColor">@color/black_revers</item>
     </style>
 
+    <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+
+    </style>
+
+
 
 </resources>
