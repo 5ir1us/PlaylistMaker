@@ -108,21 +108,6 @@ class SearchFragment : Fragment() {
             findNavController().navigate(R.id.action_searchFragment_to_audioPlayerFragment, bundle)
         }
 
-//        // TODO:
-//        trackAdapter.setItemClickListener { track ->
-//            if (clickDebounce()) {
-//                searchViewModel.addTrackToHistory(track)
-//                val searchIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
-//                getInfoSong(searchIntent, track)
-//                startActivity(searchIntent)
-//            }
-//        }
-
-//        historyAdapter.setItemClickListener { track ->
-//            val historyIntent = Intent(requireContext(), AudioPlayerActivity::class.java)
-//            getInfoSong(historyIntent, track)
-//            startActivity(historyIntent)
-//        }
     }
 
     private fun setupUI() {
