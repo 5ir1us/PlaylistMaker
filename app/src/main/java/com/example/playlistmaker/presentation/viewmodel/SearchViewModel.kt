@@ -17,7 +17,7 @@ class SearchViewModel(
 
   private val _screenState = MutableLiveData<SearchScreenState>()
   val searchScreenState: LiveData<SearchScreenState> get() = _screenState
-
+  private var isSearchInProgress = false
 
   init {
     _screenState.value = SearchScreenState(
@@ -34,7 +34,8 @@ class SearchViewModel(
   }
 
   fun searchTracks(query: String) {
-    if (query.isNotEmpty()) {
+    if (query.isNotEmpty() && !isSearchInProgress) {
+      isSearchInProgress = true
       _screenState.value = _screenState.value?.copy(
         isLoading = true,
         isHistoryVisible = false,
@@ -45,32 +46,35 @@ class SearchViewModel(
 
       viewModelScope.launch {
         try {
-          val tracks = searchTracksInteractor.searchTracks(query)
-          if (tracks.isEmpty()) {
-            _screenState.value = _screenState.value?.copy(
-              isLoading = false,
-              showNoResults = true,
-              searchResults = tracks,
-              isHistoryVisible = false,
-              showError = false
-            )
-          } else {
-            _screenState.value = _screenState.value?.copy(
-              isLoading = false,
-              searchResults = tracks,
-              isHistoryVisible = false,
-              showNoResults = false,
-              showError = false
-            )
+          searchTracksInteractor.searchTracks(query).collect { tracks ->
+            isSearchInProgress = false
+            if (tracks.isEmpty()) {
+              _screenState.value = _screenState.value?.copy(
+                isLoading = false,
+                showNoResults = true,
+                searchResults = tracks,
+                isHistoryVisible = false,
+                showError = false
+              )
+            } else {
+              _screenState.value = _screenState.value?.copy(
+                isLoading = false,
+                searchResults = tracks,
+                isHistoryVisible = false,
+                showNoResults = false,
+                showError = false
+              )
+            }
           }
         } catch (e: Exception) {
+          isSearchInProgress = false
           _screenState.value = _screenState.value?.copy(
             isLoading = false,
             showError = true
           )
         }
       }
-    } else {
+    } else if (query.isEmpty()) {
       _screenState.value = _screenState.value?.copy(
         searchResults = emptyList(),
         isHistoryVisible = trackHistoryInteractor.getHistory().isNotEmpty(),

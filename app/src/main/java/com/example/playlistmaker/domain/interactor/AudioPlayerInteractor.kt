@@ -1,5 +1,7 @@
 package com.example.playlistmaker.domain.interactor
 
+import kotlinx.coroutines.flow.Flow
+
 interface AudioPlayerInteractor {
   fun play(trackUrl: String)
   fun pause()
@@ -7,7 +9,7 @@ interface AudioPlayerInteractor {
   fun getCurrentPosition(): Int
   fun stop()
   fun release()
-  fun updateTrackProgress(callback: (currentTime: String) -> Unit)
+  fun updateTrackProgress(): Flow<String>
   fun togglePlayback (trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit)
   fun setOnTrackCompleteListener(listener: () -> Unit)
   }
