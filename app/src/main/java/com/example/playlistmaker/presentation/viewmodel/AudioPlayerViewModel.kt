@@ -3,8 +3,10 @@ package com.example.playlistmaker.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.presentation.state.AudioPlayerState
+import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
   private val audioPlayerInteractor: AudioPlayerInteractor,
@@ -63,8 +65,10 @@ class AudioPlayerViewModel(
   }
 
   private fun updateTrackProgress() {
-    audioPlayerInteractor.updateTrackProgress { time ->
-      updateState(currentTrackTime = time)
+    viewModelScope.launch {
+      audioPlayerInteractor.updateTrackProgress().collect { time ->
+        updateState(currentTrackTime = time)
+      }
     }
   }
 

@@ -4,95 +4,99 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.os.Looper
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer?) : AudioPlayerRepository {
-  private var onTrackComplete: (() -> Unit)? = null
-  private val handler = Handler(Looper.getMainLooper())
-  private var currentPosition: Int = 0
+class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPlayerRepository {
+    private var onTrackComplete: (() -> Unit)? = null
+    private val handler = Handler(Looper.getMainLooper())
+    private var currentPosition: Int = 0
+    private var isPrepared: Boolean = false
 
-  override fun playTrack(trackUrl: String) {
-    if (mediaPlayer == null) {
-      mediaPlayer = MediaPlayer().apply {
-        setDataSource(trackUrl)
-        prepare()
-        setOnCompletionListener {
-          onTrackComplete?.invoke()
-          stopTrack()
+    override fun playTrack(trackUrl: String) {
+        mediaPlayer = MediaPlayer().apply {
+            setDataSource(trackUrl)
+            prepare()
+            isPrepared = true
+            setOnCompletionListener {
+                onTrackComplete?.invoke()
+                stopTrack()
+            }
+            start()
         }
-        start()
-      }
-    } else {
-      mediaPlayer?.seekTo(currentPosition)
-      mediaPlayer?.start()
+
+        mediaPlayer.seekTo(currentPosition)
+        mediaPlayer.start()
+
     }
-  }
 
-  override fun pauseTrack() {
-    mediaPlayer?.let {
-      it.pause()
-      currentPosition = it.currentPosition
+    override fun pauseTrack() {
+        try {
+            if (mediaPlayer.isPlaying) {
+                mediaPlayer.pause()
+                currentPosition = mediaPlayer.currentPosition
+            }
+        } catch (e: IllegalStateException) {
+            e.printStackTrace()
+        }
     }
-  }
 
-  override fun stopTrack() {
-    try {
-      mediaPlayer?.stop()
-    } catch (e: IllegalStateException) {
+    override fun stopTrack() {
+        try {
+            mediaPlayer.stop()
+        } catch (e: IllegalStateException) {
 
-    } finally {
-      mediaPlayer?.release()
-      mediaPlayer = null
+        } finally {
+            mediaPlayer.release()
+
+        }
+        currentPosition = 0
     }
-    currentPosition = 0
-  }
 
-  override fun isPlaying(): Boolean {
-    return mediaPlayer?.isPlaying ?: false
-  }
+    override fun isPlaying(): Boolean {
+        return try {
+            mediaPlayer.isPlaying && isPrepared
+        } catch (e: IllegalStateException) {
+            false
+        }
+    }
 
-  override fun getCurrentPosition(): Int {
-    return mediaPlayer?.currentPosition ?: 0
-  }
+    override fun getCurrentPosition(): Int {
+        return mediaPlayer.currentPosition ?: 0
+    }
 
-  override fun release() {
-    mediaPlayer?.release()
-    mediaPlayer = null
-    handler.removeCallbacksAndMessages(null)
-  }
+    override fun release() {
+        mediaPlayer.release()
+        handler.removeCallbacksAndMessages(null)
+    }
 
-  override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
-    val runnable = object : Runnable {
-      override fun run() {
+    override fun updateTrackProgress(): Flow<String> = flow {
+        while (isPlaying()) {
+            val currentPosition = getCurrentPosition() / 1000
+            val minutes = currentPosition / 60
+            val seconds = currentPosition % 60
+            emit(String.format("%02d:%02d", minutes, seconds))
+            delay(3000)
+        }
+        emit("00:00")
+    }
+
+    override fun togglePlayback(
+        trackUrl: String,
+        onPlay: () -> Unit,
+        onPause: () -> Unit,
+    ) {
         if (isPlaying()) {
-          val currentPosition = getCurrentPosition() / 1000
-          val minutes = currentPosition / 60
-          val seconds = currentPosition % 60
-          callback.invoke(String.format("%02d:%02d", minutes, seconds))
-          handler.postDelayed(this, 1000)
+            pauseTrack()
+            onPause()
         } else {
-          handler.removeCallbacks(this)
-          callback.invoke("00:00")
+            playTrack(trackUrl)
+            onPlay()
         }
-      }
     }
-    handler.post(runnable)
-  }
 
-  override fun togglePlayback(
-    trackUrl: String,
-    onPlay: () -> Unit,
-    onPause: () -> Unit,
-  ) {
-    if (isPlaying()) {
-      pauseTrack()
-      onPause()
-    } else {
-      playTrack(trackUrl)
-      onPlay()
+    override fun setOnCompletionListener(listener: () -> Unit) {
+        onTrackComplete = listener
     }
-  }
-
-  override fun setOnCompletionListener(listener: () -> Unit) {
-    onTrackComplete = listener
-  }
 }

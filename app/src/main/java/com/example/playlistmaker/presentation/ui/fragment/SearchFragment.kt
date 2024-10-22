@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
@@ -20,31 +21,25 @@ import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment() {
     companion object {
-        private const val CLICK_DEBOUNCER = 3000L // Значение задержки в миллисекундах
+        private const val CLICK_DEBOUNCER = 3000L
+
     }
 
     private lateinit var simpleTextWatcher: TextWatcher
     private lateinit var binding: FragmentSearchBinding
-
-
+    private var searchJob: Job? = null
+    private var clickJob: Job? = null
     private lateinit var trackAdapter: TrackAdapter
     private lateinit var historyAdapter: SearchHistoryAdapter
-    private val handler = Handler(Looper.getMainLooper())
     private var isClickAllowed = true
     private val searchViewModel: SearchViewModel by viewModel()
-
-    private val searchRunnable = kotlinx.coroutines.Runnable {
-        val query = binding.searchEdittext.text.toString().trim()
-        if (query.isNotEmpty()) {
-            searchViewModel.searchTracks(query)
-        } else {
-            searchViewModel.resetStateToHistory()
-        }
-    }
 
 
     override fun onCreateView(
@@ -110,14 +105,28 @@ class SearchFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        isClickAllowed = true
+    }
+
     private fun setupUI() {
         // TextWatcher для обработки ввода текста
         simpleTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                handler.removeCallbacks(searchRunnable)
-                handler.postDelayed(searchRunnable, CLICK_DEBOUNCER)
+
+                searchJob?.cancel()
+                searchJob = viewLifecycleOwner.lifecycleScope.launch {
+                    delay(CLICK_DEBOUNCER)
+                    val query = s.toString().trim()
+                    if (query.isNotEmpty()) {
+                        searchViewModel.searchTracks(query)
+                    } else {
+                        searchViewModel.resetStateToHistory()
+                    }
+                }
                 searchViewModel.onQueryTextChanged(s.toString())
             }
 
@@ -162,8 +171,12 @@ class SearchFragment : Fragment() {
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCER)
+            clickJob?.cancel()
+            clickJob = viewLifecycleOwner.lifecycleScope.launch {
+                isClickAllowed = false
+                delay(CLICK_DEBOUNCER)
+                isClickAllowed = true
+            }
         }
         return current
     }
@@ -179,9 +192,5 @@ class SearchFragment : Fragment() {
         inputMethodManager.hideSoftInputFromWindow(requireView().windowToken, 0)
     }
 
-    private fun getInfoSong(intent: Intent, track: Track) {
-        with(intent) {
-            putExtra(AudioPlayerFragment.TRACK_INFO, track)// TODO:
-        }
-    }
+
 }

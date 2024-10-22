@@ -4,5 +4,5 @@ import ResponseCode
 
 data class TrackSearchResponse(
     val resultCount: Int,
-    val results: ArrayList<TrackDto>,
+    val results: List<TrackDto> = emptyList(),
 ) : ResponseCode()
