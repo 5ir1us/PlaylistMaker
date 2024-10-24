@@ -9,7 +9,8 @@ interface AudioPlayerRepository {
   fun isPlaying(): Boolean
   fun getCurrentPosition(): Int
   fun release()
-  fun updateTrackProgress( ): Flow<String>  //todo
+  fun trackProgress( ): Flow<String>  //todo
   fun togglePlayback (trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit)
   fun setOnCompletionListener(listener: () -> Unit)
+
 }

@@ -26,11 +26,6 @@ class AudioPlayerViewModel(
     }
   }
 
-  fun playTrack(trackUrl: String) {
-    audioPlayerInteractor.play(trackUrl)
-    updateState(isPlaying = true)
-    updateTrackProgress()
-  }
 
   fun pauseTrack() {
     audioPlayerInteractor.pause()
@@ -43,7 +38,7 @@ class AudioPlayerViewModel(
   }
 
   private fun onTrackComplete() {
-    _screenState.value = _screenState.value?.copy(isPlaying = false)
+    _screenState.value = _screenState.value?.copy(isPlaying = false,currentTrackTime = "00:00")
   }
 
   fun togglePlayback(trackUrl: String) {

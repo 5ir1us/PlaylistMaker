@@ -32,7 +32,7 @@ class AudioPlayerInteractorImpl(private val trackPlayerRepository: AudioPlayerRe
   }
 
   override fun updateTrackProgress(): Flow<String> {
-    return trackPlayerRepository.updateTrackProgress()
+    return trackPlayerRepository.trackProgress()
   }
 
   override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {

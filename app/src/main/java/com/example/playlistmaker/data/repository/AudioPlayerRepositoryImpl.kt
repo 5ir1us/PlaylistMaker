@@ -1,8 +1,6 @@
 package com.example.playlistmaker.data.repository
 
 import android.media.MediaPlayer
-import android.os.Handler
-import android.os.Looper
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -10,7 +8,6 @@ import kotlinx.coroutines.flow.flow
 
 class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPlayerRepository {
     private var onTrackComplete: (() -> Unit)? = null
-    private val handler = Handler(Looper.getMainLooper())
     private var currentPosition: Int = 0
     private var isPrepared: Boolean = false
 
@@ -52,6 +49,7 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
 
         }
         currentPosition = 0
+
     }
 
     override fun isPlaying(): Boolean {
@@ -68,18 +66,17 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
 
     override fun release() {
         mediaPlayer.release()
-        handler.removeCallbacksAndMessages(null)
-    }
+     }
 
-    override fun updateTrackProgress(): Flow<String> = flow {
+    override fun trackProgress(): Flow<String> = flow {
         while (isPlaying()) {
             val currentPosition = getCurrentPosition() / 1000
             val minutes = currentPosition / 60
             val seconds = currentPosition % 60
             emit(String.format("%02d:%02d", minutes, seconds))
-            delay(3000)
+            delay(300)
         }
-        emit("00:00")
+//        emit("00:00")
     }
 
     override fun togglePlayback(
@@ -98,5 +95,9 @@ class AudioPlayerRepositoryImpl(private var mediaPlayer: MediaPlayer) : AudioPla
 
     override fun setOnCompletionListener(listener: () -> Unit) {
         onTrackComplete = listener
+        mediaPlayer.setOnCompletionListener {
+            currentPosition = 0  // Сброс позиции в начало при завершении трека
+            listener.invoke()  // Вызываем переданный колбек при завершении
+        }
     }
 }
