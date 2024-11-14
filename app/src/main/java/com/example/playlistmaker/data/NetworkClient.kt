@@ -1,7 +1,8 @@
 package com.example.playlistmaker.data
 
-import ResponseCode
+import com.example.playlistmaker.data.dto.TrackSearchResponse
+
 
 interface NetworkClient {
-    fun doRequest(dto: Any): ResponseCode
+    suspend fun doRequest(dto: Any): TrackSearchResponse
 }

@@ -6,23 +6,24 @@ import com.example.playlistmaker.data.dto.TrackSearchRequest
 import com.example.playlistmaker.data.dto.TrackSearchResponse
 import com.example.playlistmaker.domain.repository.SearchTrackRepository
 import com.example.playlistmaker.domain.model.Track
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 
 class SearchTrackRepositoryImpl(
   private val networkClient: NetworkClient
  ) : SearchTrackRepository {
 
-  override fun searchTracks(query: String): ArrayList<Track> {
-    val request = TrackSearchRequest(query)
-    val response = networkClient.doRequest(request)
+    override fun searchTracks(query: String): Flow<List<Track>> = flow {
+        val request = TrackSearchRequest(query)
+        val response = networkClient.doRequest(request)
 
-    return if (response is TrackSearchResponse && response.resultCode == 200) {
-
-       ArrayList(response.results.map { TrackConverter.convertToDomainModel(it) })
-    } else {
-      ArrayList()
+        if (response.resultCode == 200) {
+             emit(response.results.map { TrackConverter.convertToDomainModel(it) })
+        } else {
+            emit(emptyList())
+        }
     }
-
-  }
 }
 

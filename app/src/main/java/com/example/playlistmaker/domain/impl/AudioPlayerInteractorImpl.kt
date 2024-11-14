@@ -2,6 +2,7 @@ package com.example.playlistmaker.domain.impl
 
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
+import kotlinx.coroutines.flow.Flow
 
 class AudioPlayerInteractorImpl(private val trackPlayerRepository: AudioPlayerRepository) :
   AudioPlayerInteractor {
@@ -30,8 +31,8 @@ class AudioPlayerInteractorImpl(private val trackPlayerRepository: AudioPlayerRe
     trackPlayerRepository.release()
   }
 
-  override fun updateTrackProgress(callback: (currentTime: String) -> Unit) {
-    trackPlayerRepository.updateTrackProgress(callback)
+  override fun updateTrackProgress(): Flow<String> {
+    return trackPlayerRepository.trackProgress()
   }
 
   override fun togglePlayback(trackUrl: String, onPlay: () -> Unit, onPause: () -> Unit) {
