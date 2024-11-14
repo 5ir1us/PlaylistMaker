@@ -5,12 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
+import com.example.playlistmaker.domain.interactor.FavoriteTracksInteractor
+import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.state.AudioPlayerState
 import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
   private val audioPlayerInteractor: AudioPlayerInteractor,
+  private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : ViewModel() {
+
+
+  private val _isFavorite = MutableLiveData<Boolean>()
+  val isFavorite: LiveData<Boolean> = _isFavorite
 
   private val _screenState = MutableLiveData<AudioPlayerState>()
   val screenState: LiveData<AudioPlayerState> get() = _screenState
@@ -54,10 +61,28 @@ class AudioPlayerViewModel(
     )
   }
 
-  fun toggleFavorite() {
-    _screenState.value =
-      _screenState.value?.copy(isFavorite = !(_screenState.value?.isFavorite ?: false))
+  // TODO:
+  fun toggleFavorite(track: Track) {
+    viewModelScope.launch {
+      if (_isFavorite.value == true) {
+        favoriteTracksInteractor.removeTrackFromFavorites(track)
+        _isFavorite.value = false
+      } else {
+        favoriteTracksInteractor.addTrackToFavorites(track)
+        _isFavorite.value = true
+      }
+      updateState(isFavorite = _isFavorite.value) // Обновляем UI состояние
+    }
   }
+
+  fun checkIfFavorite(track: Track) {
+    viewModelScope.launch {
+      favoriteTracksInteractor.getAllFavoriteTracks().collect { favoriteTracks ->
+        _isFavorite.value = favoriteTracks.any { it.trackId == track.trackId }
+      }
+    }
+  }
+  // TODO:  
 
   private fun updateTrackProgress() {
     viewModelScope.launch {
@@ -83,4 +108,8 @@ class AudioPlayerViewModel(
     super.onCleared()
     audioPlayerInteractor.release()
   }
+
+
+  // TODO: ----
+
 }

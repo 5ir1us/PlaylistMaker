@@ -1,5 +1,7 @@
 package com.example.playlistmaker.di
 
+import androidx.room.Room
+import com.example.playlistmaker.data.db.AppDatabase
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
 import com.example.playlistmaker.presentation.viewmodel.FavoritesViewModel
 import com.example.playlistmaker.presentation.viewmodel.PlaylistsViewModel
@@ -11,7 +13,10 @@ import org.koin.dsl.module
 val presentationModule = module {
 
     viewModel {
-        AudioPlayerViewModel(audioPlayerInteractor = get())
+        AudioPlayerViewModel(
+            audioPlayerInteractor = get(),
+            favoriteTracksInteractor = get()
+        )
     }
 
     viewModel {
@@ -22,7 +27,8 @@ val presentationModule = module {
         SettingsViewModel(themeInteractor = get(), externalNavigatorInteractor = get())
     }
 
-    viewModel { FavoritesViewModel() }
-
     viewModel { PlaylistsViewModel() }
+
+
+    viewModel { FavoritesViewModel(get()) }
 }

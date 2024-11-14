@@ -1,6 +1,7 @@
 package com.example.playlistmaker.domain.model
 
 import android.os.Parcelable
+import com.example.playlistmaker.data.db.FavoriteTrack
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -15,7 +16,9 @@ data class Track(
   val releaseDate: String?,
   val primaryGenreName: String?,
   val country: String?,
-  val previewUrl: String?
+  val previewUrl: String?,
+  var isFavorite: Boolean = false,
+  var timeAdd: Long
 ):Parcelable {
 
   fun getCoverArtwork() = artworkUrl100?.replaceAfterLast('/', "512x512bb.jpg")
@@ -28,6 +31,9 @@ data class Track(
     val outputFormat = SimpleDateFormat("yyyy", Locale.getDefault())
     return outputFormat.format(date)
   }
+
+
+
 }
 
 

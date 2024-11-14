@@ -54,8 +54,11 @@ class AudioPlayerFragment : Fragment() {
 
 
         //получает данные из поиска и
-        val track = arguments?.getParcelable<Track>("TRACK_INFO")
-        track?.let { setupTrackInfo(it) }
+        val track = arguments?.getParcelable<Track>(TRACK_INFO)
+        track?.let {
+            setupTrackInfo(it)
+            audioPlayerViewModel.checkIfFavorite(it) // TODO:  
+        }
         observeViewModel()
 
 
@@ -67,14 +70,33 @@ class AudioPlayerFragment : Fragment() {
             }
         }
 
-        binding.favoriteMusic.setOnClickListener {
-            audioPlayerViewModel.toggleFavorite()
+
+        // TODO:  
+        // Обновляем состояние кнопки "Нравится" в зависимости от того, является ли трек избранным
+        audioPlayerViewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            binding.favoriteMusic.setImageResource(
+                if (isFavorite) R.drawable.like_button else R.drawable.favorite_border
+            )
         }
+
+        // Обработка клика по кнопке "Нравится"
+        binding.favoriteMusic.setOnClickListener {
+            track?.let { audioPlayerViewModel.toggleFavorite(it) }
+        }
+
+        // TODO:
+
+//        binding.favoriteMusic.setOnClickListener {
+//            audioPlayerViewModel.toggleFavorite()
+//        }
     }
 
     private fun observeViewModel() {
         audioPlayerViewModel.screenState.observe(viewLifecycleOwner) { state ->
-            Log.d("AudioPlayerFragment", "UI updating with currentTrackTime: ${state.currentTrackTime}")
+            Log.d(
+                "AudioPlayerFragment",
+                "UI updating with currentTrackTime: ${state.currentTrackTime}"
+            )
             binding.timeTrack.text = state.currentTrackTime
             binding.playButton.setImageResource(
                 if (state.isPlaying) R.drawable.stop_player else R.drawable.play_button
