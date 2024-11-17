@@ -9,7 +9,6 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaLibraryBinding
 import com.example.playlistmaker.presentation.adapter.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MediaLibraryFragment : Fragment() {
 

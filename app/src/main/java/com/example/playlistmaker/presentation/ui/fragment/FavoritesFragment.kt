@@ -35,9 +35,9 @@ class FavoritesFragment : Fragment() {
         fun newInstance(): FavoritesFragment {
             return FavoritesFragment()
         }
+
         private const val CLICK_DEBOUNCER_FAVOR = 1000L
     }
-
 
 
     override fun onCreateView(
@@ -57,8 +57,10 @@ class FavoritesFragment : Fragment() {
         // Подписка на обновления избранных треков
         favoriteTrackViewModel.favoriteTracks.observe(viewLifecycleOwner) { favoriteTracks ->
             adapter.updateTracks(ArrayList(favoriteTracks))
-            binding.recyclerListFavoritesTrack.visibility = if (favoriteTracks.isNotEmpty()) View.VISIBLE else View.GONE
-            binding.emptyFavoriteIcon.visibility = if (favoriteTracks.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerListFavoritesTrack.visibility =
+                if (favoriteTracks.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.emptyFavoriteIcon.visibility =
+                if (favoriteTracks.isEmpty()) View.VISIBLE else View.GONE
         }
     }
 
@@ -90,16 +92,6 @@ class FavoritesFragment : Fragment() {
 
     }
 
-    private fun toggleFavorite(track: Track) {
-        if (track.isFavorite) {
-            favoriteTrackViewModel.removeTrackFromFavorites(track)
-        } else {
-            favoriteTrackViewModel.addTrackToFavorites(track)
-        }
-        track.isFavorite = !track.isFavorite
-
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()

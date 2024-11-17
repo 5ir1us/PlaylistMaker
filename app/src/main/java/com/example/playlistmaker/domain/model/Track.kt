@@ -1,7 +1,6 @@
 package com.example.playlistmaker.domain.model
 
 import android.os.Parcelable
-import com.example.playlistmaker.data.db.FavoriteTrack
 import kotlinx.parcelize.Parcelize
 import java.text.SimpleDateFormat
 import java.util.Locale
