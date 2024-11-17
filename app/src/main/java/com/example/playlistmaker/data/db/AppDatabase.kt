@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 
 
 @Database(entities = [FavoriteTrack::class], version = 1)
-abstract class AppDatabase : RoomDatabase()  {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteTrackDao(): FavoriteTrackDao
 }

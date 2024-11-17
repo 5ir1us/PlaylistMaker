@@ -20,7 +20,11 @@ val presentationModule = module {
     }
 
     viewModel {
-        SearchViewModel(searchTracksInteractor = get(), trackHistoryInteractor = get())
+        SearchViewModel(
+            searchTracksInteractor = get(),
+            trackHistoryInteractor = get(),
+            favoriteTracksInteractor = get()
+        )
     }
 
     viewModel {

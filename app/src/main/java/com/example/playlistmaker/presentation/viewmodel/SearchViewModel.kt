@@ -4,15 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.interactor.FavoriteTracksInteractor
 import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
 import com.example.playlistmaker.domain.interactor.TrackHistoryInteractor
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.state.SearchScreenState
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SearchViewModel(
   private val searchTracksInteractor: SearchTracksInteractor,
   private val trackHistoryInteractor: TrackHistoryInteractor,
+  private val favoriteTracksInteractor: FavoriteTracksInteractor
 ) : ViewModel() {
 
   private val _screenState = MutableLiveData<SearchScreenState>()
@@ -115,5 +119,12 @@ class SearchViewModel(
     _screenState.value = _screenState.value?.copy(
       isHistoryVisible = hasFocus && _screenState.value?.history?.isNotEmpty() == true
     )
+  }
+
+
+  suspend fun checkIfFavorite(track: Track): Boolean {
+    return favoriteTracksInteractor.getAllFavoriteTrackIds()
+      .map { favoriteTrackIds -> track.trackId in favoriteTrackIds }
+      .firstOrNull() ?: false
   }
 }

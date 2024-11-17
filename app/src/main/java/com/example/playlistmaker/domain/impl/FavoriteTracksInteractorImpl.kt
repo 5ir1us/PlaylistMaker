@@ -23,4 +23,7 @@ class FavoriteTracksInteractorImpl(
     override fun getAllFavoriteTracks(): Flow<List<Track>> {
         return repository.getAllFavoriteTracks()
     }
+    override fun getAllFavoriteTrackIds(): Flow<List<Int>> { // Реализация нового метода
+        return repository.getAllFavoriteTrackIds()
+    }
 }

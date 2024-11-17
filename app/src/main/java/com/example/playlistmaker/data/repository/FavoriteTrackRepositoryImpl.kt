@@ -36,4 +36,8 @@ class FavoriteTrackRepositoryImpl(
         return favoriteTrackDao.getAllFavoriteTracks()
             .map { favoriteTracks -> favoriteTracks.map { TrackConverter.convertToDomainModel(it) } }
     }
+
+    override fun getAllFavoriteTrackIds(): Flow<List<Int>> { // Реализация нового метода
+        return favoriteTrackDao.getAllFavoriteTrackIds()
+    }
 }

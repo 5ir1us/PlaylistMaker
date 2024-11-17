@@ -78,7 +78,9 @@ class AudioPlayerViewModel(
   fun checkIfFavorite(track: Track) {
     viewModelScope.launch {
       favoriteTracksInteractor.getAllFavoriteTracks().collect { favoriteTracks ->
-        _isFavorite.value = favoriteTracks.any { it.trackId == track.trackId }
+        val isFav = favoriteTracks.any { it.trackId == track.trackId }
+        _isFavorite.value = isFav
+        updateState(isFavorite = isFav)
       }
     }
   }
@@ -110,6 +112,6 @@ class AudioPlayerViewModel(
   }
 
 
-  // TODO: ----
+
 
 }

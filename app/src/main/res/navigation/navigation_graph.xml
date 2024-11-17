@@ -11,14 +11,8 @@
         android:label="fragment_media_library"
         tools:layout="@layout/fragment_media_library">
         <action
-            android:id="@+id/action_mediaLibraryFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_mediaLibraryFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
-            android:id="@+id/action_mediaLibraryFragment_to_favoritesFragment2"
-            app:destination="@id/favoritesFragment2" />
+            android:id="@+id/action_mediaLibraryFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
     </fragment>
 
     <fragment
@@ -49,26 +43,11 @@
             android:id="@+id/action_searchFragment_to_audioPlayerFragment"
             app:destination="@id/audioPlayerFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/audioPlayerFragment"
         android:name="com.example.playlistmaker.presentation.ui.fragment.AudioPlayerFragment"
         android:label="fragment_audio_player"
-        tools:layout="@layout/fragment_audio_player">
-        <!-- Аргумент для передачи Track -->
-        <argument
-            android:name="track"
-            app:argType="com.example.playlistmaker.domain.model.Track"
-            app:nullable="false" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/favoritesFragment2"
-        android:name="com.example.playlistmaker.presentation.ui.fragment.FavoritesFragment"
-        android:label="fragment_favorites"
-        tools:layout="@layout/fragment_favorites" >
-        <action
-            android:id="@+id/action_favoritesFragment2_to_audioPlayerFragment"
-            app:destination="@id/audioPlayerFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_audio_player" />
 
 </navigation>

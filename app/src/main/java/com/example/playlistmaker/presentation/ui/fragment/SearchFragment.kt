@@ -84,18 +84,24 @@ class SearchFragment : Fragment() {
 
         trackAdapter.setItemClickListener { track ->
             if (clickDebounce()) {
-                searchViewModel.addTrackToHistory(track)
+                lifecycleScope.launch {
 
-                val bundle = Bundle().apply {
-                    putParcelable("TRACK_INFO", track)
+                    val isFavorite = searchViewModel.checkIfFavorite(track)
+                    track.isFavorite = isFavorite
+
+                    searchViewModel.addTrackToHistory(track)
+
+                    val bundle = Bundle().apply {
+                        putParcelable("TRACK_INFO", track)
+                    }
+
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_audioPlayerFragment,
+                        bundle
+                    )
                 }
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_audioPlayerFragment,
-                    bundle
-                )
             }
         }
-
         historyAdapter.setItemClickListener { track ->
             val bundle = Bundle().apply {
                 putParcelable("TRACK_INFO", track)

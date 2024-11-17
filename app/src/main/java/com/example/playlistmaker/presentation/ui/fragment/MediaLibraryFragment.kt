@@ -15,7 +15,6 @@ class MediaLibraryFragment : Fragment() {
 
     private var _binding: FragmentMediaLibraryBinding? = null
     private val binding get() = _binding!!
-//    private val mediaLibraryViewModel: MediaLibraryViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,7 +41,6 @@ class MediaLibraryFragment : Fragment() {
                 else -> ""
             }
         }.attach()
-
 
 
     }

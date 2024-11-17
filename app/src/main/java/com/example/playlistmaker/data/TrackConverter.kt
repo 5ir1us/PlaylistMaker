@@ -3,7 +3,6 @@ package com.example.playlistmaker.data
 import com.example.playlistmaker.data.db.FavoriteTrack
 import com.example.playlistmaker.data.dto.TrackDto
 import com.example.playlistmaker.domain.model.Track
-import okhttp3.internal.concurrent.formatDuration
 
 object TrackConverter {
 
@@ -84,5 +83,10 @@ object TrackConverter {
         return (minutes * 60 + seconds) * 1000
     }
 
+    private fun formatDuration(milliseconds: Long): String {
+        val minutes = milliseconds / 1000 / 60
+        val seconds = (milliseconds / 1000) % 60
+        return String.format("%02d:%02d", minutes, seconds)
+    }
 
 }

@@ -24,7 +24,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AudioPlayerFragment : Fragment() {
 
     companion object {
-        const val TRACK_INFO: String = "Track"
+        const val TRACK_INFO: String = "TRACK_INFO"
     }
 
     private var _binding: FragmentAudioPlayerBinding? = null
@@ -86,9 +86,7 @@ class AudioPlayerFragment : Fragment() {
 
         // TODO:
 
-//        binding.favoriteMusic.setOnClickListener {
-//            audioPlayerViewModel.toggleFavorite()
-//        }
+
     }
 
     private fun observeViewModel() {
