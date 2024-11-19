@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_revers"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context="com.example.playlistmaker.presentation.ui.fragment.CreateFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarPlaylistCreate"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:background="@color/white_revers"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageView
+            android:id="@+id/button_create_playlist"
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:clickable="true"
+            android:padding="@dimen/padding_12"
+            android:src="@drawable/settings_return"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            style="@style/ActivityToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingStart="@dimen/padding_12"
+            android:paddingEnd="@dimen/padding_12"
+            android:text="@string/new_playlist"
+            android:textSize="@dimen/text_size_22" />
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <FrameLayout
+        android:id="@+id/coverContainer"
+        android:layout_width="match_parent"
+        android:layout_height="312dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="@dimen/indent_24"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="@dimen/indent_24"
+        android:background="@drawable/frame_of_the_new_plylmsta"
+        android:clipToOutline="true"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/coverImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/addCoverIcon"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:contentDescription="Добавить изображение"
+            android:src="@drawable/create_playlist_image" />
+    </FrameLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+
+        style="@style/TextInputStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/indent_16"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="@dimen/indent_16"
+        android:background="@drawable/rounded_border_focused"
+        android:hint="@string/name_new_playlist"
+        android:padding="2dp"
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/box_stroke_color">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/playlistNameInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_revers"
+            android:inputType="text"
+            android:textColor="@color/black_revers"
+            android:textSize="@dimen/text_size_16" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/indent_16"
+        android:layout_marginTop="17dp"
+        android:layout_marginEnd="@dimen/indent_16"
+        android:background="@drawable/rounded_border_focused"
+        android:hint="@string/playlist_description"
+        android:padding="2dp">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/playlistDescriptionInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white_revers"
+            android:inputType="textMultiLine"
+            android:textColor="@color/black_revers"
+            android:textSize="@dimen/text_size_16" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/createButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/padding_12"
+        android:layout_marginTop="170dp"
+        android:layout_marginEnd="@dimen/padding_12"
+        android:background="@drawable/button_background_selector"
+        android:enabled="false"
+        android:text="@string/add_playlist"
+        android:textColor="@android:color/white">
+
+    </Button>
+
+</LinearLayout>
