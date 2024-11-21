@@ -2,6 +2,7 @@ package com.example.playlistmaker.presentation.ui.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
@@ -52,6 +53,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+    fun hideBottomNavigation() {
+        binding.bottomNavigation.visibility = View.GONE
+    }
 
+    fun showBottomNavigation() {
+        binding.bottomNavigation.visibility = View.VISIBLE
+    }
 
 }

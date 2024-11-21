@@ -1,7 +1,9 @@
 package com.example.playlistmaker.data
 
 import com.example.playlistmaker.data.db.FavoriteTrack
+import com.example.playlistmaker.data.db.Playlist
 import com.example.playlistmaker.data.dto.TrackDto
+import com.example.playlistmaker.domain.model.PlaylistModel
 import com.example.playlistmaker.domain.model.Track
 
 object TrackConverter {
@@ -73,6 +75,27 @@ object TrackConverter {
             isFavorite = track.isFavorite,
             timeAdd = track.timeAdd
 
+        )
+    }
+
+
+    fun fromEntity(entity: Playlist): PlaylistModel {
+        return PlaylistModel(
+            id = entity.id,
+            name = entity.name,
+            description = entity.description,
+            coverPath = entity.coverPath,
+            trackCount = entity.trackCount
+        )
+    }
+
+    fun toEntity(domain: PlaylistModel): Playlist {
+        return Playlist(
+            id = domain.id,
+            name = domain.name,
+            description = domain.description,
+            coverPath = domain.coverPath,
+            trackCount = domain.trackCount
         )
     }
 

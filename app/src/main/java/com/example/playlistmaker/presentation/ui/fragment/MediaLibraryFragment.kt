@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentMediaLibraryBinding
 import com.example.playlistmaker.presentation.adapter.ViewPagerAdapter
+import com.example.playlistmaker.presentation.ui.activity.MainActivity
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MediaLibraryFragment : Fragment() {
@@ -28,6 +29,7 @@ class MediaLibraryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        (activity as? MainActivity)?.showBottomNavigation()
 
         val adapter = ViewPagerAdapter(requireActivity())
         binding.viewPager.adapter = adapter

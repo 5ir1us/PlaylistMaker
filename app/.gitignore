@@ -1,33 +1,83 @@
 # Gradle files
 .gradle/
 build/
+app/build/
+gradle/
+*.lock
 
-# Local configuration file (sdk path, etc)
+# Local configuration files
 local.properties
 
-# Log/OS files
+# Log files
 *.log
+log/
+daemon-*.log
 
-# Android studio generated files and folders
+# Android Studio generated files and folders
 captures/
 .externalNativeBuild/
 .cxx/
 *.apk
+*.aab
 output.json
 
-# IntelliJ
+# IntelliJ/Android Studio specific files
 *.iml
 .idea/
-misc.xml
+*.ipr
+*.iws
+*.misc.xml
 deploymentTargetDropDown.xml
 render.experimental.xml
 
-# Keystore files
+# Keystore files (sensitive data)
 *.jks
 *.keystore
 
 # Google Services (e.g. APIs or Firebase)
 google-services.json
+firebase-debug.log
 
-# Android Profiling
+# Android Profiling files
 *.hprof
+
+# Temporary and swap files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Build outputs and generated files
+*.ap_
+build/generated/
+navigation.xml
+navigation/
+
+# Unnecessary metadata files
+*.meta
+metadata.bin
+output.bin
+cp_init.jar
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.bak
+*.orig
+*.rej
+*.sublime-project
+*.sublime-workspace
+
+# IntelliJ/Android Studio
+*.vcs.xml
+
+# Gradle wrapper
+gradle-wrapper.jar
+gradle-wrapper.properties
+
+# Exclude virtual environment for Python (if used)
+venv/
+
+# Ignore any other unnecessary or sensitive files
+!README.md

@@ -1,16 +1,25 @@
+# Исключаем временные файлы и папки
 *.iml
-.gradle
-/local.properties
+.gradle/
+local.properties
+.DS_Store
+/build/
+.cxx/
+captures/
+.externalNativeBuild/
+
+# Исключаем `.idea`, кроме важных файлов
+.idea/*
+!.idea/misc.xml
+!.idea/workspace.xml
+!.idea/modules.xml
+!.idea/vcs.xml
+!.idea/libraries
+
+# Исключаем кэш и временные файлы IDE
 /.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
-.idea
+
+# Исключаем Gradle
+/gradle/

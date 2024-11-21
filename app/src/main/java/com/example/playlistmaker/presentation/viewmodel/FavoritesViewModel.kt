@@ -15,15 +15,13 @@ class FavoritesViewModel(private val favoriteTracksInteractor: FavoriteTracksInt
     val favoriteTracks: LiveData<List<Track>> =
         favoriteTracksInteractor.getAllFavoriteTracks().asLiveData()
 
-    // Метод для добавления трека в избранное
-    fun addTrackToFavorites(track: Track) {
+     fun addTrackToFavorites(track: Track) {
         viewModelScope.launch {
             favoriteTracksInteractor.addTrackToFavorites(track)
         }
     }
 
-    // Метод для удаления трека из избранного
-    fun removeTrackFromFavorites(track: Track) {
+     fun removeTrackFromFavorites(track: Track) {
         viewModelScope.launch {
             favoriteTracksInteractor.removeTrackFromFavorites(track)
         }

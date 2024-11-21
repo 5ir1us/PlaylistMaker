@@ -93,16 +93,19 @@
 
     </style>
 
-
+<!--неиспоьзуемый-->
     <style name="TextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <item name="boxStrokeColor">@color/box_stroke_color</item> <!-- Используем ColorStateList -->
-        <item name="hintTextColor">#3772E7</item> <!-- Цвет подсказки по умолчанию -->
-
-        <item name="android:textColorHint">?attr/colorOnPrimary</item> <!-- Цвет текста подсказки -->
-
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintTextColor">#3772E7</item>
+        <item name="android:textColorHint">?attr/colorOnPrimary</item>
     </style>
 
-
+    <!--неиспоьзуемый-->
+    <style name="CustomTextInputStyle2" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@android:color/transparent</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintTextColor">@color/black</item>
+    </style>
 
 </resources>

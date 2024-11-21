@@ -73,8 +73,8 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-
-        style="@style/TextInputStyle"
+        android:id="@+id/playlistNameInputLayout"
+        android:theme="@style/CustomTextInputStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_16"
@@ -84,8 +84,9 @@
         android:hint="@string/name_new_playlist"
         android:padding="2dp"
         app:boxBackgroundColor="@android:color/transparent"
-        app:boxBackgroundMode="outline"
-        app:boxStrokeColor="@color/box_stroke_color">
+        app:boxStrokeColor="@android:color/transparent"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxBackgroundMode="outline">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlistNameInput"
@@ -99,7 +100,8 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/TextInputStyle"
+        android:id="@+id/playlistDescriptionInputLayout"
+        android:theme="@style/CustomTextInputStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_16"
@@ -107,6 +109,7 @@
         android:layout_marginEnd="@dimen/indent_16"
         android:background="@drawable/rounded_border_focused"
         android:hint="@string/playlist_description"
+        app:boxStrokeWidthFocused="0dp"
         android:padding="2dp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -119,18 +122,28 @@
             android:textSize="@dimen/text_size_16" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/createButton"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/padding_12"
-        android:layout_marginTop="170dp"
-        android:layout_marginEnd="@dimen/padding_12"
-        android:background="@drawable/button_background_selector"
-        android:enabled="false"
-        android:text="@string/add_playlist"
-        android:textColor="@android:color/white">
+        android:layout_height="match_parent">
 
-    </Button>
+        <TextView
+            android:id="@+id/createButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/padding_12"
+            android:layout_marginEnd="@dimen/padding_12"
+            android:layout_marginBottom="32dp"
+            android:background="@drawable/button_background_selector"
+            android:clickable="true"
+            android:enabled="false"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="12dp"
+            android:text="@string/add_playlist"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </FrameLayout>
 
 </LinearLayout>
