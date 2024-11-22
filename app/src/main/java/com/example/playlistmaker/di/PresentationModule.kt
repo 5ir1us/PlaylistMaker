@@ -15,7 +15,8 @@ val presentationModule = module {
     viewModel {
         AudioPlayerViewModel(
             audioPlayerInteractor = get(),
-            favoriteTracksInteractor = get()
+            favoriteTracksInteractor = get(),
+            playlistInteractor = get()
         )
     }
 

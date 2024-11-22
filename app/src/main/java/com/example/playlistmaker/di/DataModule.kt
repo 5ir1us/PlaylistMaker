@@ -29,6 +29,7 @@ import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
+import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -82,13 +83,12 @@ val dataModule = module {
 
     }
 
-    single { get<AppDatabase>().favoriteTrackDao() }
-
     single<FavoriteTrackRepository> { FavoriteTrackRepositoryImpl(get()) }
 
 
-// TODO:  
-    single<PlaylistRepository> { PlaylistRepositoryImpl(get()) }
+// TODO:
+    single<PlaylistRepository> { PlaylistRepositoryImpl(get() ) }
+    single { get<AppDatabase>().favoriteTrackDao() }
     single { get<AppDatabase>().playlistDao() }
-
+//    single { get<AppDatabase>().trackInPlaylistDao() }
 }

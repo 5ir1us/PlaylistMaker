@@ -13,6 +13,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteTrackDao(): FavoriteTrackDao
     abstract fun playlistDao(): PlaylistDao
+//    abstract fun trackInPlaylistDao(): TrackInPlaylistDao
 
 
 

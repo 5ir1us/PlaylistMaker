@@ -1,21 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp">
 
-    <TextView
-        android:id="@+id/playlistName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/playlist_name"
-        android:textAppearance="?attr/textAppearanceBody1" />
+    <ImageView
+        android:id="@+id/playlistCoverBottomSheet"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:contentDescription="@string/empty_playlist"
+        android:scaleType="centerCrop"
+        android:background="@drawable/placeholder" />
 
-    <TextView
-        android:id="@+id/playlistDescription"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/description"
-        android:textAppearance="?attr/textAppearanceCaption" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <TextView
+            android:id="@+id/playlistNameBottomSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_16"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/black_revers"
+            android:paddingBottom="2dp" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/playlistDescriptionBottomSheet"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textSize="11dp"-->
+<!--            android:textAppearance="?attr/textAppearanceBody2"-->
+<!--            android:textColor="@color/black_revers" />-->
+
+        <TextView
+            android:id="@+id/playlistTrackCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#AEAFB4"
+            android:layout_marginTop="1dp" />
+    </LinearLayout>
 </LinearLayout>

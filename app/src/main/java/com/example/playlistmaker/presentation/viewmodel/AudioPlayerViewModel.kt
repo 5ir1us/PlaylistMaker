@@ -4,15 +4,20 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.data.db.Playlist
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.domain.interactor.FavoriteTracksInteractor
+import com.example.playlistmaker.domain.interactor.PlaylistInteractor
+import com.example.playlistmaker.domain.model.PlaylistModel
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.state.AudioPlayerState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
   private val audioPlayerInteractor: AudioPlayerInteractor,
-  private val favoriteTracksInteractor: FavoriteTracksInteractor
+  private val favoriteTracksInteractor: FavoriteTracksInteractor,
+  private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
 
@@ -61,7 +66,7 @@ class AudioPlayerViewModel(
     )
   }
 
-  // TODO:
+
   fun toggleFavorite(track: Track) {
     viewModelScope.launch {
       if (_isFavorite.value == true) {
@@ -84,7 +89,7 @@ class AudioPlayerViewModel(
       }
     }
   }
-  // TODO:  
+
 
   private fun updateTrackProgress() {
     viewModelScope.launch {
@@ -111,7 +116,9 @@ class AudioPlayerViewModel(
     audioPlayerInteractor.release()
   }
 
-
+  fun getPlaylists(): Flow<List<PlaylistModel>> {
+    return playlistInteractor.getAllPlaylists()
+  }
 
 
 }
