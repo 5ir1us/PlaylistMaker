@@ -4,11 +4,13 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.Constants
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
 import com.example.playlistmaker.domain.impl.ExternalNavigatorInteractorImpl
+import com.example.playlistmaker.domain.impl.FavoriteTracksInteractorImpl
 import com.example.playlistmaker.domain.impl.SearchTracksInteractorImpl
 import com.example.playlistmaker.domain.impl.ThemeInteractorImpl
 import com.example.playlistmaker.domain.impl.TrackHistoryInteractorImpl
 import com.example.playlistmaker.domain.interactor.AudioPlayerInteractor
 import com.example.playlistmaker.domain.interactor.ExternalNavigatorInteractor
+import com.example.playlistmaker.domain.interactor.FavoriteTracksInteractor
 import com.example.playlistmaker.domain.interactor.SearchTracksInteractor
 import com.example.playlistmaker.domain.interactor.ThemeInteractor
 import com.example.playlistmaker.domain.interactor.TrackHistoryInteractor
@@ -49,5 +51,8 @@ val domainModule = module {
   factory<TrackHistoryInteractor> {
     TrackHistoryInteractorImpl(repository = get())
   }
+
+
+  single<FavoriteTracksInteractor> { FavoriteTracksInteractorImpl(get()) }
 
 }

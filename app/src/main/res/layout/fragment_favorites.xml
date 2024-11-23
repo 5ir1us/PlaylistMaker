@@ -2,11 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="com.example.playlistmaker.presentation.ui.fragment.FavoritesFragment">>
+
+    <LinearLayout
+        android:id="@+id/empty_favorite_icon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
 
     <ImageView
-        android:id="@+id/empty_favorite_icon"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/indent_102"
@@ -22,4 +33,16 @@
         android:text="@string/empty_playlist"
         android:textAppearance="?attr/textAppearanceBody1"
         android:textSize="@dimen/text_size_19" />
+    </LinearLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerListFavoritesTrack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/indent_16"
+        android:visibility="gone"
+        tools:listitem="@layout/layout_track">
+    </androidx.recyclerview.widget.RecyclerView>
+
 </LinearLayout>

@@ -1,10 +1,7 @@
 package com.example.playlistmaker.presentation.ui.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -17,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
-import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
@@ -84,18 +80,24 @@ class SearchFragment : Fragment() {
 
         trackAdapter.setItemClickListener { track ->
             if (clickDebounce()) {
-                searchViewModel.addTrackToHistory(track)
+                lifecycleScope.launch {
 
-                val bundle = Bundle().apply {
-                    putParcelable("TRACK_INFO", track)
+                    val isFavorite = searchViewModel.checkIfFavorite(track)
+                    track.isFavorite = isFavorite
+
+                    searchViewModel.addTrackToHistory(track)
+
+                    val bundle = Bundle().apply {
+                        putParcelable("TRACK_INFO", track)
+                    }
+
+                    findNavController().navigate(
+                        R.id.action_searchFragment_to_audioPlayerFragment,
+                        bundle
+                    )
                 }
-                findNavController().navigate(
-                    R.id.action_searchFragment_to_audioPlayerFragment,
-                    bundle
-                )
             }
         }
-
         historyAdapter.setItemClickListener { track ->
             val bundle = Bundle().apply {
                 putParcelable("TRACK_INFO", track)

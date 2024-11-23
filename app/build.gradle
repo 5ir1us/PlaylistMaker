@@ -2,8 +2,11 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'org.jetbrains.kotlin.plugin.parcelize' // интерфей Parcelable для передачи
+    id 'kotlin-kapt'
 
-}
+ }
+
+
 
 android {
     namespace 'com.example.playlistmaker'
@@ -19,9 +22,14 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+
+
     buildFeatures { viewBinding true }
 
     buildTypes {
+        debug {
+            debuggable true
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -66,5 +74,11 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:2.5.3"//навигациия
     implementation "androidx.fragment:fragment-ktx:1.5.6"//навигациия
     implementation 'com.google.android.material:material:1.8.0' // BottomNavigationView
+    // Room
+    def room_version = "2.6.0"
+    implementation("androidx.room:room-runtime:$room_version") // библиотека Room
+    kapt("androidx.room:room-compiler:$room_version") // Kotlin-кодогенератор
+    implementation("androidx.room:room-ktx:$room_version") // поддержка корутин
 
-}
+
+ }

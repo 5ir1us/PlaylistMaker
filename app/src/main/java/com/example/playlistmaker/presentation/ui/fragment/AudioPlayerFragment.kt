@@ -8,7 +8,6 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -24,7 +23,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class AudioPlayerFragment : Fragment() {
 
     companion object {
-        const val TRACK_INFO: String = "Track"
+        const val TRACK_INFO: String = "TRACK_INFO"
     }
 
     private var _binding: FragmentAudioPlayerBinding? = null
@@ -54,8 +53,11 @@ class AudioPlayerFragment : Fragment() {
 
 
         //получает данные из поиска и
-        val track = arguments?.getParcelable<Track>("TRACK_INFO")
-        track?.let { setupTrackInfo(it) }
+        val track = arguments?.getParcelable<Track>(TRACK_INFO)
+        track?.let {
+            setupTrackInfo(it)
+            audioPlayerViewModel.checkIfFavorite(it) // TODO:  
+        }
         observeViewModel()
 
 
@@ -67,14 +69,31 @@ class AudioPlayerFragment : Fragment() {
             }
         }
 
-        binding.favoriteMusic.setOnClickListener {
-            audioPlayerViewModel.toggleFavorite()
+
+        // TODO:  
+        // Обновляем состояние кнопки "Нравится" в зависимости от того, является ли трек избранным
+        audioPlayerViewModel.isFavorite.observe(viewLifecycleOwner) { isFavorite ->
+            binding.favoriteMusic.setImageResource(
+                if (isFavorite) R.drawable.like_button else R.drawable.favorite_border
+            )
         }
+
+        // Обработка клика по кнопке "Нравится"
+        binding.favoriteMusic.setOnClickListener {
+            track?.let { audioPlayerViewModel.toggleFavorite(it) }
+        }
+
+        // TODO:
+
+
     }
 
     private fun observeViewModel() {
         audioPlayerViewModel.screenState.observe(viewLifecycleOwner) { state ->
-            Log.d("AudioPlayerFragment", "UI updating with currentTrackTime: ${state.currentTrackTime}")
+            Log.d(
+                "AudioPlayerFragment",
+                "UI updating with currentTrackTime: ${state.currentTrackTime}"
+            )
             binding.timeTrack.text = state.currentTrackTime
             binding.playButton.setImageResource(
                 if (state.isPlaying) R.drawable.stop_player else R.drawable.play_button
