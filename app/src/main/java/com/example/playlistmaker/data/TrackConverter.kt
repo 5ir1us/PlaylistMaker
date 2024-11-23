@@ -79,11 +79,11 @@ object TrackConverter {
         )
     }
 
-
-    // Конвертация Track в TrackInPlaylist
-    fun convertToTrackInPlaylist(track: Track): TrackInPlaylist {
+    fun convertToTrackInPlaylist(track: Track, playlistId: Long): TrackInPlaylist {
         return TrackInPlaylist(
             trackId = track.trackId,
+            playlistId = playlistId,
+            artworkUrl = track.artworkUrl100 ?: "",
             trackName = track.trackName,
             artistName = track.artistName,
             albumName = track.collectionName,
@@ -96,6 +96,7 @@ object TrackConverter {
             timeAdded = System.currentTimeMillis()
         )
     }
+
 
     // Конвертация TrackInPlaylist обратно в Track
     fun convertToDomainModel(trackInPlaylist: TrackInPlaylist): Track {
@@ -111,10 +112,9 @@ object TrackConverter {
             previewUrl = trackInPlaylist.audioUrl,
             isFavorite = trackInPlaylist.isFavorite,
             timeAdd = trackInPlaylist.timeAdded,
-            artworkUrl100 = null
+            artworkUrl100 = trackInPlaylist.artworkUrl
         )
     }
-
 
 
     fun fromEntity(entity: Playlist): PlaylistModel {
@@ -123,7 +123,8 @@ object TrackConverter {
             name = entity.name,
             description = entity.description,
             coverPath = entity.coverPath,
-            trackCount = entity.trackCount
+            trackCount = entity.trackCount,
+            trackIds = entity.trackIds
         )
     }
 
@@ -133,7 +134,8 @@ object TrackConverter {
             name = domain.name,
             description = domain.description,
             coverPath = domain.coverPath,
-            trackCount = domain.trackCount
+            trackCount = domain.trackCount,
+            trackIds = domain.trackIds
         )
     }
 

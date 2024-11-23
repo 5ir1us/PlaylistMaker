@@ -11,17 +11,9 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
 
 
-        <item name="colorControlActivated">@android:color/transparent</item>
-        <item name="textInputStyle">@style/CustomTextInputStyle</item>
-    </style>
+      </style>
 
 
-    <style name="CustomTextInputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@android:color/transparent</item>
-        <item name="boxStrokeWidthFocused">0dp</item> <!-- Убираем ширину рамки при фокусе -->
-        <item name="hintTextColor">@color/black</item> <!-- Цвет подсказки -->
-    </style>
 </resources>

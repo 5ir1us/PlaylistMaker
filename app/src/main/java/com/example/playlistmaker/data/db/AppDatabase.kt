@@ -1,40 +1,46 @@
 package com.example.playlistmaker.data.db
 
-import android.content.Context
 import androidx.room.Database
-import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 
 
-@Database(entities = [FavoriteTrack::class, Playlist::class], version = 2)
+@Database(entities = [FavoriteTrack::class, Playlist::class, TrackInPlaylist::class], version = 4)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun favoriteTrackDao(): FavoriteTrackDao
     abstract fun playlistDao(): PlaylistDao
-//    abstract fun trackInPlaylistDao(): TrackInPlaylistDao
-
+    abstract fun trackInPlaylistDao(): TrackInPlaylistDao
 
 
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        // Миграция с версии 1 на версию 2
-          val MIGRATION_1_2 = object : Migration(1, 2) {
+
+        val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(db: SupportSQLiteDatabase) {
-                // SQL-запрос для создания новой таблицы playlists
-                db.execSQL("""
-                    CREATE TABLE IF NOT EXISTS `playlists` (
-                        `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-                        `name` TEXT NOT NULL,
-                        `description` TEXT,
-                        `coverPath` TEXT,
-                        `trackIds` TEXT NOT NULL DEFAULT '[]',
-                        `trackCount` INTEGER NOT NULL DEFAULT 0
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS `tracks_in_playlists` (
+                        `trackId` INTEGER NOT NULL,
+                        `playlistId` INTEGER NOT NULL,
+                        `artworkUrl` TEXT,
+                        `trackName` TEXT NOT NULL,
+                        `artistName` TEXT NOT NULL,
+                        `albumName` TEXT,
+                        `releaseYear` INTEGER,
+                        `genre` TEXT,
+                        `country` TEXT,
+                        `duration` TEXT,
+                        `audioUrl` TEXT NOT NULL,
+                        `isFavorite` INTEGER NOT NULL,
+                        `timeAdded` INTEGER NOT NULL,
+                        PRIMARY KEY(`trackId`, `playlistId`)
                     )
-                """.trimIndent())
+                """.trimIndent()
+                )
             }
         }
 

@@ -1,9 +1,11 @@
 package com.example.playlistmaker.domain.impl
 
+import com.example.playlistmaker.data.TrackConverter
 import com.example.playlistmaker.data.TrackConverter.fromEntity
-import com.example.playlistmaker.domain.repository.PlaylistRepository
+ import com.example.playlistmaker.domain.repository.PlaylistRepository
 import com.example.playlistmaker.domain.interactor.PlaylistInteractor
 import com.example.playlistmaker.domain.model.PlaylistModel
+import com.example.playlistmaker.domain.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -18,4 +20,14 @@ class PlaylistInteractorIml (private val repository: PlaylistRepository):Playlis
             playlists.map { fromEntity(it) }
         }
     }
+
+
+    override suspend fun isTrackInPlaylist(trackId: Int, playlistId: Long): Boolean {
+        return repository.isTrackInPlaylist(trackId, playlistId)
+    }
+
+    override suspend fun addTrackToPlaylist(track: Track, playlist: PlaylistModel) {
+         repository.addTrackToPlaylist(track, TrackConverter.toEntity(playlist))
+    }
+
 }

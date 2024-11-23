@@ -7,7 +7,6 @@ import androidx.room.Room
 import com.example.playlistmaker.data.NetworkClient
 import com.example.playlistmaker.data.datasource.SharedPreferencesDataSource
 import com.example.playlistmaker.data.db.AppDatabase
-import com.example.playlistmaker.data.db.AppDatabase.Companion.MIGRATION_1_2
 import com.example.playlistmaker.data.network.RetrofitClient
 import com.example.playlistmaker.data.network.TrackApiService
 import com.example.playlistmaker.data.repository.AudioPlayerRepositoryImpl
@@ -29,7 +28,6 @@ import com.example.playlistmaker.domain.repository.ThemeRepository
 import com.example.playlistmaker.domain.repository.TrackHistoryRepository
 import com.google.gson.Gson
 import org.koin.android.ext.koin.androidContext
-import org.koin.core.scope.get
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -78,7 +76,8 @@ val dataModule = module {
             get(),
             AppDatabase::class.java, "app_database"
         )
-            .addMigrations(MIGRATION_1_2)
+//            .addMigrations(MIGRATION_3_4)
+            .fallbackToDestructiveMigration()
             .build()
 
     }
@@ -86,9 +85,8 @@ val dataModule = module {
     single<FavoriteTrackRepository> { FavoriteTrackRepositoryImpl(get()) }
 
 
-// TODO:
-    single<PlaylistRepository> { PlaylistRepositoryImpl(get() ) }
+    single<PlaylistRepository> { PlaylistRepositoryImpl(get(), get()) }
     single { get<AppDatabase>().favoriteTrackDao() }
     single { get<AppDatabase>().playlistDao() }
-//    single { get<AppDatabase>().trackInPlaylistDao() }
+    single { get<AppDatabase>().trackInPlaylistDao() }
 }

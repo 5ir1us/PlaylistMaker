@@ -59,6 +59,8 @@ class CreateFragment : Fragment() {
 
         setupObservers() // Подключаем наблюдателей
         setupListeners() // Устанавливаем слушатели для элементов интерфейса
+        updateStrokeColor()
+
     }
 
     // Подключение наблюдателей к ViewModel
@@ -94,12 +96,12 @@ class CreateFragment : Fragment() {
         }
 
         // Наблюдение за изменениями в текстовых полях
-        viewModel.isPlaylistNameEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
-            updateFieldBorder(binding.playlistNameInputLayout, isNonEmpty)
-        }
-        viewModel.isPlaylistDescriptionEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
-            updateFieldBorder(binding.playlistDescriptionInputLayout, isNonEmpty)
-        }
+//        viewModel.isPlaylistNameEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
+//            updateFieldBorder(binding.playlistNameInputLayout, isNonEmpty)
+//        }
+//        viewModel.isPlaylistDescriptionEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
+//            updateFieldBorder(binding.playlistDescriptionInputLayout, isNonEmpty)
+//        }
     }
 
     // Установка слушателей для элементов интерфейса
@@ -109,22 +111,38 @@ class CreateFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onPlaylistNameChanged(s.toString()) // Обновление имени в ViewModel
+                viewModel.onPlaylistNameChanged(s.toString())
+
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+
+        // TODO: --------------------
 
         // Слушатель изменений текста в поле описания плейлиста
         binding.playlistDescriptionInput.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                viewModel.onPlaylistDescriptionChanged(s.toString()) // Обновление описания в ViewModel
+                updateDescriptionStrokeColor(s)
+                viewModel.onPlaylistDescriptionChanged(s.toString())
+
+
+
+
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
+
+// TODO:
+
+
+
+        // TODO:
+
 
         // Слушатель кнопки "Создать плейлист"
         binding.createButton.setOnClickListener {
@@ -175,7 +193,8 @@ class CreateFragment : Fragment() {
                 binding.coverImageView.visibility = View.VISIBLE
                 binding.addCoverIcon.visibility = View.GONE
 
-                val coverPath = saveCoverImageToInternalStorage(uri) // Сохранение во внутреннее хранилище
+                val coverPath =
+                    saveCoverImageToInternalStorage(uri) // Сохранение во внутреннее хранилище
                 viewModel.setCoverImagePath(coverPath) // Передача в ViewModel
             }
         }
@@ -194,7 +213,11 @@ class CreateFragment : Fragment() {
         ) {
             openGallery()
         } else {
-            Toast.makeText(requireContext(), "Permission required to access media", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Permission required to access media",
+                Toast.LENGTH_SHORT
+            ).show()
         }
     }
 
@@ -207,7 +230,7 @@ class CreateFragment : Fragment() {
                 inputStream.copyTo(outputStream) // Копирование данных изображения
             }
         }
-        return imageFile.absolutePath // Возврат пути к сохраненному файлу
+        return imageFile.absolutePath
     }
 
     // Показ диалога подтверждения выхода
@@ -220,14 +243,56 @@ class CreateFragment : Fragment() {
             .show()
     }
 
-    // Обновление рамки текстового поля
-    private fun updateFieldBorder(layout: TextInputLayout, isNonEmpty: Boolean) {
-        val background = if (isNonEmpty) {
-            R.drawable.button_background_selector // Фокус с введенным текстом
-        } else {
-            R.drawable.rounded_border_focused // Пустое поле
+    //цвет рамки нахЗвание
+//    private fun updateStrokeColor(s: CharSequence?) {
+//        val isFieldEmpty = s.isNullOrEmpty()
+//        val colorResId = if (isFieldEmpty) {
+//            R.color.text_gray
+//        } else {
+//            R.color.blue
+//        }
+//        binding.playlistNameInputLayout.setBoxStrokeColor(
+//            ContextCompat.getColor(requireContext(), colorResId)
+//        )
+//    }
+    private fun updateStrokeColor() {
+        // Наблюдаем за состоянием имени плейлиста
+        viewModel.isPlaylistNameEmpty.observe(viewLifecycleOwner) { isEmpty ->
+            binding.playlistNameInput.isEnabled
+            val colorResId = if (isEmpty) {
+                R.color.text_gray // Цвет рамки, если поле пустое
+            } else {
+                R.color.blue // Цвет рамки, если в поле есть текст
+            }
+            binding.playlistNameInputLayout.setBoxStrokeColor(
+                ContextCompat.getColor(requireContext(), colorResId)
+            )
         }
-        layout.setBackgroundResource(background)
+    }
+
+//    viewModel.isCreateButtonEnabled.observe(viewLifecycleOwner) { isEnabled ->
+//        binding.createButton.isEnabled = isEnabled
+//        val background = if (isEnabled) {
+//            R.drawable.button_background_selector // Включенная кнопка
+//        } else {
+//            R.drawable.button_background_selector // Отключенная кнопка
+//        }
+//        binding.createButton.setBackgroundResource(background)
+//    }
+
+
+
+
+    private fun updateDescriptionStrokeColor(s: CharSequence?) {
+        val isFieldEmpty = s.isNullOrEmpty()
+        val colorResId = if (isFieldEmpty) {
+            R.color.text_gray
+        } else {
+            R.color.blue
+        }
+        binding.playlistDescriptionInputLayout.setBoxStrokeColor(
+            ContextCompat.getColor(requireContext(), colorResId)
+        )
     }
 
     // Освобождение ресурсов

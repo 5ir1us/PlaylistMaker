@@ -74,26 +74,27 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlistNameInputLayout"
-        android:theme="@style/CustomTextInputStyle"
+        style="@style/CustomTextInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_16"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="@dimen/indent_16"
-        android:background="@drawable/rounded_border_focused"
         android:hint="@string/name_new_playlist"
-        android:padding="2dp"
         app:boxBackgroundColor="@android:color/transparent"
-        app:boxStrokeColor="@android:color/transparent"
-        app:boxStrokeWidthFocused="0dp"
-        app:boxBackgroundMode="outline">
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="@color/box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:hintTextColor="@color/blue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlistNameInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_revers"
+
+            android:layout_height="match_parent"
             android:inputType="text"
+            android:paddingBottom="17dp"
             android:textColor="@color/black_revers"
             android:textSize="@dimen/text_size_16" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -101,26 +102,31 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/playlistDescriptionInputLayout"
-        android:theme="@style/CustomTextInputStyle"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/indent_16"
         android:layout_marginTop="17dp"
         android:layout_marginEnd="@dimen/indent_16"
-        android:background="@drawable/rounded_border_focused"
         android:hint="@string/playlist_description"
-        app:boxStrokeWidthFocused="0dp"
-        android:padding="2dp">
+        app:boxBackgroundColor="@android:color/transparent"
+        app:boxBackgroundMode="outline"
+
+        app:boxStrokeWidth="1dp"
+        app:boxStrokeWidthFocused="1dp"
+        app:hintTextColor="@color/blue">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/playlistDescriptionInput"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_revers"
+            android:layout_height="match_parent"
             android:inputType="textMultiLine"
+
+            android:paddingBottom="17dp"
             android:textColor="@color/black_revers"
             android:textSize="@dimen/text_size_16" />
     </com.google.android.material.textfield.TextInputLayout>
+
 
     <FrameLayout
         android:layout_width="match_parent"

@@ -9,4 +9,7 @@ interface PlaylistInteractor {
 
     suspend fun createPlaylist(name: String, description: String?, coverPath: String?)
     fun getAllPlaylists(): Flow<List<PlaylistModel>>
+
+    suspend fun isTrackInPlaylist(trackId: Int, playlistId: Long): Boolean
+    suspend fun addTrackToPlaylist(track: Track, playlist: PlaylistModel)
 }

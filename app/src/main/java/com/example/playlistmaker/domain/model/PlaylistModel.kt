@@ -5,5 +5,6 @@ data class PlaylistModel(
     val name: String,
     val description: String?,
     val coverPath: String?,
-    val trackCount: Int
+    val trackCount: Int,
+    val trackIds: String
 )

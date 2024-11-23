@@ -27,6 +27,20 @@ class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor
     private val _showToastMessage = MutableLiveData<String>()
     val showToastMessage: LiveData<String> get() = _showToastMessage
 
+
+
+    // LiveData для отслеживания имени плейлиста
+    private val _playlistName = MutableLiveData<String>()
+    val playlistNameCreate: LiveData<String> = _playlistName
+
+    // LiveData для отслеживания состояния, пустое ли поле или нет
+    private val _isPlaylistNameEmpty = MutableLiveData<Boolean>()
+    val isPlaylistNameEmpty: LiveData<Boolean> = _isPlaylistNameEmpty
+
+
+
+
+
     private var playlistName: String = ""
     private var playlistDescription: String? = null
     private var coverPath: String? = null
@@ -34,8 +48,11 @@ class CreatePlaylistViewModel(private val playlistInteractor: PlaylistInteractor
     fun onPlaylistNameChanged(name: String) {
         playlistName = name
         _isPlaylistNameEnabled.value = name.isNotBlank() // TODO:
+        _isPlaylistNameEmpty.value = name.isEmpty()
         validateInput()
     }
+
+
 
     fun onPlaylistDescriptionChanged(description: String?) {
         playlistDescription = description
