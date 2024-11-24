@@ -12,6 +12,9 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <!-- Customize your theme here. -->
+
+
+        <item name="colorOnSurface">#FFFFFF</item>
     </style>
     
     

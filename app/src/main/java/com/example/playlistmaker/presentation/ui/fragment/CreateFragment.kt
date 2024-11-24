@@ -95,13 +95,7 @@ class CreateFragment : Fragment() {
             }
         }
 
-        // Наблюдение за изменениями в текстовых полях
-//        viewModel.isPlaylistNameEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
-//            updateFieldBorder(binding.playlistNameInputLayout, isNonEmpty)
-//        }
-//        viewModel.isPlaylistDescriptionEnabled.observe(viewLifecycleOwner) { isNonEmpty ->
-//            updateFieldBorder(binding.playlistDescriptionInputLayout, isNonEmpty)
-//        }
+
     }
 
     // Установка слушателей для элементов интерфейса
@@ -130,15 +124,12 @@ class CreateFragment : Fragment() {
                 viewModel.onPlaylistDescriptionChanged(s.toString())
 
 
-
-
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
 
 // TODO:
-
 
 
         // TODO:
@@ -235,26 +226,32 @@ class CreateFragment : Fragment() {
 
     // Показ диалога подтверждения выхода
     private fun showExitConfirmationDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("Завершить создание плейлиста?")
-            .setMessage("Все несохраненные данные будут потеряны")
-            .setPositiveButton("Завершить") { _, _ -> viewModel.discardChanges() }
-            .setNegativeButton("Отмена", null)
-            .show()
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle(R.string.finish_creating_a_playlist)
+            .setMessage(R.string.any_unsaved_data_will_be_lost)
+            .setPositiveButton(R.string.finish_create_playlist) { _, _ -> viewModel.discardChanges() }
+            .setNegativeButton(R.string.undo_create_playlist, null)
+            .create()
+
+        dialog.setOnShowListener {
+            val isDarkTheme = resources.configuration.uiMode and
+                    android.content.res.Configuration.UI_MODE_NIGHT_MASK == android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+            val buttonColor = if (isDarkTheme) R.color.white else R.color.black
+
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE)?.setTextColor(
+                ContextCompat.getColor(requireContext(), buttonColor)
+            )
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE)?.setTextColor(
+                ContextCompat.getColor(requireContext(), buttonColor)
+            )
+        }
+
+        dialog.show()
     }
 
-    //цвет рамки нахЗвание
-//    private fun updateStrokeColor(s: CharSequence?) {
-//        val isFieldEmpty = s.isNullOrEmpty()
-//        val colorResId = if (isFieldEmpty) {
-//            R.color.text_gray
-//        } else {
-//            R.color.blue
-//        }
-//        binding.playlistNameInputLayout.setBoxStrokeColor(
-//            ContextCompat.getColor(requireContext(), colorResId)
-//        )
-//    }
+
     private fun updateStrokeColor() {
         // Наблюдаем за состоянием имени плейлиста
         viewModel.isPlaylistNameEmpty.observe(viewLifecycleOwner) { isEmpty ->
@@ -269,18 +266,6 @@ class CreateFragment : Fragment() {
             )
         }
     }
-
-//    viewModel.isCreateButtonEnabled.observe(viewLifecycleOwner) { isEnabled ->
-//        binding.createButton.isEnabled = isEnabled
-//        val background = if (isEnabled) {
-//            R.drawable.button_background_selector // Включенная кнопка
-//        } else {
-//            R.drawable.button_background_selector // Отключенная кнопка
-//        }
-//        binding.createButton.setBackgroundResource(background)
-//    }
-
-
 
 
     private fun updateDescriptionStrokeColor(s: CharSequence?) {

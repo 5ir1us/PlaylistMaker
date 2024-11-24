@@ -22,6 +22,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentAudioPlayerBinding
 import com.example.playlistmaker.domain.model.Track
 import com.example.playlistmaker.presentation.adapter.PlaylistBottomSheetAdapter
+import com.example.playlistmaker.presentation.ui.activity.MainActivity
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.coroutines.launch
@@ -47,6 +48,10 @@ class AudioPlayerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as? MainActivity)?.hideBottomNavigation()
+
+
+
         _binding = FragmentAudioPlayerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -96,13 +101,13 @@ class AudioPlayerFragment : Fragment() {
             if (isAdded) {
                 Toast.makeText(
                     requireContext(),
-                    "Трек успешно добавлен в плейлист!",
+                    getString(R.string.toast_add_track),
                     Toast.LENGTH_SHORT
                 ).show()
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "Трек уже существует в этом плейлисте.",
+                    getString(R.string.the_track_already_exists),
                     Toast.LENGTH_SHORT
                 ).show()
             }
@@ -122,10 +127,7 @@ class AudioPlayerFragment : Fragment() {
 
     private fun observeViewModel() {
         audioPlayerViewModel.screenState.observe(viewLifecycleOwner) { state ->
-            Log.d(
-                "AudioPlayerFragment",
-                "UI updating with currentTrackTime: ${state.currentTrackTime}"
-            )
+
             binding.timeTrack.text = state.currentTrackTime
             binding.playButton.setImageResource(
                 if (state.isPlaying) R.drawable.stop_player else R.drawable.play_button
@@ -156,7 +158,6 @@ class AudioPlayerFragment : Fragment() {
         binding.visibleGroup.isVisible = track.collectionName != null
     }
 
-    // TODO: В методе onSlide() изменяется значение alpha для overlay
     private fun setupBottomSheet() {
         val bottomSheetContainer = binding.playlistsBottomSheet
         val overlay = binding.overlay
@@ -207,7 +208,7 @@ class AudioPlayerFragment : Fragment() {
                     if (isTrackInPlaylist) {
                         Toast.makeText(
                             requireContext(),
-                            "Трек уже добавлен в плейлист ${playlist.name}.",
+                            getString(R.string.toast_track_error, playlist.name),
                             Toast.LENGTH_SHORT
                         ).show()
                     } else {
@@ -215,7 +216,7 @@ class AudioPlayerFragment : Fragment() {
                         bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                         Toast.makeText(
                             requireContext(),
-                            "Добавлено в плейлист ${playlist.name}.",
+                            getString(R.string.toast_added_to_playlist, playlist.name),
                             Toast.LENGTH_SHORT
                         ).show()
                     }

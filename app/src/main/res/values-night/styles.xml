@@ -53,7 +53,10 @@
     <style name="BottomNavigationViewStyle" parent="Widget.MaterialComponents.BottomNavigationView">
          <item name="android:background">@color/black_color</item>
 
+    </style>
 
+    <style name="CustomAlertDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">?attr/colorOnSurface</item>
     </style>
 
 </resources>

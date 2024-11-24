@@ -1,13 +1,17 @@
 package com.example.playlistmaker.presentation.adapter
 
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ItemPlaylistBinding
 import com.example.playlistmaker.domain.model.PlaylistModel
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import java.io.File
 
 class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
@@ -27,12 +31,25 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
         val playlist = playlists[position]
         with(holder.binding) {
             playlistName.text = playlist.name
-            playlistDescription.text = "${playlist.trackCount} tracks"
+
+            // Используем `plurals` для отображения правильного окончания
+            val context = holder.itemView.context
+            val trackCountText = context.resources.getQuantityString(
+                R.plurals.track_count,
+                playlist.trackCount,
+                playlist.trackCount
+            )
+            playlistDescription.text = trackCountText
+
+
+
 
             if (!playlist.coverPath.isNullOrEmpty() && File(playlist.coverPath).exists()) {
                 Glide.with(playlistCover.context)
                     .load(File(playlist.coverPath))
+                    .transform(CenterCrop(), RoundedCorners(8))
                     .placeholder(R.drawable.placeholder)
+
                     .into(playlistCover)
             } else {
                 playlistCover.setImageResource(R.drawable.placeholder)
@@ -57,5 +74,7 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
             }
         }
     }
+
+
 }
 

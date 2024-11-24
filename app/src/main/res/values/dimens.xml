@@ -16,5 +16,16 @@
   <dimen name="indent_24">24dp</dimen>
   <dimen name="indent_26">26dp</dimen>
   <dimen name="indent_39">39dp</dimen>
+  <dimen name="_17dp">17dp</dimen>
+  <dimen name="_170dp">170dp</dimen>
+  <dimen name="_32dp">32dp</dimen>
+  <dimen name="_16sp">16sp</dimen>
+  <dimen name="_328dp">328dp</dimen>
+  <dimen name="_56dp">56dp</dimen>
+  <dimen name="_24dp">24dp</dimen>
   <dimen name="play_size">100dp</dimen>
+  <dimen name="_326dp">326dp</dimen>
+  <dimen name="_44dp">44dp</dimen>
+  <dimen name="_100dp">100dp</dimen>
+  <dimen name="_312dp">312dp</dimen>
 </resources>

@@ -55,10 +55,13 @@ class MainActivity : AppCompatActivity() {
     }
     fun hideBottomNavigation() {
         binding.bottomNavigation.visibility = View.GONE
+        binding.bottomNavDivider.visibility = View.GONE
+
     }
 
     fun showBottomNavigation() {
         binding.bottomNavigation.visibility = View.VISIBLE
+        binding.bottomNavDivider.visibility = View.VISIBLE
     }
 
 }

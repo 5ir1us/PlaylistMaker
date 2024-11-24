@@ -1,9 +1,12 @@
 package com.example.playlistmaker.presentation.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ItemBottomSheetPlaylistBinding
 import com.example.playlistmaker.domain.model.PlaylistModel
@@ -24,7 +27,7 @@ class PlaylistBottomSheetAdapter(
     }
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
-        holder.bind(playlists[position])
+        holder.bind(playlists[position], holder.itemView.context)
     }
 
     override fun getItemCount(): Int = playlists.size
@@ -34,18 +37,25 @@ class PlaylistBottomSheetAdapter(
         notifyDataSetChanged()
     }
 
+
     inner class PlaylistViewHolder(private val binding: ItemBottomSheetPlaylistBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(playlist: PlaylistModel) {
+        fun bind(playlist: PlaylistModel, context: Context) {
             binding.playlistNameBottomSheet.text = playlist.name
-//            binding.playlistDescriptionBottomSheet.text = playlist.description ?: ""
-            binding.playlistTrackCount.text = "${playlist.trackCount} tracks"
+
+            val trackCountText = context.resources.getQuantityString(
+                R.plurals.track_count,
+                playlist.trackCount,
+                playlist.trackCount
+            )
+            binding.playlistTrackCount.text = trackCountText
 
 
             if (!playlist.coverPath.isNullOrEmpty() && File(playlist.coverPath).exists()) {
                 Glide.with(binding.playlistCoverBottomSheet.context)
                     .load(File(playlist.coverPath))
+                    .transform(CenterCrop(), RoundedCorners(2))
                     .placeholder(R.drawable.placeholder)
                     .into(binding.playlistCoverBottomSheet)
             } else {
