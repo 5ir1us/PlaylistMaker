@@ -1,6 +1,7 @@
 package com.example.playlistmaker.presentation.adapter
 
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -55,7 +56,7 @@ class PlaylistBottomSheetAdapter(
             if (!playlist.coverPath.isNullOrEmpty() && File(playlist.coverPath).exists()) {
                 Glide.with(binding.playlistCoverBottomSheet.context)
                     .load(File(playlist.coverPath))
-                    .transform(CenterCrop(), RoundedCorners(2))
+                    .transform(CenterCrop(), RoundedCorners(dpToPx(2)))
                     .placeholder(R.drawable.placeholder)
                     .into(binding.playlistCoverBottomSheet)
             } else {
@@ -66,4 +67,9 @@ class PlaylistBottomSheetAdapter(
             binding.root.setOnClickListener { onPlaylistClicked(playlist) }
         }
     }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * Resources.getSystem().displayMetrics.density).toInt()
+    }
+
 }

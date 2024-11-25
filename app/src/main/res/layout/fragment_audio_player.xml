@@ -7,19 +7,16 @@
 
     tools:context=".presentation.ui.fragment.AudioPlayerFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
          >
 
 
-
-
         <ImageView
             android:id="@+id/image_album"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/_0dp"
+            android:layout_height="@dimen/_0dp"
             android:layout_marginBottom="@dimen/indent_24"
             android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/album_artist"
@@ -302,70 +299,7 @@
             app:layout_constraintGuide_percent="0.50121653" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--   верстка экрана аудиоплккра заканчивается  -->
 
 
-
-    <!-- Полупрозрачный фон для затемнения при открытии BottomSheet -->
-    <View
-        android:id="@+id/overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#99000000"
-        android:visibility="gone" />
-
-
-
-    <!-- BottomSheet -->
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tool="http://schemas.android.com/tools"
-        android:id="@+id/playlists_bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/rounded_bottom_sheet"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="240dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-
-        <View
-            android:layout_width="50dp"
-            android:layout_height="4dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:background="@color/light_gray"
-            />
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="@string/add_to_playlist"
-            android:textColor="@color/black_revers"
-            android:textSize="@dimen/text_size_19"
-            android:textAppearance="?attr/textAppearanceHeadline6" />
-        <ImageView
-            android:id="@+id/newPlaylistButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_12"
-            android:clickable="true"
-            android:contentDescription=" "
-            android:src="@drawable/button_new_playlist" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/playlist_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:padding="8dp" />
-
-
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

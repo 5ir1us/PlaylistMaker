@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.adapter
 
+import android.content.res.Resources
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -32,7 +33,7 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
         with(holder.binding) {
             playlistName.text = playlist.name
 
-            // Используем `plurals` для отображения правильного окончания
+            // Используем `plurals`
             val context = holder.itemView.context
             val trackCountText = context.resources.getQuantityString(
                 R.plurals.track_count,
@@ -47,7 +48,7 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
             if (!playlist.coverPath.isNullOrEmpty() && File(playlist.coverPath).exists()) {
                 Glide.with(playlistCover.context)
                     .load(File(playlist.coverPath))
-                    .transform(CenterCrop(), RoundedCorners(8))
+                    .transform(CenterCrop(), RoundedCorners(dpToPx(8)))
                     .placeholder(R.drawable.placeholder)
 
                     .into(playlistCover)
@@ -63,10 +64,12 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
         playlists = newPlaylists
         notifyDataSetChanged()
     }
+    private fun dpToPx(dp: Int): Int {
+        return (dp * Resources.getSystem().displayMetrics.density).toInt()
+    }
 
 
-    //удол мусор
-    private fun deleteOldCover(path: String?) {
+     private fun deleteOldCover(path: String?) {
         path?.let {
             val file = File(it)
             if (file.exists()) {

@@ -78,8 +78,8 @@
         android:layout_width="@dimen/_328dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/indent_16"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="@dimen/indent_16"
+        android:layout_marginEnd="@dimen/indent_16"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

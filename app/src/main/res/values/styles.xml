@@ -110,8 +110,26 @@
 
 
 
+<!--шторка-->
+    <style name="RoundedBottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheet</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
 
+    </style>
 
+    <style name="RoundedBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/BottomSheetShapeAppearance</item>
+        <item name="android:background">@color/white_revers</item> <!-- Цвет содержимого -->
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:outlineProvider">none</item>
+    </style>
+
+    <style name="BottomSheetShapeAppearance" parent="ShapeAppearanceOverlay.MaterialComponents.BottomSheet">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
 
 
 

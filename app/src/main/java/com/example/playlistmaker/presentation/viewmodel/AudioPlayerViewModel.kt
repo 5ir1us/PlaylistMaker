@@ -1,5 +1,6 @@
 package com.example.playlistmaker.presentation.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ class AudioPlayerViewModel(
         audioPlayerInteractor.setOnTrackCompleteListener {
             onTrackComplete()
         }
+        loadPlaylists()
     }
 
 
@@ -150,6 +152,7 @@ class AudioPlayerViewModel(
     private fun loadPlaylists() {
         viewModelScope.launch {
             playlistInteractor.getAllPlaylists().collect { updatedPlaylists ->
+                Log.d("AudioPlayerViewModel", "Playlists updated: ${updatedPlaylists.size}")
                 _playlists.value = updatedPlaylists
                 _isEmpty.value = updatedPlaylists.isEmpty()
             }

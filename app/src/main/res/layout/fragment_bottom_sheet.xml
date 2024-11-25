@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/playlists_bottom_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_bottom_sheet"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="@dimen/_215dp"
+    android:elevation="@dimen/_0dp"
+    android:outlineProvider="none"
+    android:clipToOutline="false"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+
+    <View
+        android:layout_width="@dimen/_50dp"
+        android:layout_height="@dimen/_4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/indent_8"
+        android:background="@color/light_gray" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/add_to_playlist"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="@color/black_revers"
+        android:textSize="@dimen/text_size_19" />
+
+    <ImageView
+        android:id="@+id/newPlaylistButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/padding_12"
+        android:clickable="true"
+        android:contentDescription=" "
+        android:src="@drawable/button_new_playlist" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/playlist_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp" />
+
+    <Button
+        android:id="@+id/button_expand_to_full"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="Expand to Full"
+        android:visibility="invisible"
+        android:layout_gravity="center" />
+
+
+</LinearLayout>
+

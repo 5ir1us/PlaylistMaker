@@ -29,4 +29,10 @@
   <dimen name="_100dp">100dp</dimen>
   <dimen name="_312dp">312dp</dimen>
   <dimen name="_4dp">4dp</dimen>
+  <dimen name="_11sp">11sp</dimen>
+  <dimen name="_1dp">1dp</dimen>
+  <dimen name="_45dp">45dp</dimen>
+  <dimen name="_50dp">50dp</dimen>
+  <dimen name="_215dp">215dp</dimen>
+  <dimen name="_0dp">0dp</dimen>
 </resources>
