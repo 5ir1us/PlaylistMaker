@@ -78,6 +78,7 @@
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
         <item name="tabIndicatorColor">@color/black_revers</item>
         <item name="tabTextColor">@color/black_revers</item>
+        <item name="android:gravity">center</item>
 
     </style>
 
