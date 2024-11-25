@@ -13,6 +13,25 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
 
 
+
+        <!-- Установите прозрачный или белый цвет для colorSecondary -->
+        <item name="colorSecondary">@android:color/transparent</item>
+        <item name="colorSecondaryVariant">@android:color/transparent</item>
+        <item name="colorOnSecondary">@android:color/transparent</item>
+
+        <!-- Уберите цвет обводки -->
+        <item name="colorOutline">@android:color/transparent</item>
+
+        <!-- Прочие атрибуты -->
+        <item name="android:statusBarColor">?attr/background</item>
+        <item name="elevationOverlayEnabled">false</item>
+
+
+
+
+
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
       </style>
 
 

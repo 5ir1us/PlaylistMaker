@@ -108,8 +108,18 @@
         <item name="boxStrokeWidthFocused">2dp</item>
     </style>
 
-    <style name="CustomAlertDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">?attr/colorPrimary</item> <!-- Цвет текста кнопок -->
-    </style>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </resources>

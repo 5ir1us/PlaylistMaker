@@ -25,6 +25,7 @@ import com.example.playlistmaker.presentation.adapter.PlaylistBottomSheetAdapter
 import com.example.playlistmaker.presentation.ui.activity.MainActivity
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -41,6 +42,9 @@ class AudioPlayerFragment : Fragment() {
 
     private lateinit var bottomSheetBehavior: BottomSheetBehavior<LinearLayout>
     private lateinit var playlistAdapter: PlaylistBottomSheetAdapter
+
+    private lateinit var bottomSheetDialog: BottomSheetDialog
+
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreateView(
@@ -62,7 +66,17 @@ class AudioPlayerFragment : Fragment() {
 
 
 
-        binding.buttonPlayerBack.setOnClickListener {
+
+
+
+
+
+
+
+
+
+
+        binding.toolbarNewPlaylist.setOnClickListener {
             findNavController().popBackStack()
         }
 
@@ -116,7 +130,7 @@ class AudioPlayerFragment : Fragment() {
             navigateToCreatePlaylistScreen()
         }
 
-        setupBottomSheet()
+        setupBottomSheet() // TODO:  
         setupRecyclerView()
         loadPlaylists()
 
@@ -162,7 +176,9 @@ class AudioPlayerFragment : Fragment() {
         val bottomSheetContainer = binding.playlistsBottomSheet
         val overlay = binding.overlay
 
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
+
+
+          bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetContainer).apply {
             state = BottomSheetBehavior.STATE_HIDDEN
             peekHeight = (resources.displayMetrics.heightPixels * 0.5).toInt()
             isHideable = true
@@ -190,6 +206,7 @@ class AudioPlayerFragment : Fragment() {
 
     private fun showBottomSheet() {
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
     }
 
 

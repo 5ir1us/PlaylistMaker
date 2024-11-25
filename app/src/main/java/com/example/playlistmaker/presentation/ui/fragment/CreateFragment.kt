@@ -129,11 +129,6 @@ class CreateFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-// TODO:
-
-
-        // TODO:
-
 
         // Слушатель кнопки "Создать плейлист"
         binding.createButton.setOnClickListener {
@@ -143,12 +138,12 @@ class CreateFragment : Fragment() {
         }
 
         // Слушатель кнопки "Назад"
-        binding.buttonCreatePlaylist.setOnClickListener {
+        binding.toolbarNewPlaylist.setOnClickListener {
             viewModel.onBackButtonClicked()
         }
 
         // Слушатель контейнера для выбора обложки
-        binding.coverContainer.setOnClickListener {
+        binding.imagePlayList.setOnClickListener {
             pickImageFromGallery()
         }
     }
@@ -180,13 +175,13 @@ class CreateFragment : Fragment() {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK) {
             coverUri = data?.data // Получение URI выбранного изображения
             coverUri?.let { uri ->
-                binding.coverImageView.setImageURI(uri) // Установка изображения
-                binding.coverImageView.visibility = View.VISIBLE
-                binding.addCoverIcon.visibility = View.GONE
+                binding.imagePlayList.setImageURI(uri) // Установка изображения
+
 
                 val coverPath =
                     saveCoverImageToInternalStorage(uri) // Сохранение во внутреннее хранилище
                 viewModel.setCoverImagePath(coverPath) // Передача в ViewModel
+
             }
         }
     }
