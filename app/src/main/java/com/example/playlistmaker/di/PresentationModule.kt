@@ -3,6 +3,7 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.presentation.viewmodel.AudioPlayerViewModel
 import com.example.playlistmaker.presentation.viewmodel.CreatePlaylistViewModel
+import com.example.playlistmaker.presentation.viewmodel.EditPlaylistViewModel
 import com.example.playlistmaker.presentation.viewmodel.FavoritesViewModel
 import com.example.playlistmaker.presentation.viewmodel.PlaylistsViewModel
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
@@ -32,13 +33,18 @@ val presentationModule = module {
         SettingsViewModel(themeInteractor = get(), externalNavigatorInteractor = get())
     }
 
-    viewModel { PlaylistsViewModel(playlistInteractor = get()) }
+    viewModel {
+        PlaylistsViewModel(
+            playlistInteractor = get(),
+            trackInPlaylistDao = get()  // Здесь передаем TrackInPlaylistDao
+        )
+    }
 
 
     viewModel { FavoritesViewModel(get()) }
 
     viewModel { CreatePlaylistViewModel(playlistInteractor =  get()) }
 
-
+    viewModel { EditPlaylistViewModel(playlistInteractor = get()) }
 
 }

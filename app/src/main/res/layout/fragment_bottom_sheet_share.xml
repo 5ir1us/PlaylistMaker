@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/bottomSheetShare"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/rounded_bottom_sheet"
+    android:orientation="vertical"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="215dp"
+
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <View
+        android:layout_width="50dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:background="#E6E8EB" />
+
+
+    <include
+        android:id="@+id/playlistPreview1"
+        layout="@layout/item_bottom_sheet_playlist"
+        android:layout_marginLeft="@dimen/indent_16"/>
+
+    <TextView
+        android:id="@+id/sheetShare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="21dp"
+        android:text="Поделиться"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sheetRedactor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="21dp"
+        android:text="Редактировать информацию"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/sheetDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="21dp"
+        android:text="Удалить плейлист"
+        android:textColor="?attr/colorOnPrimary"
+        android:textSize="16sp" />
+
+
+
+</LinearLayout>
+
+

@@ -28,23 +28,14 @@ class PlaylistRepositoryImpl(
     }
 
     override suspend fun addTrackToPlaylist(track: Track, playlist: Playlist) {
-        Log.d("PlaylistRepository", "Checking if track exists in playlist...")
 
-        // Проверка на наличие трека в плейлисте
         val isTrackInPlaylist = trackInPlaylistDao.isTrackInPlaylist(track.trackId, playlist.id)
-        Log.d("PlaylistRepository", "isTrackInPlaylist result: $isTrackInPlaylist")
 
         if (!isTrackInPlaylist) {
-            Log.d("PlaylistRepository", "Track not found in playlist, adding now...")
 
-            // Преобразование Track в TrackInPlaylist
             val trackInPlaylist = TrackConverter.convertToTrackInPlaylist(track, playlist.id)
-
-            // Добавление трека в базу данных
             trackInPlaylistDao.insertTrack(trackInPlaylist)
-            Log.d("PlaylistRepository", "Track added to tracks_in_playlists table")
 
-            // Обновление плейлиста с добавлением трека
             val updatedTrackIds = if (playlist.trackIds == "[]") {
                 "[${track.trackId}]"
             } else {
@@ -56,15 +47,53 @@ class PlaylistRepositoryImpl(
                 trackCount = playlist.trackCount + 1
             )
 
-            // Обновляем плейлист
             playlistDao.updatePlaylist(updatedPlaylist)
-            Log.d("PlaylistRepository", "Playlist updated with new track count: ${updatedPlaylist.trackCount}")
-        } else {
-            Log.d("PlaylistRepository", "Track already exists in playlist, skipping addition.")
         }
     }
 
     override suspend fun isTrackInPlaylist(trackId: Int, playlistId: Long): Boolean {
         return trackInPlaylistDao.isTrackInPlaylist(trackId, playlistId)
     }
+
+    override suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist) {
+         trackInPlaylistDao.deleteTrack(track.trackId, playlist.id)
+
+         val updatedTrackIds = playlist.trackIds.removeSurrounding("[", "]")
+            .split(",")
+            .filter { it.toIntOrNull() != track.trackId }
+            .joinToString(",", "[", "]")
+
+        val updatedPlaylist = playlist.copy(
+            trackIds = updatedTrackIds,
+            trackCount = updatedTrackIds.removeSurrounding("[", "]").split(",").size
+        )
+
+         playlistDao.updatePlaylist(updatedPlaylist)
+    }
+
+
+    override suspend fun deletePlaylist(playlist: Playlist) {
+        try {
+            // Удаление треков, связанных с плейлистом
+            trackInPlaylistDao.deleteTracksByPlaylistId(playlist.id)
+
+            // Удаление самого плейлиста
+            playlistDao.deletePlaylist(playlist)
+        } catch (e: Exception) {
+            Log.e("PlaylistRepositoryImpl", "Error deleting playlist", e)
+            throw e
+        }
+    }
+
+
+    override suspend fun updatePlaylist(playlistId: Long, name: String, description: String?, coverPath: String?) {
+        val playlist = playlistDao.getPlaylistById(playlistId)
+        val updatedPlaylist = playlist.copy(
+            name = name,
+            description = description ?: playlist.description,
+            coverPath = coverPath ?: playlist.coverPath
+        )
+        playlistDao.updatePlaylist(updatedPlaylist)
+    }
+
 }
