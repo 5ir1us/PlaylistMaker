@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/playlistCoverBottomSheet"
+        android:layout_width="@dimen/_45dp"
+        android:layout_height="@dimen/_45dp"
+        android:contentDescription="@string/empty_playlist"
+        android:scaleType="centerCrop"
+        android:background="@drawable/placeholder" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/indent_8"
+        android:paddingEnd="@dimen/indent_8">
+
+        <TextView
+            android:id="@+id/playlistNameBottomSheet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_size_16"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/black_revers"
+            android:paddingBottom="2dp" />
+
+
+        <TextView
+            android:id="@+id/playlistTrackCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_11sp"
+            android:textAppearance="?attr/textAppearanceBody2"
+            android:textColor="#AEAFB4"
+            android:layout_marginTop="@dimen/_1dp" />
+    </LinearLayout>
+</LinearLayout>

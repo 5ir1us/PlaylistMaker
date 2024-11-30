@@ -12,12 +12,14 @@ import com.example.playlistmaker.data.network.TrackApiService
 import com.example.playlistmaker.data.repository.AudioPlayerRepositoryImpl
 import com.example.playlistmaker.data.repository.ExternalNavigatorRepositoryImpl
 import com.example.playlistmaker.data.repository.FavoriteTrackRepositoryImpl
+import com.example.playlistmaker.domain.repository.PlaylistRepository
 import com.example.playlistmaker.data.repository.SearchTrackRepositoryImpl
 import com.example.playlistmaker.data.repository.ThemeRepositoryImpl
 import com.example.playlistmaker.data.repository.TrackHistoryRepositoryImpl
 import com.example.playlistmaker.data.system.SystemNavigator
 import com.example.playlistmaker.data.system.SystemNavigatorImpl
 import com.example.playlistmaker.domain.Constants.APP_PREFERENCES
+import com.example.playlistmaker.data.repository.PlaylistRepositoryImpl
 import com.example.playlistmaker.domain.repository.AudioPlayerRepository
 import com.example.playlistmaker.domain.repository.ExternalNavigatorRepository
 import com.example.playlistmaker.domain.repository.FavoriteTrackRepository
@@ -69,16 +71,22 @@ val dataModule = module {
 
     single<SystemNavigator> { SystemNavigatorImpl(androidContext()) }
 
-
-
     single {
         Room.databaseBuilder(
             get(),
             AppDatabase::class.java, "app_database"
-        ).build()
+        )
+//            .addMigrations(MIGRATION_3_4)
+            .fallbackToDestructiveMigration()
+            .build()
+
     }
 
-    single { get<AppDatabase>().favoriteTrackDao() }
-
     single<FavoriteTrackRepository> { FavoriteTrackRepositoryImpl(get()) }
+
+
+    single<PlaylistRepository> { PlaylistRepositoryImpl(get(), get()) }
+    single { get<AppDatabase>().favoriteTrackDao() }
+    single { get<AppDatabase>().playlistDao() }
+    single { get<AppDatabase>().trackInPlaylistDao() }
 }

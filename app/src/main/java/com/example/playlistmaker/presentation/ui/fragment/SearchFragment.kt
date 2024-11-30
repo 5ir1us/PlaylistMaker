@@ -16,6 +16,7 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.presentation.adapter.SearchHistoryAdapter
 import com.example.playlistmaker.presentation.adapter.TrackAdapter
+import com.example.playlistmaker.presentation.ui.activity.MainActivity
 import com.example.playlistmaker.presentation.viewmodel.SearchViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -43,6 +44,9 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as? MainActivity)?.showBottomNavigation()
+
         binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
     }

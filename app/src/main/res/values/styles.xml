@@ -78,6 +78,7 @@
         <item name="tabTextAppearance">@style/MyTabTextAppearance</item>
         <item name="tabIndicatorColor">@color/black_revers</item>
         <item name="tabTextColor">@color/black_revers</item>
+        <item name="android:gravity">center</item>
 
     </style>
 
@@ -92,6 +93,51 @@
         <item name="android:background">@color/white</item>
 
     </style>
+
+
+    <style name="HintTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:textColor">@color/text_gray</item> <!-- Цвет подсказки -->
+        <item name="android:textSize">12sp</item> <!-- Размер текста подсказки -->
+        <item name="android:fontFamily">@font/ys_display_medium</item> <!-- Шрифт подсказки -->
+        <item name="android:translationY">-4dp</item> <!-- Смещение текста вверх -->
+    </style>
+
+
+    <style name="CustomTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/box_stroke_color</item>
+        <item name="boxStrokeWidth">2dp</item>
+        <item name="boxStrokeWidthFocused">2dp</item>
+    </style>
+
+
+
+<!--шторка-->
+    <style name="RoundedBottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/RoundedBottomSheet</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+
+    </style>
+
+    <style name="RoundedBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearanceOverlay">@style/BottomSheetShapeAppearance</item>
+        <item name="android:background">@color/white_revers</item> <!-- Цвет содержимого -->
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:outlineProvider">none</item>
+    </style>
+
+    <style name="BottomSheetShapeAppearance" parent="ShapeAppearanceOverlay.MaterialComponents.BottomSheet">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+
+
+
+
+
+
 
 
 

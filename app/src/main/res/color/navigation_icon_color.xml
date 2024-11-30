@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет для светлой темы -->
+    <item android:color="@color/black" android:state_activated="false" />
+    <!-- Цвет для темной темы -->
+    <item android:color="@color/white" android:state_activated="true" />
+    <!-- Обычное состояние -->
+    <item android:color="@color/white" />
+</selector>

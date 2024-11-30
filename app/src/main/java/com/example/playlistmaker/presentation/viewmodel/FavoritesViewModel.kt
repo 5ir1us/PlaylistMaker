@@ -11,19 +11,16 @@ import kotlinx.coroutines.launch
 class FavoritesViewModel(private val favoriteTracksInteractor: FavoriteTracksInteractor) :
     ViewModel() {
 
-    // LiveData для отслеживания списка избранных треков
-    val favoriteTracks: LiveData<List<Track>> =
+     val favoriteTracks: LiveData<List<Track>> =
         favoriteTracksInteractor.getAllFavoriteTracks().asLiveData()
 
-    // Метод для добавления трека в избранное
-    fun addTrackToFavorites(track: Track) {
+     fun addTrackToFavorites(track: Track) {
         viewModelScope.launch {
             favoriteTracksInteractor.addTrackToFavorites(track)
         }
     }
 
-    // Метод для удаления трека из избранного
-    fun removeTrackFromFavorites(track: Track) {
+     fun removeTrackFromFavorites(track: Track) {
         viewModelScope.launch {
             favoriteTracksInteractor.removeTrackFromFavorites(track)
         }

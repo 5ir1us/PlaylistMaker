@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Цвет рамки, когда поле находится в фокусе -->
+    <item android:color="@color/blue" android:state_focused="true" />
+    <!-- Цвет рамки, когда поле активировано и в нем есть текст -->
+    <item android:color="@color/blue" android:state_activated="true" />
+    <!-- Цвет рамки по умолчанию (когда поле пустое) -->
+    <item android:color="@color/text_gray" />
+</selector>

@@ -1,7 +1,10 @@
 package com.example.playlistmaker.data
 
 import com.example.playlistmaker.data.db.FavoriteTrack
+import com.example.playlistmaker.data.db.Playlist
+import com.example.playlistmaker.data.db.TrackInPlaylist
 import com.example.playlistmaker.data.dto.TrackDto
+import com.example.playlistmaker.domain.model.PlaylistModel
 import com.example.playlistmaker.domain.model.Track
 
 object TrackConverter {
@@ -73,6 +76,66 @@ object TrackConverter {
             isFavorite = track.isFavorite,
             timeAdd = track.timeAdd
 
+        )
+    }
+
+    fun convertToTrackInPlaylist(track: Track, playlistId: Long): TrackInPlaylist {
+        return TrackInPlaylist(
+            trackId = track.trackId,
+            playlistId = playlistId,
+            artworkUrl = track.artworkUrl100 ?: "",
+            trackName = track.trackName,
+            artistName = track.artistName,
+            albumName = track.collectionName,
+            releaseYear = track.releaseDate?.substring(0, 4)?.toIntOrNull(),
+            genre = track.primaryGenreName,
+            country = track.country,
+            duration = formatDuration(track.trackTimeMillis ?: 0),
+            audioUrl = track.previewUrl ?: "",
+            isFavorite = track.isFavorite,
+            timeAdded = System.currentTimeMillis()
+        )
+    }
+
+
+    // Конвертация TrackInPlaylist обратно в Track
+    fun convertToDomainModel(trackInPlaylist: TrackInPlaylist): Track {
+        return Track(
+            trackId = trackInPlaylist.trackId,
+            trackName = trackInPlaylist.trackName,
+            artistName = trackInPlaylist.artistName,
+            collectionName = trackInPlaylist.albumName,
+            releaseDate = trackInPlaylist.releaseYear?.toString(),
+            primaryGenreName = trackInPlaylist.genre,
+            country = trackInPlaylist.country,
+            trackTimeMillis = parseDuration(trackInPlaylist.duration ?: "00:00"),
+            previewUrl = trackInPlaylist.audioUrl,
+            isFavorite = trackInPlaylist.isFavorite,
+            timeAdd = trackInPlaylist.timeAdded,
+            artworkUrl100 = trackInPlaylist.artworkUrl
+        )
+    }
+
+
+    fun fromEntity(entity: Playlist): PlaylistModel {
+        return PlaylistModel(
+            id = entity.id,
+            name = entity.name,
+            description = entity.description,
+            coverPath = entity.coverPath,
+            trackCount = entity.trackCount,
+            trackIds = entity.trackIds
+        )
+    }
+
+    fun toEntity(domain: PlaylistModel): Playlist {
+        return Playlist(
+            id = domain.id,
+            name = domain.name,
+            description = domain.description,
+            coverPath = domain.coverPath,
+            trackCount = domain.trackCount,
+            trackIds = domain.trackIds
         )
     }
 
