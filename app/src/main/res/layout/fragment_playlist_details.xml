@@ -124,8 +124,8 @@
 
     <ImageView
         android:id="@+id/share_play_list"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
+        android:layout_width="@dimen/_24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="16dp"
         android:foregroundGravity="left"
         android:src="@drawable/playlist_share_track"
@@ -136,9 +136,9 @@
 
     <ImageView
         android:id="@+id/option_play_list"
-        android:layout_width="wrap_content"
-        android:layout_height="21dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="24dp"
+        android:layout_height="@dimen/_24dp"
+        android:layout_marginStart="17dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/track_playlist_menu"
         app:layout_constraintStart_toEndOf="@id/share_play_list"
@@ -172,7 +172,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerViewTracks"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="360dp"
             android:layout_marginTop="@dimen/padding_12"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="vertical"

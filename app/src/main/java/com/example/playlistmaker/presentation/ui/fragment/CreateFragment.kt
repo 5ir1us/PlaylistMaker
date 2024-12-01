@@ -150,18 +150,35 @@ class CreateFragment : Fragment() {
 
     // Открытие галереи для выбора изображения
     private fun pickImageFromGallery() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                android.Manifest.permission.READ_MEDIA_IMAGES
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-            openGallery()
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.READ_MEDIA_IMAGES
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGallery()
+            } else {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES),
+                    STORAGE_PERMISSION_REQUEST_CODE
+                )
+            }
         } else {
-            requestPermissions(
-                arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES),
-                STORAGE_PERMISSION_REQUEST_CODE
-            )
+            // Для Android 12 и ниже
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                openGallery()
+            } else {
+                requestPermissions(
+                    arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),
+                    STORAGE_PERMISSION_REQUEST_CODE
+                )
+            }
         }
+
     }
 
     private fun openGallery() {
@@ -201,7 +218,7 @@ class CreateFragment : Fragment() {
         } else {
             Toast.makeText(
                 requireContext(),
-                "Permission required to access media",
+                getString(R.string.permission),
                 Toast.LENGTH_SHORT
             ).show()
         }

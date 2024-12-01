@@ -65,4 +65,5 @@
     <string name="edit_playlist">Редактировать плейлист</string>
     <string name="save_playlist">Сохранить</string>
     <string name="no_tracks_in_playlist">В этом плейлисте нет треков</string>
+    <string name="permission">Разрешение, необходимое для доступа к медиафайлам</string>
 </resources>

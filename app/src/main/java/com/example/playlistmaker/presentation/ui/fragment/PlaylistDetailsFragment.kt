@@ -105,7 +105,7 @@ class PlaylistDetailsFragment : Fragment() {
 
         // Увеличиваем начальный размер на 50% высоты экрана
         val screenHeight = resources.displayMetrics.heightPixels
-        bottomSheetBehavior.peekHeight = (screenHeight * 0.33).toInt()
+        bottomSheetBehavior.peekHeight = (screenHeight * 0.30).toInt()
         bottomSheetBehavior.isFitToContents = true
         bottomSheetBehavior.isHideable = false
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
@@ -160,11 +160,15 @@ class PlaylistDetailsFragment : Fragment() {
         }
 
 
-
         binding.sharePlayList.setOnClickListener {
             playlistsViewModel.tracks.observe(viewLifecycleOwner) { tracks ->
                 if (tracks.isEmpty()) {
-
+                    // Показываем сообщение, если плейлист пустой
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.empty_playlist_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     val message = createShareMessage(playlist, tracks)
                     sharePlaylist(message)
@@ -183,11 +187,18 @@ class PlaylistDetailsFragment : Fragment() {
             currentPlaylist?.let {
                 setupUI(it)
             }
-
         }
         playlistsViewModel.tracks.observe(viewLifecycleOwner) { tracks ->
             updateTracksUI(tracks)
 
+            if (tracks.isEmpty()) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_tracks_in_playlist),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            updateTracksUI(tracks)
         }
 
     }
