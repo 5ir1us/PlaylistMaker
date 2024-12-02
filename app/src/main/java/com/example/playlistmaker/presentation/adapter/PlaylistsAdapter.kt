@@ -1,6 +1,5 @@
 package com.example.playlistmaker.presentation.adapter
 
-import android.content.res.Resources
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,10 @@ import com.example.playlistmaker.domain.model.PlaylistModel
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation
 import java.io.File
 
-class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
+class PlaylistsAdapter(
+    private var playlists: List<PlaylistModel>,
+    private val onPlaylistClick: (PlaylistModel) -> Unit
+) :
     RecyclerView.Adapter<PlaylistsAdapter.PlaylistViewHolder>() {
 
     class PlaylistViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,7 +35,7 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
         with(holder.binding) {
             playlistName.text = playlist.name
 
-            // Используем `plurals`
+            // Используем `plurals` для отображения правильного окончания
             val context = holder.itemView.context
             val trackCountText = context.resources.getQuantityString(
                 R.plurals.track_count,
@@ -43,18 +45,21 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
             playlistDescription.text = trackCountText
 
 
-
-
             if (!playlist.coverPath.isNullOrEmpty() && File(playlist.coverPath).exists()) {
                 Glide.with(playlistCover.context)
                     .load(File(playlist.coverPath))
-                    .transform(CenterCrop(), RoundedCorners(dpToPx(8)))
+                    .transform(CenterCrop(), RoundedCorners(dpToPx(8, context)))
                     .placeholder(R.drawable.placeholder)
 
                     .into(playlistCover)
             } else {
                 playlistCover.setImageResource(R.drawable.placeholder)
             }
+            holder.itemView.setOnClickListener {
+                onPlaylistClick(playlist)
+            }
+
+
         }
     }
 
@@ -64,18 +69,13 @@ class PlaylistsAdapter(private var playlists: List<PlaylistModel>) :
         playlists = newPlaylists
         notifyDataSetChanged()
     }
-    private fun dpToPx(dp: Int): Int {
-        return (dp * Resources.getSystem().displayMetrics.density).toInt()
-    }
 
-
-     private fun deleteOldCover(path: String?) {
-        path?.let {
-            val file = File(it)
-            if (file.exists()) {
-                file.delete()
-            }
-        }
+    private fun dpToPx(dp: Int, context: android.content.Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp.toFloat(),
+            context.resources.displayMetrics
+        ).toInt()
     }
 
 

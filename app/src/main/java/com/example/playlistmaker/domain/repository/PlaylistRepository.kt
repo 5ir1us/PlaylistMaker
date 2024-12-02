@@ -10,4 +10,11 @@ interface PlaylistRepository {
 
     suspend fun addTrackToPlaylist(track: Track, playlist: Playlist)
     suspend fun isTrackInPlaylist(trackId: Int, playlistId: Long): Boolean
+
+    suspend fun removeTrackFromPlaylist(track: Track, playlist: Playlist)
+
+    suspend fun deletePlaylist(playlist: Playlist)
+
+      suspend fun updatePlaylist(playlistId: Long, name: String, description: String?, coverPath: String?)
+
 }

@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_mediaLibraryFragment_to_createFragment"
             app:destination="@id/createFragment" />
+        <action
+            android:id="@+id/action_mediaLibraryFragment_to_playlistDetailsFragment"
+            app:destination="@id/playlistDetailsFragment" />
     </fragment>
 
     <fragment
@@ -56,6 +59,8 @@
             android:id="@+id/action_audioPlayerFragment_to_createFragment"
             app:destination="@id/createFragment" />
     </fragment>
+
+
     <fragment
         android:id="@+id/createFragment"
         android:name="com.example.playlistmaker.presentation.ui.fragment.CreateFragment"
@@ -64,6 +69,41 @@
         <action
             android:id="@+id/action_createFragment_to_mediaLibraryFragment"
             app:destination="@id/mediaLibraryFragment" />
+
     </fragment>
+
+
+    <fragment
+        android:id="@+id/playlistDetailsFragment"
+        android:name="com.example.playlistmaker.presentation.ui.fragment.PlaylistDetailsFragment"
+        android:label="fragment_of_playlists_with_tracks"
+        tools:layout="@layout/fragment_playlist_details" >
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_mediaLibraryFragment"
+            app:destination="@id/mediaLibraryFragment"
+            app:popUpTo="@id/mediaLibraryFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_audioPlayerFragment"
+            app:destination="@id/audioPlayerFragment" />
+        <argument
+            android:name="playlist"
+            app:argType="com.example.playlistmaker.domain.model.PlaylistModel" />
+        <action
+            android:id="@+id/action_playlistDetailsFragment_to_editPlaylistFragment2"
+            app:destination="@id/editPlaylistFragment2" />
+
+
+    </fragment>
+    <fragment
+        android:id="@+id/editPlaylistFragment2"
+        android:name="com.example.playlistmaker.presentation.ui.EditPlaylistFragment"
+        android:label="fragment_edit_playlist"
+        tools:layout="@layout/fragment_edit_playlist" >
+        <action
+            android:id="@+id/action_editPlaylistFragment2_to_playlistDetailsFragment"
+            app:destination="@id/playlistDetailsFragment" />
+    </fragment>
+
 
 </navigation>

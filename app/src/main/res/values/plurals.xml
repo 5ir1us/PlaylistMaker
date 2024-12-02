@@ -8,5 +8,14 @@
         <item quantity="other">%d трека</item>
     </plurals>
 
+    <plurals name="total_duration">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минуты</item>
+    </plurals>
+
+
+
 
 </resources>

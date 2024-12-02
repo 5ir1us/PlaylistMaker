@@ -57,8 +57,8 @@ val domainModule = module {
   single<FavoriteTracksInteractor> { FavoriteTracksInteractorImpl(get()) }
   
   
-  
-  factory <PlaylistInteractor>{PlaylistInteractorIml(get())}   // TODO:  
+
+  factory <PlaylistInteractor>{PlaylistInteractorIml(get())}
 
 
 

@@ -6,7 +6,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="?attr/colorSecondary"
-    android:padding="@dimen/indent_16">
+    android:padding="@dimen/_0dp"
+    >
+<!--16  был-->
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

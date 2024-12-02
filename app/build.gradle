@@ -89,7 +89,7 @@ dependencies {
     implementation "io.insert-koin:koin-android:3.3.0" // фреймворк di Koin
 
 // Навигация
-    def nav_version = "2.5.3"
+    def nav_version = "2.7.0"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version" // навигация
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version" // навигация
 
