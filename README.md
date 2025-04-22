@@ -21,9 +21,9 @@ API: Apple Music API
 📱 Интерфейс приложения
 
 🔎 Экран поиска
- ![68747470733a2f2f69696c692e696f2f33396c5a706d462e706e67](https://github.com/user-attachments/assets/a5cbd494-3376-43e5-892d-f4f013032fef)
+ 
 
 📂 Меню выбора плейлиста
-![68747470733a2f2f69696c692e696f2f33396c743271762e706e67](https://github.com/user-attachments/assets/bb90377c-2caa-406c-bf5c-eaaab0ae4ccc)
+ 
 
  
